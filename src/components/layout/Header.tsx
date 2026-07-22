@@ -8,12 +8,23 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [dropdownTimeout, setDropdownTimeout] = useState<any>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  const openDropdown = (label: string) => {
+    if (dropdownTimeout) clearTimeout(dropdownTimeout);
+    setActiveDropdown(label);
+  };
+
+  const closeDropdown = () => {
+    const timeout = setTimeout(() => setActiveDropdown(null), 150);
+    setDropdownTimeout(timeout);
+  };
 
   return (
     <>
@@ -43,23 +54,26 @@ export default function Header() {
           </Link>
           <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1">
             {NAV_ITEMS.map((item) => (
-              <div key={item.label} className="relative group"
-                onMouseEnter={() => item.children && setActiveDropdown(item.label)}
-                onMouseLeave={() => setActiveDropdown(null)}>
+              <div key={item.label} className="relative"
+                onMouseEnter={() => item.children && openDropdown(item.label)}
+                onMouseLeave={closeDropdown}>
                 <Link href={item.href}
                   className="flex items-center gap-1 px-2.5 xl:px-3 py-2 text-sm font-medium text-gray-700 hover:text-brand-500 transition rounded-lg hover:bg-brand-50">
                   {item.label}
                   {item.children && <ChevronDown size={14} className={`transition-transform duration-200 ${activeDropdown === item.label ? 'rotate-180' : ''}`} />}
                 </Link>
                 {item.children && activeDropdown === item.label && (
-                  <div className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 mt-1 z-50"
-                    style={{ animation: 'fadeInUp 0.2s ease-out' }}>
-                    {item.children.map((child) => (
-                      <Link key={child.label} href={child.href}
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-500 transition">
-                        {child.label}
-                      </Link>
-                    ))}
+                  <div className="absolute top-full left-0 w-64 pt-0 z-50"
+                    onMouseEnter={() => openDropdown(item.label)}
+                    onMouseLeave={closeDropdown}>
+                    <div className="bg-white rounded-xl shadow-2xl border border-gray-100 py-2 mt-0">
+                      {item.children.map((child) => (
+                        <Link key={child.label} href={child.href}
+                          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-500 transition">
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
