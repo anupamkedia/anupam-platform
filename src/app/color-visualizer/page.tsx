@@ -1,150 +1,111 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { Paintbrush, RotateCcw, Download, Share2 } from 'lucide-react';
+import { Palette, RotateCcw, Download, ArrowRight } from 'lucide-react';
 
 const rooms = [
-  { id: 'living', name: 'Living Room', walls: [{ id: 'wall1', path: 'M50,50 L350,50 L350,300 L50,300 Z', label: 'Main Wall' }, { id: 'wall2', path: 'M370,70 L550,130 L550,310 L370,300 Z', label: 'Side Wall' }] },
-  { id: 'bedroom', name: 'Bedroom', walls: [{ id: 'wall1', path: 'M50,50 L380,50 L380,300 L50,300 Z', label: 'Back Wall' }, { id: 'wall2', path: 'M400,70 L560,130 L560,300 L400,300 Z', label: 'Side Wall' }] },
-  { id: 'kitchen', name: 'Kitchen', walls: [{ id: 'wall1', path: 'M50,50 L350,50 L350,300 L50,300 Z', label: 'Wall' }] },
+  { id: 'living', name: 'Living Room', img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80' },
+  { id: 'bedroom', name: 'Bedroom', img: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80' },
+  { id: 'kitchen', name: 'Kitchen', img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80' },
+  { id: 'exterior', name: 'Exterior', img: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80' },
 ];
 
-const shadeGroups = [
-  { name: 'Whites & Creams', shades: [
-    { code: 'AP-001', name: 'Arctic White', hex: '#FFFFFF' }, { code: 'AP-002', name: 'Ivory Cream', hex: '#FFFFF0' },
-    { code: 'AP-003', name: 'Pearl White', hex: '#F5F5F0' }, { code: 'AP-004', name: 'Soft Linen', hex: '#FAF0E6' },
-    { code: 'AP-005', name: 'Warm Bisque', hex: '#FFE4C4' },
-  ]},
-  { name: 'Blues', shades: [
-    { code: 'AP-101', name: 'Sky Blue', hex: '#87CEEB' }, { code: 'AP-102', name: 'Ocean Mist', hex: '#B0C4DE' },
-    { code: 'AP-103', name: 'Royal Blue', hex: '#4169E1' }, { code: 'AP-104', name: 'Powder Blue', hex: '#B0E0E6' },
-    { code: 'AP-105', name: 'Navy Night', hex: '#2C3E6B' },
-  ]},
-  { name: 'Greens', shades: [
-    { code: 'AP-201', name: 'Sage Garden', hex: '#9DC183' }, { code: 'AP-202', name: 'Mint Fresh', hex: '#98FB98' },
-    { code: 'AP-203', name: 'Olive Grove', hex: '#808000' }, { code: 'AP-204', name: 'Forest Green', hex: '#228B22' },
-    { code: 'AP-205', name: 'Emerald', hex: '#50C878' },
-  ]},
-  { name: 'Pinks & Reds', shades: [
-    { code: 'AP-301', name: 'Blush Rose', hex: '#FFB6C1' }, { code: 'AP-302', name: 'Dusty Rose', hex: '#DCAE96' },
-    { code: 'AP-303', name: 'Coral Reef', hex: '#FF7F50' }, { code: 'AP-304', name: 'Crimson', hex: '#DC143C' },
-    { code: 'AP-305', name: 'Berry Wine', hex: '#722F37' },
-  ]},
-  { name: 'Yellows & Golds', shades: [
-    { code: 'AP-401', name: 'Sunshine', hex: '#FFDB58' }, { code: 'AP-402', name: 'Butter Cream', hex: '#FFFDD0' },
-    { code: 'AP-403', name: 'Golden Sand', hex: '#F0C05A' }, { code: 'AP-404', name: 'Mustard', hex: '#E1AD01' },
-    { code: 'AP-405', name: 'Amber Glow', hex: '#FFBF00' },
-  ]},
-  { name: 'Greys & Neutrals', shades: [
-    { code: 'AP-501', name: 'Silver Grey', hex: '#C0C0C0' }, { code: 'AP-502', name: 'Smoky Grey', hex: '#848884' },
-    { code: 'AP-503', name: 'Charcoal', hex: '#36454F' }, { code: 'AP-504', name: 'Taupe', hex: '#B38B6D' },
-    { code: 'AP-505', name: 'Mocha', hex: '#967969' },
-  ]},
-  { name: 'Purples', shades: [
-    { code: 'AP-601', name: 'Lavender', hex: '#E6E6FA' }, { code: 'AP-602', name: 'Lilac', hex: '#C8A2C8' },
-    { code: 'AP-603', name: 'Plum', hex: '#8E4585' }, { code: 'AP-604', name: 'Mauve', hex: '#E0B0FF' },
-    { code: 'AP-605', name: 'Deep Purple', hex: '#673AB7' },
-  ]},
+const colorFamilies = [
+  { name: 'Whites & Neutrals', colors: ['#FFFFFF', '#F5F5DC', '#FFF8DC', '#FFFAF0', '#F0EAD6', '#E8DCC8', '#D2B48C', '#C4A882'] },
+  { name: 'Blues', colors: ['#E6F3FF', '#B3D9FF', '#6BB3FF', '#3399FF', '#0066CC', '#004C99', '#003366', '#1A365D'] },
+  { name: 'Greens', colors: ['#E6FFE6', '#B3FFB3', '#66CC66', '#339933', '#006600', '#2D5F2D', '#4A7C59', '#8FBC8F'] },
+  { name: 'Yellows & Golds', colors: ['#FFFDE6', '#FFF9B3', '#FFE066', '#FFD700', '#FFC300', '#DAA520', '#B8860B', '#CD853F'] },
+  { name: 'Reds & Terracotta', colors: ['#FFE6E6', '#FFB3B3', '#FF6666', '#CC3333', '#990000', '#8B4513', '#A0522D', '#CD5C5C'] },
+  { name: 'Purples & Lavenders', colors: ['#F3E6FF', '#D9B3FF', '#B366FF', '#8833FF', '#6600CC', '#9370DB', '#DDA0DD', '#E6E6FA'] },
+  { name: 'Pinks', colors: ['#FFE6F0', '#FFB3D1', '#FF66A3', '#FF3385', '#CC0066', '#DB7093', '#FFB6C1', '#FFC0CB'] },
+  { name: 'Greys', colors: ['#F5F5F5', '#E0E0E0', '#BDBDBD', '#9E9E9E', '#757575', '#616161', '#424242', '#303030'] },
 ];
 
 export default function ColorVisualizerPage() {
   const [selectedRoom, setSelectedRoom] = useState(rooms[0]);
-  const [wallColors, setWallColors] = useState<Record<string, string>>({});
-  const [selectedWall, setSelectedWall] = useState(rooms[0].walls[0].id);
-  const [activeGroup, setActiveGroup] = useState(shadeGroups[0].name);
-
-  const applyColor = (hex: string) => {
-    setWallColors({ ...wallColors, [selectedWall]: hex });
-  };
-
-  const reset = () => setWallColors({});
+  const [selectedColor, setSelectedColor] = useState('#E6F3FF');
+  const [activeFamily, setActiveFamily] = useState(0);
 
   return (
     <>
-      <section className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-12 md:py-16">
+      <section className="bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 text-white py-16 md:py-20">
         <div className="container-wide px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">AI Colour Visualizer</h1>
-          <p className="text-white/70">See how different colours look on your walls before painting.</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">AI Colour Visualizer</h1>
+          <p className="text-lg text-white/80 max-w-2xl">See how different colours transform your walls. Select a room, pick a colour, and visualize instantly.</p>
         </div>
       </section>
 
       <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Room View */}
+            {/* Room Preview */}
             <div className="lg:col-span-2">
-              <div className="flex gap-2 mb-4">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <img src={selectedRoom.img} alt={selectedRoom.name} className="w-full h-[400px] md:h-[500px] object-cover" />
+                <div className="absolute inset-0" style={{ backgroundColor: selectedColor, mixBlendMode: 'multiply', opacity: 0.4 }} />
+                <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm">
+                  {selectedRoom.name} · {selectedColor}
+                </div>
+              </div>
+              {/* Room selector */}
+              <div className="flex gap-3 mt-4 overflow-x-auto pb-2">
                 {rooms.map(room => (
-                  <button key={room.id} onClick={() => { setSelectedRoom(room); setSelectedWall(room.walls[0].id); setWallColors({}); }}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${selectedRoom.id === room.id ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
-                    {room.name}
+                  <button key={room.id} onClick={() => setSelectedRoom(room)}
+                    className={`shrink-0 rounded-xl overflow-hidden border-3 transition ${selectedRoom.id === room.id ? 'border-purple-500 shadow-lg' : 'border-transparent opacity-70 hover:opacity-100'}`}>
+                    <img src={room.img} alt={room.name} className="w-24 h-16 object-cover" />
+                    <div className="text-xs font-medium text-center py-1 bg-gray-50">{room.name}</div>
                   </button>
                 ))}
-              </div>
-
-              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 relative">
-                <svg viewBox="0 0 600 350" className="w-full h-auto">
-                  {/* Floor */}
-                  <polygon points="50,300 370,300 560,320 0,320" fill="#D4A76A" opacity="0.3" />
-                  {/* Walls */}
-                  {selectedRoom.walls.map(wall => (
-                    <g key={wall.id} onClick={() => setSelectedWall(wall.id)} className="cursor-pointer">
-                      <path d={wall.path} fill={wallColors[wall.id] || '#E8E4DF'} stroke={selectedWall === wall.id ? '#8B5CF6' : '#CCC'} strokeWidth={selectedWall === wall.id ? 3 : 1} />
-                      {/* Window or door placeholder */}
-                      {wall.id === 'wall1' && <rect x="150" y="80" width="100" height="80" rx="4" fill="rgba(135,206,235,0.3)" stroke="#AAA" />}
-                    </g>
-                  ))}
-                  {/* Furniture hints */}
-                  <rect x="80" y="220" width="200" height="70" rx="8" fill="#8B7355" opacity="0.4" />
-                  <rect x="100" y="200" width="50" height="30" rx="4" fill="#A0522D" opacity="0.3" />
-                </svg>
-                <div className="flex justify-between items-center mt-3">
-                  <div className="flex gap-2">
-                    {selectedRoom.walls.map(wall => (
-                      <button key={wall.id} onClick={() => setSelectedWall(wall.id)}
-                        className={`text-xs px-3 py-1.5 rounded-lg border-2 transition ${selectedWall === wall.id ? 'border-purple-500 bg-purple-50 text-purple-700' : 'border-gray-200 text-gray-500'}`}>
-                        <span className="inline-block w-3 h-3 rounded mr-1.5" style={{ backgroundColor: wallColors[wall.id] || '#E8E4DF', border: '1px solid #ccc' }} />
-                        {wall.label}
-                      </button>
-                    ))}
-                  </div>
-                  <button onClick={reset} className="text-gray-400 hover:text-gray-600 text-sm flex items-center gap-1"><RotateCcw size={14} /> Reset</button>
-                </div>
               </div>
             </div>
 
-            {/* Shade Picker */}
+            {/* Color Picker */}
             <div>
-              <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2"><Paintbrush size={18} className="text-purple-500" /> Pick a Colour</h3>
-              <p className="text-xs text-gray-500 mb-3">Select a wall on the left, then click a shade below.</p>
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {shadeGroups.map(g => (
-                  <button key={g.name} onClick={() => setActiveGroup(g.name)}
-                    className={`text-xs px-2.5 py-1.5 rounded-lg transition ${activeGroup === g.name ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>
-                    {g.name}
-                  </button>
-                ))}
-              </div>
-              <div className="grid grid-cols-5 gap-2">
-                {shadeGroups.find(g => g.name === activeGroup)?.shades.map(shade => (
-                  <button key={shade.code} onClick={() => applyColor(shade.hex)}
-                    className="group flex flex-col items-center" title={shade.name}>
-                    <div className="w-10 h-10 rounded-lg shadow-sm border border-gray-200 group-hover:ring-2 group-hover:ring-purple-500 group-hover:scale-110 transition"
-                      style={{ backgroundColor: shade.hex }} />
-                    <span className="text-[9px] text-gray-400 mt-1 truncate w-full text-center">{shade.name}</span>
-                  </button>
-                ))}
-              </div>
+              <div className="bg-gray-50 rounded-2xl p-5">
+                <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2"><Palette size={20} className="text-purple-500" /> Pick a Colour</h3>
 
-              <div className="mt-6 p-4 bg-purple-50 rounded-xl">
-                <h4 className="font-bold text-purple-800 text-sm mb-2">Like these colours?</h4>
-                <p className="text-xs text-purple-600 mb-3">Get a free quote for your home painting project.</p>
-                <Link href="/home-painting#enquiry" className="btn-primary w-full text-center text-sm">Get Free Quote</Link>
-              </div>
+                {/* Selected color preview */}
+                <div className="flex items-center gap-3 mb-4 p-3 bg-white rounded-xl">
+                  <div className="w-14 h-14 rounded-xl shadow-inner border border-gray-200" style={{ backgroundColor: selectedColor }} />
+                  <div>
+                    <div className="font-mono text-sm font-medium text-gray-800">{selectedColor}</div>
+                    <div className="text-xs text-gray-500">Selected Shade</div>
+                  </div>
+                </div>
 
-              <div className="mt-4 flex gap-2">
-                <Link href="/shade-card" className="btn-outline text-xs flex-1 text-center">Full Shade Card</Link>
-                <Link href="/calculator" className="btn-outline text-xs flex-1 text-center">Paint Calculator</Link>
+                {/* Color families */}
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {colorFamilies.map((fam, i) => (
+                    <button key={fam.name} onClick={() => setActiveFamily(i)}
+                      className={`text-xs px-2.5 py-1 rounded-full transition ${activeFamily === i ? 'bg-purple-500 text-white' : 'bg-white text-gray-600 hover:bg-purple-50'}`}>
+                      {fam.name}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Color swatches */}
+                <div className="grid grid-cols-8 gap-1.5">
+                  {colorFamilies[activeFamily].colors.map(color => (
+                    <button key={color} onClick={() => setSelectedColor(color)}
+                      className={`w-full aspect-square rounded-lg border-2 transition hover:scale-110 ${selectedColor === color ? 'border-purple-500 ring-2 ring-purple-300 scale-110' : 'border-gray-200'}`}
+                      style={{ backgroundColor: color }} title={color} />
+                  ))}
+                </div>
+
+                {/* Custom color */}
+                <div className="mt-4">
+                  <label className="text-xs text-gray-500 mb-1 block">Custom Colour</label>
+                  <div className="flex gap-2">
+                    <input type="color" value={selectedColor} onChange={e => setSelectedColor(e.target.value)} className="w-10 h-10 rounded-lg cursor-pointer" />
+                    <input type="text" value={selectedColor} onChange={e => setSelectedColor(e.target.value)} className="input-field flex-1 font-mono text-sm !py-2" />
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="space-y-2 mt-6">
+                  <button onClick={() => setSelectedColor('#FFFFFF')} className="btn-outline w-full text-sm"><RotateCcw size={14} className="mr-2" /> Reset Colour</button>
+                  <Link href="/home-painting" className="btn-primary w-full text-sm text-center block"><ArrowRight size={14} className="mr-2 inline" /> Get Painting Quote</Link>
+                </div>
               </div>
             </div>
           </div>

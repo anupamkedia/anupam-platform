@@ -1,70 +1,93 @@
 'use client';
-import { CHAIRMAN_MESSAGE, REAL_TIMELINE, CORE_VALUES, VISION, MISSION, TEAM, SITE } from '@/lib/constants';
-import { Award, Users, Target, Heart, ChevronRight, Quote, Building2 } from 'lucide-react';
+import { CHAIRMAN_MESSAGE, REAL_TIMELINE, CORE_VALUES, TEAM, VISION, MISSION, SITE } from '@/lib/constants';
+import { Target, Eye, Award, Users } from 'lucide-react';
 
 export default function AboutPage() {
   return (
     <>
-      <section className="gradient-brand text-white py-16 md:py-24">
-        <div className="container-wide px-4">
+      {/* Hero */}
+      <section className="relative text-white overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-brand-500/85" />
+        <div className="container-wide px-4 py-20 md:py-28 relative z-10">
           <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">About Us</p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Colouring Success Stories<br />Since 1972</h1>
-          <p className="text-lg text-brand-200 max-w-2xl">From a humble garage in Kolkata to one of India&apos;s most trusted coating manufacturers — our 50-year journey of innovation, quality, and trust.</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">The Odyssey of Anupam Paints</h1>
+          <p className="text-xl text-brand-200 max-w-2xl">Charting the Spectrum of Success Since 1972</p>
         </div>
       </section>
 
       {/* Chairman's Message */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-gray-50">
         <div className="container-wide max-w-4xl">
-          <div className="bg-gradient-to-br from-brand-50 to-blue-50 rounded-2xl p-8 md:p-12">
-            <Quote className="text-brand-300 mb-4" size={40} />
-            <div className="text-gray-700 leading-relaxed space-y-4">
-              {CHAIRMAN_MESSAGE.message.split('\n\n').map((para, i) => (
-                <p key={i} className="text-base">{para}</p>
-              ))}
-            </div>
-            <div className="mt-8 flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-brand-500 flex items-center justify-center text-white text-xl font-bold">MK</div>
+          <h2 className="text-3xl font-bold text-brand-500 mb-8">Chairman&apos;s Message</h2>
+          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+            <div className="md:flex gap-8">
+              <div className="md:w-48 shrink-0 mb-6 md:mb-0">
+                <div className="w-40 h-48 bg-gradient-to-br from-brand-100 to-brand-200 rounded-xl mx-auto flex items-center justify-center">
+                  <Users size={48} className="text-brand-400" />
+                </div>
+                <div className="text-center mt-3">
+                  <div className="font-bold text-gray-800">{CHAIRMAN_MESSAGE.name}</div>
+                  <div className="text-sm text-brand-500">{CHAIRMAN_MESSAGE.title}</div>
+                </div>
+              </div>
               <div>
-                <div className="font-bold text-gray-800 text-lg">{CHAIRMAN_MESSAGE.name}</div>
-                <div className="text-brand-500 text-sm">{CHAIRMAN_MESSAGE.title}</div>
+                <p className="text-lg font-medium text-gray-800 mb-4">{CHAIRMAN_MESSAGE.greeting}</p>
+                {CHAIRMAN_MESSAGE.message.split('\n\n').map((para, i) => (
+                  <p key={i} className="text-gray-600 leading-relaxed mb-4">{para}</p>
+                ))}
+                <p className="text-gray-500 italic mt-6">{CHAIRMAN_MESSAGE.signoff}</p>
+                <p className="font-bold text-brand-500 text-lg">{CHAIRMAN_MESSAGE.name}</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Vision & Mission */}
-      <section className="section-padding gradient-light">
+      {/* Mission & Vision */}
+      <section className="section-padding bg-white">
         <div className="container-wide">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="card p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <div className="bg-gradient-to-br from-brand-50 to-blue-50 rounded-2xl p-8">
               <div className="w-12 h-12 rounded-xl bg-brand-500 text-white flex items-center justify-center mb-4"><Target size={24} /></div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Our Vision</h3>
-              <p className="text-gray-600 leading-relaxed">{VISION}</p>
+              <h3 className="text-2xl font-bold text-brand-500 mb-4">Our Mission</h3>
+              <p className="text-gray-700 leading-relaxed">{MISSION}</p>
             </div>
-            <div className="card p-8">
-              <div className="w-12 h-12 rounded-xl bg-accent-400 text-white flex items-center justify-center mb-4"><Award size={24} /></div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Our Mission</h3>
-              <p className="text-gray-600 leading-relaxed">{MISSION}</p>
+            <div className="bg-gradient-to-br from-brand-50 to-blue-50 rounded-2xl p-8">
+              <div className="w-12 h-12 rounded-xl bg-brand-500 text-white flex items-center justify-center mb-4"><Eye size={24} /></div>
+              <h3 className="text-2xl font-bold text-brand-500 mb-4">Our Vision</h3>
+              <p className="text-gray-700 leading-relaxed">{VISION}</p>
             </div>
+          </div>
+
+          {/* Core Values */}
+          <h2 className="section-title text-center mb-8">Core Values</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {CORE_VALUES.map((val, i) => (
+              <div key={i} className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-lg hover:border-brand-200 transition text-center">
+                <Award className="mx-auto text-brand-500 mb-3" size={28} />
+                <h3 className="font-bold text-gray-800 mb-2">{val.title}</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">{val.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Timeline */}
-      <section className="section-padding bg-white">
-        <div className="container-wide max-w-3xl">
-          <h2 className="section-title text-center mb-12">Our Journey</h2>
-          <div className="relative">
-            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-brand-200 transform md:-translate-x-px" />
-            {REAL_TIMELINE.map((event, i) => (
-              <div key={i} className={`relative flex items-start gap-6 mb-10 last:mb-0 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
-                <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-brand-500 rounded-full border-4 border-white shadow transform -translate-x-2 md:-translate-x-2 mt-1" />
-                <div className={`ml-14 md:ml-0 md:w-5/12 ${i % 2 === 0 ? 'md:text-right md:pr-12' : 'md:pl-12'}`}>
-                  <div className="bg-brand-500 text-white text-sm font-bold px-3 py-1 rounded-full inline-block mb-2">{event.year}</div>
-                  <h3 className="font-bold text-gray-800 text-lg mb-1">{event.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{event.desc}</p>
+      <section className="section-padding bg-gradient-to-b from-brand-500 to-brand-700 text-white">
+        <div className="container-wide">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our Journey</h2>
+          <div className="max-w-3xl mx-auto space-y-8">
+            {REAL_TIMELINE.map((item, i) => (
+              <div key={i} className="flex gap-6">
+                <div className="shrink-0 w-20 text-right">
+                  <span className="text-yellow-300 font-bold text-lg">{item.year}</span>
+                </div>
+                <div className="relative pl-6 border-l-2 border-yellow-300/30 pb-4">
+                  <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-yellow-300 border-2 border-brand-500" />
+                  <h3 className="font-bold text-lg mb-1">{item.title}</h3>
+                  <p className="text-brand-200 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -72,31 +95,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className="section-padding gradient-light">
-        <div className="container-wide">
-          <h2 className="section-title text-center mb-10">Our Core Values</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
-            {CORE_VALUES.map((value, i) => (
-              <div key={i} className="card p-5 text-center hover:border-brand-300 transition">
-                <div className="w-10 h-10 rounded-full bg-brand-50 text-brand-500 flex items-center justify-center mx-auto mb-3"><Heart size={20} /></div>
-                <h3 className="font-bold text-gray-800 mb-2 text-sm">{value.title}</h3>
-                <p className="text-xs text-gray-600 leading-relaxed">{value.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership */}
+      {/* Team */}
       <section className="section-padding bg-white">
         <div className="container-wide">
-          <h2 className="section-title text-center mb-10">Leadership Team</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <h2 className="section-title text-center mb-10">Our Leadership Team</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {TEAM.map((member, i) => (
               <div key={i} className="text-center group">
-                <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-brand-100 to-blue-100 mx-auto mb-3 flex items-center justify-center overflow-hidden group-hover:shadow-lg transition">
-                  <Users size={32} className="text-brand-300" />
+                <div className="w-28 h-28 mx-auto rounded-full bg-gradient-to-br from-brand-100 to-blue-100 flex items-center justify-center mb-3 group-hover:shadow-lg transition overflow-hidden">
+                  <Users size={36} className="text-brand-400" />
                 </div>
                 <h3 className="font-bold text-gray-800 text-sm">{member.name}</h3>
                 <p className="text-xs text-brand-500">{member.role}</p>
@@ -106,13 +113,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Company Stats */}
-      <section className="py-16 bg-brand-500 text-white">
-        <div className="container-wide px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[{ value: '1972', label: 'Founded' }, { value: '150+', label: 'Team Members' }, { value: '1000 KL', label: 'Monthly Capacity' }, { value: '35+', label: 'Years with Railways & Navy' }].map((stat, i) => (
-              <div key={i}><div className="text-3xl md:text-4xl font-bold text-brand-100">{stat.value}</div><div className="text-brand-200 text-sm mt-1">{stat.label}</div></div>
-            ))}
+      {/* Carbon Nano-Struct */}
+      <section className="section-padding gradient-light">
+        <div className="container-wide text-center max-w-3xl">
+          <div className="bg-brand-500 text-white rounded-2xl p-8 md:p-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">Carbon Nano-Struct Technology</h2>
+            <p className="text-brand-200 text-lg leading-relaxed">Our paints are enhanced with Carbon Nano-Struct Technology — for coatings that Outperform and Outlast. This proprietary technology delivers superior adhesion, chemical resistance, and durability across all product ranges.</p>
           </div>
         </div>
       </section>
