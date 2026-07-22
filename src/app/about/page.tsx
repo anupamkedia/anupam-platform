@@ -1,78 +1,70 @@
-import { Metadata } from 'next';
-import { SITE, WHY_ANUPAM } from '@/lib/constants';
-import { CheckCircle, Award, Factory, FlaskConical, Leaf, Users, Target, Eye } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'About Us',
-  description: 'Learn about Anupam Paints — 50+ years of manufacturing excellence in decorative, industrial, marine, railway, and specialty coatings. Based in Kolkata, India.',
-};
-
-const timeline = [
-  { year: '1972', title: 'Founded', desc: 'Anupam Enterprises established in Kolkata with a vision to manufacture quality paints.' },
-  { year: '1980s', title: 'Government Approvals', desc: 'Secured first railway and government approvals, entering institutional market.' },
-  { year: '1990s', title: 'Capacity Expansion', desc: 'Expanded manufacturing facility at Ranihati, Howrah. Added industrial coatings division.' },
-  { year: '2000s', title: 'ISO Certified', desc: 'Achieved ISO 9001 certification. Expanded to marine and defence coatings.' },
-  { year: '2010s', title: 'Innovation', desc: 'In-house resin plant commissioned. NABL-compliant lab established. Launched specialty coatings.' },
-  { year: '2020s', title: 'Digital Transformation', desc: '1000 KL/month capacity. Polyurea, nano coatings, Azura eco-friendly line. Pan-India expansion.' },
-];
+'use client';
+import { CHAIRMAN_MESSAGE, REAL_TIMELINE, CORE_VALUES, VISION, MISSION, TEAM, SITE } from '@/lib/constants';
+import { Award, Users, Target, Heart, ChevronRight, Quote, Building2 } from 'lucide-react';
 
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
       <section className="gradient-brand text-white py-16 md:py-24">
         <div className="container-wide px-4">
-          <div className="max-w-3xl">
-            <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">About Us</p>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">50+ Years of Coating Excellence</h1>
-            <p className="text-lg text-brand-200 leading-relaxed">
-              From a small paint workshop in Kolkata to one of India&apos;s most versatile coating manufacturers — our journey of innovation, quality, and trust.
-            </p>
+          <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">About Us</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Colouring Success Stories<br />Since 1972</h1>
+          <p className="text-lg text-brand-200 max-w-2xl">From a humble garage in Kolkata to one of India&apos;s most trusted coating manufacturers — our 50-year journey of innovation, quality, and trust.</p>
+        </div>
+      </section>
+
+      {/* Chairman's Message */}
+      <section className="section-padding bg-white">
+        <div className="container-wide max-w-4xl">
+          <div className="bg-gradient-to-br from-brand-50 to-blue-50 rounded-2xl p-8 md:p-12">
+            <Quote className="text-brand-300 mb-4" size={40} />
+            <div className="text-gray-700 leading-relaxed space-y-4">
+              {CHAIRMAN_MESSAGE.message.split('\n\n').map((para, i) => (
+                <p key={i} className="text-base">{para}</p>
+              ))}
+            </div>
+            <div className="mt-8 flex items-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-brand-500 flex items-center justify-center text-white text-xl font-bold">MK</div>
+              <div>
+                <div className="font-bold text-gray-800 text-lg">{CHAIRMAN_MESSAGE.name}</div>
+                <div className="text-brand-500 text-sm">{CHAIRMAN_MESSAGE.title}</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Vision & Mission */}
-      <section className="section-padding bg-white">
-        <div className="container-wide grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-8 rounded-2xl bg-brand-50 border border-brand-100">
-            <div className="flex items-center gap-3 mb-4">
-              <Eye className="text-brand-500" size={28} />
-              <h2 className="text-2xl font-bold text-brand-500">Our Vision</h2>
+      <section className="section-padding gradient-light">
+        <div className="container-wide">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="card p-8">
+              <div className="w-12 h-12 rounded-xl bg-brand-500 text-white flex items-center justify-center mb-4"><Target size={24} /></div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Our Vision</h3>
+              <p className="text-gray-600 leading-relaxed">{VISION}</p>
             </div>
-            <p className="text-gray-700 leading-relaxed">
-              To be India&apos;s most trusted and technically advanced coatings manufacturer, delivering world-class protection and aesthetics across every industry.
-            </p>
-          </div>
-          <div className="p-8 rounded-2xl bg-accent-50 border border-red-100">
-            <div className="flex items-center gap-3 mb-4">
-              <Target className="text-accent-400" size={28} />
-              <h2 className="text-2xl font-bold text-accent-400">Our Mission</h2>
+            <div className="card p-8">
+              <div className="w-12 h-12 rounded-xl bg-accent-400 text-white flex items-center justify-center mb-4"><Award size={24} /></div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Our Mission</h3>
+              <p className="text-gray-600 leading-relaxed">{MISSION}</p>
             </div>
-            <p className="text-gray-700 leading-relaxed">
-              To engineer high-performance coating solutions through innovation, manufacturing excellence, and customer partnership — while maintaining cost leadership and environmental responsibility.
-            </p>
           </div>
         </div>
       </section>
 
       {/* Timeline */}
-      <section className="section-padding gradient-light">
-        <div className="container-wide">
+      <section className="section-padding bg-white">
+        <div className="container-wide max-w-3xl">
           <h2 className="section-title text-center mb-12">Our Journey</h2>
-          <div className="max-w-3xl mx-auto">
-            {timeline.map((item, i) => (
-              <div key={i} className="flex gap-6 mb-8 last:mb-0">
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                    {item.year.slice(-2)}
-                  </div>
-                  {i < timeline.length - 1 && <div className="w-0.5 flex-1 bg-brand-200 mt-2" />}
-                </div>
-                <div className="pb-8">
-                  <div className="text-sm text-brand-500 font-medium">{item.year}</div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-1">{item.title}</h3>
-                  <p className="text-gray-600">{item.desc}</p>
+          <div className="relative">
+            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-brand-200 transform md:-translate-x-px" />
+            {REAL_TIMELINE.map((event, i) => (
+              <div key={i} className={`relative flex items-start gap-6 mb-10 last:mb-0 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                <div className="absolute left-6 md:left-1/2 w-4 h-4 bg-brand-500 rounded-full border-4 border-white shadow transform -translate-x-2 md:-translate-x-2 mt-1" />
+                <div className={`ml-14 md:ml-0 md:w-5/12 ${i % 2 === 0 ? 'md:text-right md:pr-12' : 'md:pl-12'}`}>
+                  <div className="bg-brand-500 text-white text-sm font-bold px-3 py-1 rounded-full inline-block mb-2">{event.year}</div>
+                  <h3 className="font-bold text-gray-800 text-lg mb-1">{event.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{event.desc}</p>
                 </div>
               </div>
             ))}
@@ -80,39 +72,46 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Strengths */}
+      {/* Core Values */}
+      <section className="section-padding gradient-light">
+        <div className="container-wide">
+          <h2 className="section-title text-center mb-10">Our Core Values</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+            {CORE_VALUES.map((value, i) => (
+              <div key={i} className="card p-5 text-center hover:border-brand-300 transition">
+                <div className="w-10 h-10 rounded-full bg-brand-50 text-brand-500 flex items-center justify-center mx-auto mb-3"><Heart size={20} /></div>
+                <h3 className="font-bold text-gray-800 mb-2 text-sm">{value.title}</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">{value.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership */}
       <section className="section-padding bg-white">
         <div className="container-wide">
-          <h2 className="section-title text-center mb-4">Why Customers Trust Us</h2>
-          <p className="section-subtitle text-center mx-auto mb-12">A combination of manufacturing strength, technical depth, and commercial advantage.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {WHY_ANUPAM.map((item, i) => (
-              <div key={i} className="card p-6 hover:border-brand-200 transition">
-                <CheckCircle size={24} className="text-brand-500 mb-3" />
-                <h3 className="font-bold text-gray-800 mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+          <h2 className="section-title text-center mb-10">Leadership Team</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {TEAM.map((member, i) => (
+              <div key={i} className="text-center group">
+                <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-brand-100 to-blue-100 mx-auto mb-3 flex items-center justify-center overflow-hidden group-hover:shadow-lg transition">
+                  <Users size={32} className="text-brand-300" />
+                </div>
+                <h3 className="font-bold text-gray-800 text-sm">{member.name}</h3>
+                <p className="text-xs text-brand-500">{member.role}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Leadership placeholder */}
-      <section className="section-padding gradient-light">
-        <div className="container-wide text-center">
-          <h2 className="section-title mb-4">Leadership</h2>
-          <p className="text-gray-600 max-w-lg mx-auto mb-8">
-            [Founder and director profiles with photographs will be displayed here. Content to be provided by Anupam Paints.]
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {['Managing Director', 'Director', 'Director'].map((title, i) => (
-              <div key={i} className="card p-6 text-center">
-                <div className="w-20 h-20 rounded-full bg-brand-100 mx-auto mb-4 flex items-center justify-center">
-                  <Users size={32} className="text-brand-400" />
-                </div>
-                <div className="font-bold text-gray-800">{title}</div>
-                <div className="text-sm text-steel-400">Anupam Enterprises</div>
-              </div>
+      {/* Company Stats */}
+      <section className="py-16 bg-brand-500 text-white">
+        <div className="container-wide px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {[{ value: '1972', label: 'Founded' }, { value: '150+', label: 'Team Members' }, { value: '1000 KL', label: 'Monthly Capacity' }, { value: '35+', label: 'Years with Railways & Navy' }].map((stat, i) => (
+              <div key={i}><div className="text-3xl md:text-4xl font-bold text-brand-100">{stat.value}</div><div className="text-brand-200 text-sm mt-1">{stat.label}</div></div>
             ))}
           </div>
         </div>

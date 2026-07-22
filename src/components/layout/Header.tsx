@@ -20,9 +20,8 @@ export default function Header() {
     if (dropdownTimeout) clearTimeout(dropdownTimeout);
     setActiveDropdown(label);
   };
-
   const closeDropdown = () => {
-    const timeout = setTimeout(() => setActiveDropdown(null), 150);
+    const timeout = setTimeout(() => setActiveDropdown(null), 200);
     setDropdownTimeout(timeout);
   };
 
@@ -43,14 +42,8 @@ export default function Header() {
       </div>
       <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white shadow-sm'}`}>
         <div className="container-wide flex items-center justify-between h-16 md:h-20 px-4">
-          <Link href="/" className="flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-brand-500 to-brand-700 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg md:text-xl">A</span>
-            </div>
-            <div>
-              <div className="text-lg md:text-xl font-bold text-brand-500 leading-tight">ANUPAM PAINTS</div>
-              <div className="text-[10px] md:text-xs text-steel-400 tracking-wider">SINCE 1972</div>
-            </div>
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <img src="/img/logos/anupam-paints-logo.png" alt="Anupam Paints" className="h-10 md:h-14 w-auto" />
           </Link>
           <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1">
             {NAV_ITEMS.map((item) => (
