@@ -15,7 +15,7 @@ export default function InfrastructurePage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-brand-500/85" />
         <div className="container-wide px-4 py-20 md:py-28 relative z-10">
           <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">Infrastructure</p>
@@ -58,7 +58,7 @@ export default function InfrastructurePage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
               'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80',
-              'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=400&q=80',
+              'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=80',
               'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&q=80',
               'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=400&q=80',
               'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=80',

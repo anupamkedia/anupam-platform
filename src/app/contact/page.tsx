@@ -19,7 +19,7 @@ export default function ContactPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-brand-500/85" />
         <div className="container-wide px-4 py-16 md:py-24 relative z-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>

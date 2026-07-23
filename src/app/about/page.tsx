@@ -7,7 +7,7 @@ export default function AboutPage() {
     <>
       {/* Hero */}
       <section className="relative text-white overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-brand-500/85" />
         <div className="container-wide px-4 py-20 md:py-28 relative z-10">
           <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">About Us</p>

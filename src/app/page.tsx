@@ -8,16 +8,16 @@ import { ArrowRight, Shield, CheckCircle, Factory, FlaskConical, Award, Truck, C
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
 const heroImages = [
-  'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80',
-  'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1920&q=80',
-  'https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=1920&q=80',
+  'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=1920&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1920&q=80',
+  'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1920&q=80',
 ];
 
 const divisionImages: Record<string, string> = {
-  decorative: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=600&q=80',
-  industrial: 'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=600&q=80',
-  marine: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80',
-  railway: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=600&q=80',
+  decorative: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=600&q=80',
+  industrial: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80',
+  marine: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&q=80',
+  railway: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&q=80',
   specialty: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80',
 };
 
@@ -177,7 +177,7 @@ export default function HomePage() {
 
       {/* FACTORY with real image */}
       <section className="relative text-white overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1920&q=80" alt="Factory" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1920&q=80" alt="Factory" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-brand-500/85" />
         <div className="container-wide px-4 py-20 md:py-28 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -192,8 +192,8 @@ export default function HomePage() {
               <Link href="/infrastructure" className="bg-white text-brand-500 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition inline-flex items-center gap-2">View Infrastructure <ArrowRight size={18} /></Link>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80" alt="Lab" className="rounded-xl shadow-2xl w-full h-48 object-cover" />
-              <img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=400&q=80" alt="Factory" className="rounded-xl shadow-2xl w-full h-48 object-cover mt-8" />
+              <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&q=80" alt="Lab" className="rounded-xl shadow-2xl w-full h-48 object-cover" />
+              <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&q=80" alt="Factory" className="rounded-xl shadow-2xl w-full h-48 object-cover mt-8" />
             </div>
           </div>
         </div>
