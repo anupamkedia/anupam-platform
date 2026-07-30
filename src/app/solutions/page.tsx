@@ -33,7 +33,7 @@ export default function SolutionsPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/heroes/structural-steel.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-brand-500/85" />
         <div className="container-wide px-4 py-20 md:py-28 relative z-10">
           <p className="text-white/50 text-sm font-medium mb-2 tracking-wider uppercase">Solutions</p>

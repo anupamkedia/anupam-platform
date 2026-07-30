@@ -18,7 +18,7 @@ export default function HomePage() {
       {/* HERO — Clean, authoritative, single focus */}
       <section className="relative bg-[var(--color-navy)] text-white overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1920&q=80" alt="" className="w-full h-full object-cover opacity-20" />
+          <img src="/img/heroes/factory-aerial.png" alt="" className="w-full h-full object-cover opacity-20" />
         </div>
         <div className="container-wide py-24 md:py-32 lg:py-40 relative z-10">
           <div className="max-w-3xl">
@@ -61,15 +61,15 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-[var(--color-border)]">
             {[
               { name: 'Decorative Coatings', slug: 'decorative', accent: 'var(--accent-decorative)',
-                img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80',
+                img: '/img/heroes/living-room.png',
                 desc: 'Premium interior and exterior paints, waterproofing, textures, and wood finishes under AZURA, ASURE, ANEX, ATOP, AMAJE, and AREST brands.',
                 subs: ['Interior Emulsions', 'Exterior Emulsions', 'Primers', 'Waterproofing', 'Enamels', 'Textures'] },
               { name: 'Industrial Protective', slug: 'industrial', accent: 'var(--accent-industrial)',
-                img: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80',
+                img: '/img/heroes/structural-steel.png',
                 desc: 'High-performance anti-corrosion systems enhanced with Carbon Nano-Struct Technology for structural steel, pipelines, tanks, and process equipment.',
                 subs: ['Epoxy Systems', 'PU Coatings', 'Zinc-Rich Primers', 'Heat Resistant', 'Chemical Resistant', 'Tank Linings'] },
               { name: 'Specialty & Defence', slug: 'specialty', accent: 'var(--accent-specialty)',
-                img: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&q=80',
+                img: '/img/heroes/naval-vessel.png',
                 desc: 'Marine, railway, fire protection, flooring, and advanced coatings for India\'s most demanding institutional and defence applications.',
                 subs: ['Marine & Navy', 'Railway (RDSO)', 'Fire Protection', 'Flooring', 'Polyurea', 'Glass Coating'] },
             ].map((div) => (
@@ -157,8 +157,8 @@ export default function HomePage() {
               <Link href="/infrastructure" className="btn-outline mt-8">Learn About Our R&D</Link>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&q=80" alt="Lab" className="w-full h-52 object-cover" style={{borderRadius:'var(--radius-lg)'}} />
-              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=80" alt="Testing" className="w-full h-52 object-cover mt-8" style={{borderRadius:'var(--radius-lg)'}} />
+              <img src="/img/heroes/factory-aerial.png" alt="Lab" className="w-full h-52 object-cover" style={{borderRadius:'var(--radius-lg)'}} />
+              <img src="/img/heroes/structural-steel.png" alt="Testing" className="w-full h-52 object-cover mt-8" style={{borderRadius:'var(--radius-lg)'}} />
             </div>
           </div>
         </div>
@@ -217,7 +217,7 @@ export default function HomePage() {
             <Link href="/infrastructure" className="btn-white w-fit">View Infrastructure <ArrowRight size={16} /></Link>
           </div>
           <div className="relative">
-            <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=960&q=80" alt="Anupam Paints Factory" className="w-full h-full object-cover min-h-[400px]" />
+            <img src="/img/heroes/factory-aerial.png" alt="Anupam Paints Factory" className="w-full h-full object-cover min-h-[400px]" />
           </div>
         </div>
       </section>
@@ -242,7 +242,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="relative">
-              <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Beautiful interior" className="w-full h-80 object-cover" style={{borderRadius:'var(--radius-lg)'}} />
+              <img src="/img/heroes/living-room.png" alt="Beautiful interior" className="w-full h-80 object-cover" style={{borderRadius:'var(--radius-lg)'}} />
               <div className="absolute -bottom-4 -left-4 flex gap-1.5">
                 {['#C4122F', '#0F1B2D', '#D97706', '#0891B2', '#4338CA', '#059669'].map(c => (
                   <div key={c} className="w-8 h-8 shadow-md" style={{background:c, borderRadius:'var(--radius-sm)'}} />

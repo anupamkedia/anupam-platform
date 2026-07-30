@@ -8,11 +8,11 @@ import { ArrowRight, Package } from 'lucide-react';
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
 const divImages: Record<string, string> = {
-  decorative: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80',
-  industrial: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80',
-  marine: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&q=80',
-  railway: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=600&q=80',
-  specialty: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80',
+  decorative: '/img/heroes/decorative-range.png',
+  industrial: '/img/heroes/structural-steel.png',
+  marine: '/img/heroes/naval-vessel.png',
+  railway: '/img/heroes/railway-coach.png',
+  specialty: '/img/heroes/structural-steel.png',
 };
 
 const divAccents: Record<string, string> = {

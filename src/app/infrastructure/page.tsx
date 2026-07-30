@@ -15,7 +15,7 @@ export default function InfrastructurePage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1920&q=80" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/heroes/factory-aerial.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-brand-500/85" />
         <div className="container-wide px-4 py-20 md:py-28 relative z-10">
           <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">Infrastructure</p>
@@ -57,14 +57,14 @@ export default function InfrastructurePage() {
           <h2 className="section-title text-center mb-10">Factory Gallery</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
-              'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80',
-              'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=80',
-              'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&q=80',
-              'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=400&q=80',
-              'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=80',
-              'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&q=80',
-              'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=400&q=80',
-              'https://images.unsplash.com/photo-1416339698674-4f118dd3388b?w=400&q=80',
+              '/img/heroes/factory-aerial.png',
+              '/img/heroes/structural-steel.png',
+              '/img/heroes/factory-aerial.png',
+              '/img/heroes/structural-steel.png',
+              '/img/heroes/structural-steel.png',
+              '/img/heroes/factory-aerial.png',
+              '/img/heroes/railway-coach.png',
+              '/img/heroes/naval-vessel.png',
             ].map((img, i) => (
               <div key={i} className="rounded-xl overflow-hidden hover:shadow-lg transition"><img src={img} alt={`Factory ${i+1}`} className="w-full h-48 object-cover hover:scale-105 transition-transform duration-500" /></div>
             ))}
