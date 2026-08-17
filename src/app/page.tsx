@@ -113,6 +113,8 @@ export default function HomePage() {
 
       {/* HERO — Cinematic cross-fade */}
       <section className="relative h-screen flex items-center overflow-hidden bg-[var(--color-navy)]">
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-30"><source src="/video/hero.mp4" type="video/mp4" /></video>
+        <div className="absolute inset-0 bg-[var(--color-navy)]/50" />
         {heroSlides.map((slide, i) => (
           <div key={i} className={`absolute inset-0 transition-opacity duration-[2000ms] ${i === heroIdx ? 'opacity-100' : 'opacity-0'}`}>
             <img src={slide.img} alt="" className="w-full h-full object-cover" />
