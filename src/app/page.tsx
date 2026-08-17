@@ -269,7 +269,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {processSteps.map((step) => (
               <div key={step.num}>
-                <div className="text-3xl font-extrabold text-[var(--color-border)] mb-3">{step.num}</div>
+                <div className="text-3xl font-extrabold mb-3" style={{color:'var(--color-red)', opacity: 0.35}}>{step.num}</div>
                 <h4 className="text-sm font-bold text-[var(--color-navy)] mb-1">{step.title}</h4>
                 <p className="text-xs text-[var(--color-steel)] leading-relaxed">{step.desc}</p>
               </div>
