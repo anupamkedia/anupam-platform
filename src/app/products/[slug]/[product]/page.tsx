@@ -62,7 +62,7 @@ export default function ProductDetailPage() {
   if (loading) return <div className="section-padding text-center text-gray-400">Loading product...</div>;
   if (!product) return <div className="section-padding text-center"><h2 className="text-xl font-bold">Product Not Found</h2><Link href={`/products/${divSlug}`} className="btn-primary mt-4">Back</Link></div>;
 
-  const imgUrl = getProductImage(product.code, product.slug);
+  const imgUrl = getProductImage(product.code, product.slug, product.name);
   const features = product.features || [];
   const tds = product.tds_data || null;
   const gp = tds?.general_properties || {};

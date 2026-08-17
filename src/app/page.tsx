@@ -113,8 +113,12 @@ export default function HomePage() {
 
       {/* HERO — Cinematic cross-fade */}
       <section className="relative h-screen flex items-center overflow-hidden bg-[var(--color-navy)]">
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-30"><source src="/video/hero.mp4" type="video/mp4" /></video>
-        <div className="absolute inset-0 bg-[var(--color-navy)]/50" />
+        {heroSlides.map((slide, i) => (
+          <div key={i} className={`absolute inset-0 transition-opacity duration-[2000ms] ${i === heroIdx ? 'opacity-100' : 'opacity-0'}`}>
+            <img src={slide.img} alt="" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-[var(--color-navy)]/60" />
+          </div>
+        ))}
         <div className="container-wide relative z-10">
           <div className="max-w-3xl">
             <div className="w-16 h-[2px] bg-[var(--color-red)] mb-10" />
@@ -130,8 +134,16 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        {/* Slide indicators */}
         <div className="absolute bottom-8 left-0 right-0 z-10">
-          <div className="container-wide flex gap-3 overflow-x-auto no-scrollbar no-scrollbar">
+          <div className="container-wide flex gap-6">
+            {heroSlides.map((slide, i) => (
+              <button key={i} onClick={() => setHeroIdx(i)} className={`text-xs font-medium transition-all ${i === heroIdx ? 'text-white' : 'text-white/30 hover:text-white/50'}`}>
+                <div className={`w-8 h-[2px] mb-2 transition-all ${i === heroIdx ? 'bg-[var(--color-red)]' : 'bg-white/20'}`} />
+                {slide.label}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -391,8 +403,6 @@ export default function HomePage() {
           <div className="flex justify-center gap-6 mt-8 text-sm text-[var(--color-steel)]">
             <a href="tel:03322651204" className="hover:text-[var(--color-navy)] transition inline-flex items-center gap-1"><Phone size={14} /> 033-2265 1204</a>
             <a href="https://wa.me/919830063651" className="hover:text-white transition inline-flex items-center gap-1"><MessageSquare size={14} /> WhatsApp</a>
-            <a href="https://www.facebook.com/anupampaintsandcoatings" target="_blank" rel="noopener noreferrer" className="hover:text-white transition inline-flex items-center gap-1">Facebook</a>
-            <a href="https://www.linkedin.com/company/anupam-paints-and-coatings/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition inline-flex items-center gap-1">LinkedIn</a>
             <a href="mailto:care@anupampaints.com" className="hover:text-white transition inline-flex items-center gap-1"><Mail size={14} /> Email</a>
           </div>
         </div>

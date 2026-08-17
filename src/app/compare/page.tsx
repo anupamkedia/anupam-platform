@@ -34,11 +34,15 @@ export default function ComparePage() {
 
   return (
     <>
-      <section className="bg-[var(--color-navy)] text-white py-16 md:py-24">
+      <section className="relative text-white overflow-hidden">
+        <img src="/img/app/decorative/dec-colour-consult.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+        <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide"><div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
           <h1 className="text-page-title text-white mb-4">Compare Products</h1>
           <p className="text-white/50 max-w-xl">Select 2-4 Anupam products to compare specifications side by side.</p>
         </div>
+      </div>
       </section>
       <section className="section-padding bg-white">
         <div className="container-wide">

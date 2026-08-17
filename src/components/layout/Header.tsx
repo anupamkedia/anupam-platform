@@ -70,7 +70,6 @@ const megaMenu: Record<string, { cols: { title: string; items: { label: string; 
         { label: 'Coating System Selector', href: '/#solution-finder' },
         { label: 'Paint Calculator', href: '/calculator' },
         { label: 'Find Anupam Equivalent', href: '/find-equivalent' },
-        { label: 'Downloads', href: '/downloads' },
       ]},
       { title: 'Innovation', items: [
         { label: 'Carbon Nano-Struct Technology', href: '/infrastructure' },
@@ -123,9 +122,6 @@ const navItems = [
   { label: 'Home Painting', href: '/home-painting', mega: 'Home Painting' },
   { label: 'Technical Centre', href: '/technical-library', mega: 'Technical Centre' },
   { label: 'Company', href: '/about', mega: 'Company' },
-  { label: 'Brands', href: '/brands' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Dealership', href: '/dealership' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -180,8 +176,8 @@ export default function Header() {
                 </Link>
 
                 {item.mega && activeMega === item.mega && megaMenu[item.mega] && (
-                  <div className="absolute top-full left-0 pt-2 z-50" onMouseEnter={() => openMega(item.mega!)} onMouseLeave={closeMega}>
-                    <div className="bg-white shadow-xl border border-[var(--color-border)] p-6" style={{borderRadius:'var(--radius-lg)', maxWidth: '90vw', minWidth: megaMenu[item.mega].cols.length > 2 ? '580px' : '380px'}}>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50" onMouseEnter={() => openMega(item.mega!)} onMouseLeave={closeMega}>
+                    <div className="bg-white shadow-xl border border-[var(--color-border)] p-6" style={{borderRadius:'var(--radius-lg)', minWidth: megaMenu[item.mega].cols.length > 2 ? '640px' : '420px'}}>
                       <div className={`grid gap-8 ${megaMenu[item.mega].cols.length > 2 ? 'grid-cols-3' : 'grid-cols-2'}`}>
                         {megaMenu[item.mega].cols.map((col, ci) => (
                           <div key={ci}>

@@ -69,7 +69,7 @@ export default function DivisionPage() {
           ) : filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product: any) => {
-                const imgUrl = getProductImage(product.code, product.slug);
+                const imgUrl = getProductImage(product.code, product.slug, product.name);
                 return (
                   <Link key={product.id} href={`/products/${slug}/${product.slug}`} className="card card-hover group">
                     <div className="h-52 bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center overflow-hidden">

@@ -98,7 +98,7 @@ const slugFallbacks: [string, string][] = [
   ['red oxide', '/img/products/anex-red-oxide.jpg'],
 ];
 
-export function getProductImage(code?: string, slug?: string): string | null {
+export function getProductImage(code?: string, slug?: string, name?: string): string | null {
   if (code && imageMap[code]) return imageMap[code];
   if (slug) {
     const lower = slug.toLowerCase();
@@ -106,7 +106,14 @@ export function getProductImage(code?: string, slug?: string): string | null {
       if (lower.includes(key)) return img;
     }
   }
-  // Ultimate fallback - return a default product image
+  // Try product name
+  if (name) {
+    const lowerName = name.toLowerCase();
+    for (const [key, img] of slugFallbacks) {
+      if (lowerName.includes(key)) return img;
+    }
+  }
+  // Ultimate fallback
   return '/img/products/azura-advance-emulsion.jpg';
 }
 
