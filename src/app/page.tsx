@@ -136,24 +136,9 @@ export default function HomePage() {
       </section>
 
       {/* BRAND LOGOS */}
-      <section className="py-10" style={{background:'#F5F2ED',borderTop:'1px solid #E8E5E0',borderBottom:'1px solid #E8E5E0'}}>
+      <section className="py-6" style={{background:'#F5F2ED',borderTop:'1px solid #E8E5E0',borderBottom:'1px solid #E8E5E0'}}>
         <div className="container-wide">
-          <p className="text-center text-xs font-semibold uppercase tracking-widest mb-6" style={{color:'var(--color-steel)'}}>Our Decorative Brands — Premium Range</p>
-          <div className="flex items-center justify-center gap-8 md:gap-14 flex-wrap">
-            {[
-              {name:'Azura',shots:['azura-advance-emulsion.jpg','azura-pearl-glow.jpg','azura-luxury-exterior-7.jpg']},
-              {name:'Asure',shots:['asure-cleanwalls.jpg','asure-radiance.jpg']},
-              {name:'Anex',shots:['anex-advance-interior.jpg','anex-advance-exterior.jpg']},
-              {name:'Arest',shots:['arest-base-coat.jpg','arest-roof-coat.jpg','arest-crack-fillers.jpg']},
-            ].map(brand => (
-              <div key={brand.name} className="text-center">
-                <img src={`/img/logos/${brand.name.toLowerCase()}.${brand.name === 'Asure' || brand.name === 'Arest' ? (brand.name === 'Asure' ? 'png' : 'jpg') : 'jpg'}`} alt={brand.name} className={`mx-auto mb-3 ${brand.name === 'Arest' ? 'h-14' : 'h-8'}`} />
-                <div className="flex gap-2 justify-center">
-                  {brand.shots.map(s => <img key={s} src={`/img/products/${s}`} alt="" className="h-36 w-auto object-contain drop-shadow-md hover:scale-105 transition-transform" style={{borderRadius:'var(--radius-md)'}} />)}
-                </div>
-              </div>
-            ))}
-          </div>
+          <img src="/img/heroes/brands-collage.png" alt="Anupam Paints Brands" className="w-full h-auto" style={{borderRadius:'var(--radius-md)'}} />
         </div>
       </section>
 
