@@ -25,11 +25,6 @@ export default function HomePaintingPage() {
     <>
       {/* Hero */}
       <section className="relative text-white overflow-hidden"><img src="/img/heroes/hero-homepainting.png" alt="" className="absolute inset-0 w-full h-full object-cover" /><div className="absolute inset-0 bg-[var(--color-navy)]/75" /><div className="py-20 md:py-28 relative z-10">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-10 right-10 w-72 h-72 bg-yellow-300 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 left-10 w-96 h-96 bg-blue-300 rounded-full blur-3xl" />
-        </div>
-        <div className="container-wide px-4 relative z-10">
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Transform Your Home<br /><span className="text-yellow-300">With Beautiful Colours</span>
@@ -43,7 +38,7 @@ export default function HomePaintingPage() {
             </div>
           </div>
         </div>
-      </div></section>
+      </section>
 
       {/* Brand logos strip */}
       <section className="bg-white py-6 border-b border-gray-100">
@@ -53,7 +48,7 @@ export default function HomePaintingPage() {
               alt={brand} className="h-10 md:h-14 w-auto opacity-80 hover:opacity-100 transition" />
           ))}
         </div>
-      </div></section>
+      </section>
 
       {/* Services */}
       <section className="section-padding bg-white">
@@ -72,7 +67,7 @@ export default function HomePaintingPage() {
             ))}
           </div>
         </div>
-      </div></section>
+      </section>
 
       {/* Why choose us for home */}
       <section className="section-padding gradient-light">
@@ -93,7 +88,7 @@ export default function HomePaintingPage() {
             ))}
           </div>
         </div>
-      </div></section>
+      </section>
 
       {/* Tools */}
       <section className="section-padding bg-white">
@@ -120,7 +115,7 @@ export default function HomePaintingPage() {
             </Link>
           </div>
         </div>
-      </div></section>
+      </section>
 
       {/* Lead capture form */}
       <section id="enquiry" className="section-padding bg-gradient-to-br from-purple-600 to-blue-700 text-white">
@@ -165,7 +160,7 @@ export default function HomePaintingPage() {
             </form>
           )}
         </div>
-      </div></section>
+      </section>
     </>
   );
 }
