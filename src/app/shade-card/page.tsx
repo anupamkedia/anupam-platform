@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Palette, Search, Copy, Check } from 'lucide-react';
+import { Palette, Search, Check, Layers } from 'lucide-react';
+import { ralColors } from './ral-data';
 
 const shadeGroups = [
   { name: 'Whites & Off-Whites', shades: [
@@ -36,55 +37,96 @@ const shadeGroups = [
 ];
 
 export default function ShadeCardPage() {
+  const [tab, setTab] = useState<'decorative' | 'ral'>('decorative');
   const [search, setSearch] = useState('');
   const [copied, setCopied] = useState('');
+
   const allShades = shadeGroups.flatMap(g => g.shades.map(s => ({ ...s, group: g.name })));
-  const filtered = search ? allShades.filter(s => s.name.toLowerCase().includes(search.toLowerCase()) || s.code.toLowerCase().includes(search.toLowerCase())) : null;
+  const filteredDecorative = search ? allShades.filter(s => s.name.toLowerCase().includes(search.toLowerCase()) || s.code.toLowerCase().includes(search.toLowerCase())) : null;
+  const filteredRal = search ? ralColors.filter(s => s.name.toLowerCase().includes(search.toLowerCase()) || s.code.toLowerCase().includes(search.toLowerCase())) : ralColors;
 
   const copyCode = (code: string) => { navigator.clipboard.writeText(code); setCopied(code); setTimeout(() => setCopied(''), 2000); };
 
   return (
     <>
-      <section className="gradient-brand text-white py-16 md:py-20">
-        <div className="container-wide px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Shade Card</h1>
-          <p className="text-brand-200">Explore our decorative shade collection. Click any shade to copy its code.</p>
+      <section className="relative text-white overflow-hidden">
+        <img src="/img/app/decorative/dec-colour-consult.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+        <div className="container-wide py-16 md:py-20 relative z-10">
+          <div className="w-12 h-[2px] bg-[var(--color-red)] mb-5" />
+          <h1 className="text-page-title text-white mb-3">Digital Shade Card</h1>
+          <p className="text-white/60 max-w-xl">Explore our decorative shade collection and complete RAL industrial colour reference. Click any shade to copy its code.</p>
         </div>
       </section>
-      <section className="bg-white py-6 border-b border-gray-100 sticky top-16 md:top-20 z-30 backdrop-blur-sm bg-white/95">
-        <div className="container-wide px-4 max-w-xl mx-auto">
-          <div className="relative"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input className="input-field !pl-9" placeholder="Search shade name or code..." value={search} onChange={e => setSearch(e.target.value)} /></div>
+
+      {/* Tabs */}
+      <section className="bg-white border-b border-gray-100 sticky top-16 md:top-20 z-30 backdrop-blur-sm bg-white/95">
+        <div className="container-wide flex flex-col md:flex-row md:items-center justify-between gap-4 py-4">
+          <div className="flex gap-2">
+            <button onClick={() => { setTab('decorative'); setSearch(''); }} className={`text-sm font-semibold px-4 py-2 inline-flex items-center gap-2 transition ${tab === 'decorative' ? 'bg-[var(--color-navy)] text-white' : 'bg-gray-100 text-[var(--color-steel)] hover:bg-gray-200'}`} style={{borderRadius:'var(--radius-md)'}}>
+              <Palette size={14} /> Decorative Shades
+            </button>
+            <button onClick={() => { setTab('ral'); setSearch(''); }} className={`text-sm font-semibold px-4 py-2 inline-flex items-center gap-2 transition ${tab === 'ral' ? 'bg-[var(--color-navy)] text-white' : 'bg-gray-100 text-[var(--color-steel)] hover:bg-gray-200'}`} style={{borderRadius:'var(--radius-md)'}}>
+              <Layers size={14} /> RAL Industrial Colours
+            </button>
+          </div>
+          <div className="relative w-full md:w-72">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input className="input-field !pl-9" placeholder={tab === 'decorative' ? 'Search shade name or code...' : 'Search RAL name or code...'} value={search} onChange={e => setSearch(e.target.value)} />
+          </div>
         </div>
       </section>
-      <section className="section-padding bg-white">
-        <div className="container-wide">
-          {filtered ? (
-            <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-3">
-              {filtered.map(s => (
-                <button key={s.code} onClick={() => copyCode(s.code)} className="group">
-                  <div className="aspect-square rounded-xl shadow-sm border border-gray-100 mb-1 group-hover:scale-105 transition" style={{ backgroundColor: s.hex }} />
-                  <div className="text-xs font-medium text-gray-800 truncate">{s.name}</div>
-                  <div className="text-xs text-gray-400 flex items-center gap-1">{s.code} {copied === s.code && <Check size={10} className="text-green-500" />}</div>
-                </button>
-              ))}
-            </div>
-          ) : shadeGroups.map(group => (
-            <div key={group.name} className="mb-10 last:mb-0">
-              <h2 className="text-xl font-bold text-brand-500 mb-4 flex items-center gap-2"><Palette size={20} /> {group.name}</h2>
+
+      {tab === 'decorative' ? (
+        <section className="section-padding bg-white">
+          <div className="container-wide">
+            {filteredDecorative ? (
               <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-3">
-                {group.shades.map(s => (
+                {filteredDecorative.map(s => (
                   <button key={s.code} onClick={() => copyCode(s.code)} className="group text-left">
-                    <div className="aspect-square rounded-xl shadow-sm border border-gray-100 mb-1 group-hover:scale-105 transition" style={{ backgroundColor: s.hex }} />
+                    <div className="aspect-square shadow-sm border border-gray-100 mb-1 group-hover:scale-105 transition" style={{ backgroundColor: s.hex, borderRadius: 'var(--radius-md)' }} />
                     <div className="text-xs font-medium text-gray-800 truncate">{s.name}</div>
                     <div className="text-xs text-gray-400 flex items-center gap-1">{s.code} {copied === s.code && <Check size={10} className="text-green-500" />}</div>
                   </button>
                 ))}
               </div>
+            ) : shadeGroups.map(group => (
+              <div key={group.name} className="mb-10 last:mb-0">
+                <h2 className="text-lg font-bold text-[var(--color-navy)] mb-4 flex items-center gap-2"><Palette size={18} /> {group.name}</h2>
+                <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-3">
+                  {group.shades.map(s => (
+                    <button key={s.code} onClick={() => copyCode(s.code)} className="group text-left">
+                      <div className="aspect-square shadow-sm border border-gray-100 mb-1 group-hover:scale-105 transition" style={{ backgroundColor: s.hex, borderRadius: 'var(--radius-md)' }} />
+                      <div className="text-xs font-medium text-gray-800 truncate">{s.name}</div>
+                      <div className="text-xs text-gray-400 flex items-center gap-1">{s.code} {copied === s.code && <Check size={10} className="text-green-500" />}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section className="section-padding bg-white">
+          <div className="container-wide">
+            <div className="mb-8 max-w-2xl">
+              <p className="text-sm text-[var(--color-steel)] leading-relaxed">The RAL Classic system is the international standard for specifying industrial, architectural, and protective coating colours. Used across our structural steel, railway, marine, and industrial ranges — reference these codes when specifying a project colour.</p>
             </div>
-          ))}
-        </div>
-      </section>
+            <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-3">
+              {filteredRal.map(s => (
+                <button key={s.code} onClick={() => copyCode(s.code)} className="group text-left">
+                  <div className="aspect-square shadow-sm border border-gray-100 mb-1 group-hover:scale-105 transition" style={{ backgroundColor: s.hex, borderRadius: 'var(--radius-md)' }} />
+                  <div className="text-xs font-medium text-gray-800 truncate">{s.name}</div>
+                  <div className="text-xs text-gray-400 flex items-center gap-1">{s.code} {copied === s.code && <Check size={10} className="text-green-500" />}</div>
+                </button>
+              ))}
+            </div>
+            {filteredRal.length === 0 && (
+              <div className="text-center py-16 text-[var(--color-steel)]">No RAL colours match your search.</div>
+            )}
+          </div>
+        </section>
+      )}
     </>
   );
 }
