@@ -13,7 +13,7 @@ const steps = [
 const recommendations: Record<string, { system: string; products: string[]; dft: string }> = {
   'Mild Steel-Exterior-Anti-Corrosion-Infrastructure': { system: 'Structural Steel Protection System', products: ['Epoxy Zinc-Rich Primer (75µ)', 'Epoxy MIO Intermediate (125µ)', 'Aliphatic PU Topcoat (50µ)'], dft: '250 microns' },
   'Mild Steel-Coastal / Marine-Anti-Corrosion-Marine / Shipbuilding': { system: 'Marine Hull Coating System', products: ['Inorganic Zinc Silicate (75µ)', 'High-Build Epoxy x2 (150µ)', '2K Anti-Fouling x2 (125µ)'], dft: '375 microns' },
-  'Concrete / Masonry-Exterior-Waterproofing-Residential': { system: 'Exterior Waterproofing System', products: ['Azura Damp Arrestor Primer', 'Elastomeric Waterproof Coating x2', 'Azura Weather Shield Topcoat'], dft: 'As per spec' },
+  'Concrete / Masonry-Exterior-Waterproofing-Residential': { system: 'Exterior Waterproofing System', products: ['Azura Damp Arrestor Primer', 'Elastomeric Waterproof Coating x2', 'Azura Antidirt Long Life Topcoat'], dft: 'As per spec' },
   'Floor-Interior-Abrasion Resistance-Warehousing / Logistics': { system: 'Industrial Flooring System', products: ['Epoxy Floor Primer', 'Self-Levelling Epoxy Coating x2', 'PU Clear Topcoat'], dft: '500+ microns' },
 };
 

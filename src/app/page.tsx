@@ -31,7 +31,7 @@ const signatureProducts = [
   { name: 'FEVE Coach Exterior', desc: 'Fluoropolymer technology for railway coaches. Gloss retention beyond 10 years.', tag: 'Railway', link: '/solutions/railway-coaches' },
   { name: 'Anti-Fouling System', desc: 'Biocide-free silicone-epoxy hybrid for naval vessels. 5-year docking intervals.', tag: 'Marine', link: '/solutions/marine-hull' },
   { name: 'WRAS Tank Lining', desc: 'Solventless epoxy approved for potable water contact. Zero VOC.', tag: 'Water', link: '/solutions/tank-lining' },
-  { name: 'Azura Weather Shield 15', desc: 'Premium exterior emulsion with Polysiloxane and PU hybrid. 15-year dirt resistance.', tag: 'Decorative', link: '/products/decorative' },
+  { name: 'Azura Antidirt Long Life', desc: 'Premium exterior emulsion with Polysiloxane and PU hybrid. 15-year dirt resistance.', tag: 'Decorative', link: '/products/decorative' },
   { name: 'Duraflo Floor System', desc: 'Self-levelling epoxy + polyaspartic topcoat. Return to service in 4 hours.', tag: 'Flooring', link: '/solutions/industrial-flooring' },
 ];
 
@@ -81,7 +81,7 @@ export default function HomePage() {
     'Tank-Potable Water': { primer: 'Solventless Epoxy (self-priming)', intermediate: 'Solventless Epoxy', topcoat: 'Solventless Epoxy', dft: '300-500 microns', link: '/solutions/tank-lining' },
     'Floor-Abrasion': { primer: 'Epoxy Floor Primer', intermediate: 'Duraflo Self-Levelling Epoxy', topcoat: 'Polyaspartic Topcoat', dft: '1-3mm', link: '/solutions/industrial-flooring' },
     'Interior Wall-Luxury Finish': { primer: 'Azura Damp Arrestor Primer', intermediate: 'Acrylic Wall Putty', topcoat: 'Azura Pearl Glow', dft: 'Per spec', link: '/products/decorative' },
-    'Exterior Wall-Weather': { primer: 'Azura Damp Arrestor Primer', intermediate: 'Cement Putty', topcoat: 'Azura Weather Shield 15', dft: 'Per spec', link: '/products/decorative' },
+    'Exterior Wall-Weather': { primer: 'Azura Damp Arrestor Primer', intermediate: 'Cement Putty', topcoat: 'Azura Antidirt Long Life', dft: 'Per spec', link: '/products/decorative' },
     'Roof-Waterproofing': { primer: 'Arest Base Coat', intermediate: 'Arest Crack Filler', topcoat: 'Arest Cool Roof Coat', dft: 'Per spec', link: '/products/decorative' },
   };
 
