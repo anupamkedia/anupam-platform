@@ -41,7 +41,15 @@ export default function DivisionPage() {
 
   return (
     <>
-      <section className={`bg-gradient-to-br ${divColor} text-white py-16 md:py-24 relative overflow-hidden`}>
+      <section className="relative text-white overflow-hidden py-16 md:py-24">
+        <img src={
+          slug === 'decorative' ? '/img/divisions/div-decorative.png' :
+          slug === 'industrial' ? '/img/divisions/div-industrial.png' :
+          slug === 'marine' ? '/img/heroes/naval-vessel.png' :
+          slug === 'railway' ? '/img/heroes/railway-coach.png' :
+          '/img/divisions/div-specialty.png'
+        } alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="container-wide px-4 relative z-10">
           <p className="text-white/70 text-sm font-medium mb-2 tracking-wider uppercase">Products</p>
           <h1 className="text-4xl md:text-5xl font-bold mb-2">{division?.name || fallbackDiv?.name || slug}</h1>
