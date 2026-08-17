@@ -157,7 +157,7 @@ export default function Header() {
           <div className="flex items-center gap-5 text-white/60">
             <Link href="/dealers" className="hover:text-white transition">Find a Dealer</Link>
             <span className="text-white/20">|</span>
-            <Link href="/technical-library" className="hover:text-white transition">Download Catalogue</Link>
+            <Link href="/downloads" className="hover:text-white transition">Download Catalogue</Link>
           </div>
         </div>
       </div>
