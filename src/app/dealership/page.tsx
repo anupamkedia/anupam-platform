@@ -64,7 +64,7 @@ export default function DealershipPage() {
                   {brand:'Arest',tier:'Waterproofing',desc:'Complete waterproofing and damp-proofing solutions'}
                 ].map(b => (
                   <div key={b.brand} className="flex items-center gap-3 p-3 bg-gray-50" style={{borderRadius:'var(--radius-md)'}}>
-                    <img src={`/img/logos/${b.brand.toLowerCase()}.${['asure','atop','amaje'].includes(b.brand.toLowerCase())?'png':'jpg'}`} alt={b.brand} className="h-8 w-auto" />
+                    <img src={`/img/logos/${b.brand.toLowerCase()}-hd.png`} alt={b.brand} className="h-8 w-auto" />
                     <div><span className="text-sm font-semibold text-[var(--color-navy)]">{b.brand}</span> <span className="text-xs text-[var(--color-steel)]">({b.tier})</span><p className="text-xs text-[var(--color-steel)]">{b.desc}</p></div>
                   </div>
                 ))}
