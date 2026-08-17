@@ -14,14 +14,17 @@ export default function ApprovalFinderPage() {
   const filtered = approvals.filter(a => (filter === 'All' || a.name?.includes(filter) || a.category?.includes(filter)) && (search === '' || a.name?.toLowerCase().includes(search.toLowerCase())));
   return (
     <>
-      <section className="bg-[var(--color-navy)] text-white py-16 md:py-24">
+      <section className="relative text-white overflow-hidden">
+        <img src="/img/app/industrial/ind-coastal-steel.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+        <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
           <h1 className="text-page-title text-white mb-4">Approval Finder</h1>
           <p className="text-white/50 max-w-xl mb-8">Search Anupam products by approval body, industry, or specification.</p>
           <div className="relative max-w-md"><Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" /><input className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/40 outline-none" style={{borderRadius:'var(--radius-md)'}} placeholder="Search approvals..." value={search} onChange={e=>setSearch(e.target.value)} /></div>
         </div>
-      </section>
+      </div></section>
       <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="flex gap-2 overflow-x-auto pb-4 mb-6">{orgs.map(o=><button key={o} onClick={()=>setFilter(o)} className={`whitespace-nowrap text-sm px-3 py-1.5 transition ${filter===o?'bg-[var(--color-navy)] text-white':'bg-gray-100 text-[var(--color-steel)]'}`} style={{borderRadius:'var(--radius-sm)'}}>{o}</button>)}</div>

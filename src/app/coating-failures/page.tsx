@@ -30,13 +30,16 @@ export default function CoatingFailuresPage() {
 
   return (
     <>
-      <section className="bg-[var(--color-navy)] text-white py-16 md:py-24">
+      <section className="relative text-white overflow-hidden">
+        <img src="/img/app/industrial/ind-maintenance.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+        <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide max-w-3xl">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
           <h1 className="text-page-title text-white mb-4">What Went Wrong With Your Coating?</h1>
           <p className="text-white/50 leading-relaxed">Identify common coating failures, understand causes, and learn the correct remediation. Select the problem you are experiencing below.</p>
         </div>
-      </section>
+      </div></section>
 
       <section className="section-padding" style={{background: 'var(--color-warm-white)'}}>
         <div className="container-wide">

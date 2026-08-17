@@ -29,7 +29,10 @@ export default function CoatingSystemsPage() {
 
   return (
     <>
-      <section className="bg-[var(--color-navy)] text-white py-16 md:py-24">
+      <section className="relative text-white overflow-hidden">
+        <img src="/img/app/industrial/ind-structural-spray.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+        <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
           <h1 className="text-page-title text-white mb-4">Coating System Library</h1>
@@ -37,7 +40,7 @@ export default function CoatingSystemsPage() {
           <div className="relative max-w-md"><Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
             <input className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/40 outline-none" style={{borderRadius:'var(--radius-md)'}} placeholder="Search systems..." value={search} onChange={e=>setSearch(e.target.value)} /></div>
         </div>
-      </section>
+      </div></section>
       <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="flex gap-2 overflow-x-auto pb-4 mb-6">

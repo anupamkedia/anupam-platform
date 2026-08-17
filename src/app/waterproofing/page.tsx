@@ -12,13 +12,16 @@ const areas = [
 export default function WaterproofingPage() {
   return (
     <>
-      <section className="bg-[var(--color-navy)] text-white py-16 md:py-24">
+      <section className="relative text-white overflow-hidden">
+        <img src="/img/app/decorative/dec-roof-waterproof.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+        <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide max-w-3xl">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
           <h1 className="text-page-title text-white mb-4">Waterproofing Solutions</h1>
           <p className="text-white/50">Diagnose the water path before choosing the product. Waterproofing problems cannot be solved reliably without identifying the source of water.</p>
         </div>
-      </section>
+      </div></section>
       <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="space-y-6">

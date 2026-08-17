@@ -16,13 +16,16 @@ const courses = [
 export default function AcademyPage() {
   return (
     <>
-      <section className="bg-[var(--color-navy)] text-white py-16 md:py-24">
+      <section className="relative text-white overflow-hidden">
+        <img src="/img/app/railway/rly-coach-painting.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+        <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide max-w-3xl">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
           <h1 className="text-page-title text-white mb-4">Anupam Academy</h1>
           <p className="text-white/50">Training and knowledge resources for painters, applicators, contractors, dealers, engineers, and inspectors.</p>
         </div>
-      </section>
+      </div></section>
       <section className="section-padding" style={{background:'var(--color-warm-white)'}}>
         <div className="container-wide">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
