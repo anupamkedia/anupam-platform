@@ -124,12 +124,12 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
             {scaleData.map((item) => (
               <div key={item.label}>
-                <div className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">{item.value}</div>
-                <div className="text-xs text-white/30 mt-1 font-medium uppercase tracking-wider">{item.label}</div>
+                <div className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">{item.value}</div>
+                <div className="text-xs text-white/60 mt-2 font-semibold uppercase tracking-wider">{item.label}</div>
               </div>
             ))}
           </div>
-          <p className="text-white/20 text-sm mt-10 max-w-3xl" style={{fontFamily:'var(--font-body)'}}>
+          <p className="text-white/50 text-sm mt-10 max-w-3xl" style={{fontFamily:'var(--font-body)'}}>
             From formulation and resin manufacturing to testing, production and technical application support — critical capabilities remain under our control.
           </p>
         </div>
@@ -138,12 +138,19 @@ export default function HomePage() {
       {/* BRAND LOGOS */}
       <section className="py-10" style={{background:'#F5F2ED',borderTop:'1px solid #E8E5E0',borderBottom:'1px solid #E8E5E0'}}>
         <div className="container-wide">
-          <p className="text-center text-xs font-semibold uppercase tracking-widest mb-6" style={{color:'var(--color-steel)'}}>Our Decorative Brands</p>
+          <p className="text-center text-xs font-semibold uppercase tracking-widest mb-6" style={{color:'var(--color-steel)'}}>Our Decorative Brands — Premium Range</p>
           <div className="flex items-center justify-center gap-8 md:gap-14 flex-wrap">
-            {['azura', 'asure', 'anex', 'atop', 'amaje', 'arest'].map(brand => (
-              <div key={brand} className="bg-white px-5 py-3 shadow-sm" style={{borderRadius:'var(--radius-md)',border:'1px solid #E8E5E0'}}>
-                <img src={`/img/logos/${brand}.${brand === 'asure' || brand === 'atop' || brand === 'amaje' ? 'png' : 'jpg'}`}
-                  alt={brand} className="h-10 md:h-14 w-auto" />
+            {[
+              {name:'Azura',shots:['azura-advance-emulsion.jpg','azura-pearl-glow.jpg','azura-luxury-exterior-7.jpg']},
+              {name:'Asure',shots:['asure-cleanwalls.jpg','asure-radiance.jpg']},
+              {name:'Anex',shots:['anex-advance-interior.jpg','anex-advance-exterior.jpg']},
+              {name:'Arest',shots:['arest-base-coat.jpg','arest-roof-coat.jpg','arest-crack-fillers.jpg']},
+            ].map(brand => (
+              <div key={brand.name} className="text-center">
+                <img src={`/img/logos/${brand.name.toLowerCase()}.${brand.name === 'Asure' ? 'png' : 'jpg'}`} alt={brand.name} className="h-8 mx-auto mb-3" />
+                <div className="flex gap-2 justify-center">
+                  {brand.shots.map(s => <img key={s} src={`/img/products/${s}`} alt="" className="h-20 w-auto object-contain bg-white p-1.5 border border-gray-200" style={{borderRadius:'var(--radius-md)'}} />)}
+                </div>
               </div>
             ))}
           </div>
@@ -253,11 +260,11 @@ export default function HomePage() {
           <h2 className="text-section-heading mb-10" style={{color:'white'}}>Built for Problems Ordinary Paint Cannot Solve.</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--color-border)]">
             {signatureProducts.map((prod) => (
-              <Link key={prod.name} href={prod.link} className="bg-[#1A2940] p-8 group hover:bg-[#1E3050] transition">
-                <span className="text-xs font-medium text-[var(--color-red)] uppercase tracking-wider">{prod.tag}</span>
-                <h3 className="text-lg font-bold text-[var(--color-navy)] mt-2 mb-2">{prod.name}</h3>
-                <p className="text-sm text-[var(--color-steel)] leading-relaxed mb-4">{prod.desc}</p>
-                <span className="text-sm font-semibold text-[var(--color-navy)] inline-flex items-center gap-1 group-hover:gap-2 transition-all">Learn More <ArrowRight size={14} /></span>
+              <Link key={prod.name} href={prod.link} className="bg-[#1A2940] p-8 group hover:bg-[#1E3050] transition" style={{borderLeft:"3px solid var(--color-red)"}}>
+                <span className="text-xs font-semibold text-[#FF6B6B] uppercase tracking-wider">{prod.tag}</span>
+                <h3 className="text-lg font-bold text-white mt-2 mb-2">{prod.name}</h3>
+                <p className="text-sm text-white/60 leading-relaxed mb-4">{prod.desc}</p>
+                <span className="text-sm font-semibold text-[#FF6B6B] inline-flex items-center gap-1 group-hover:gap-2 transition-all">Learn More <ArrowRight size={14} /></span>
               </Link>
             ))}
           </div>
@@ -269,7 +276,7 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════ */}
 
       {/* MANUFACTURING JOURNEY */}
-      <section className="section-padding" style={{background:'#EEF2F7'}}>
+      <section className="section-padding" style={{background:'linear-gradient(135deg, #E8EEF5 0%, #DCE5F0 50%, #D0DCE9 100%)'}}>
         <div className="container-wide">
           <div className="text-label mb-2">Inside Anupam</div>
           <h2 className="text-section-heading mb-12">From Resin to Ready Coating.</h2>
@@ -287,7 +294,7 @@ export default function HomePage() {
       </section>
 
       {/* PROOF, NOT PROMISES */}
-      <section className="section-padding" style={{background:'#F5F0EB'}}>
+      <section className="section-padding" style={{background:'linear-gradient(135deg, #F0E8E0 0%, #EBE0D5 100%)'}}>
         <div className="container-wide">
           <div className="text-center mb-12">
             <h2 className="text-page-title">Proof, Not Promises.</h2>
@@ -314,7 +321,7 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════ */}
 
       {/* BUILT AROUND YOUR ROLE */}
-      <section className="section-padding bg-white">
+      <section className="section-padding" style={{background:"linear-gradient(135deg, #EBF0F5 0%, #E0E8F0 100%)"}}>
         <div className="container-wide">
           <div className="text-center mb-12">
             <div className="w-12 h-[2px] bg-[var(--color-red)] mx-auto mb-6" />
@@ -336,7 +343,7 @@ export default function HomePage() {
         <div className="relative overflow-hidden">
           <img src="/img/divisions/div-decorative.png" alt="Premium interior" className="w-full h-full object-cover min-h-[400px]" />
         </div>
-        <div className="p-10 md:p-16 flex flex-col justify-center" style={{background:'#FDF8F4'}}>
+        <div className="p-10 md:p-16 flex flex-col justify-center" style={{background:'linear-gradient(135deg, #FDF8F4 0%, #FAF0E6 100%)'}}>
           <div className="w-10 h-[2px] mb-6" style={{background:'var(--accent-decorative)'}} />
           <span className="text-xs font-semibold uppercase tracking-wider mb-2" style={{color:'var(--accent-decorative)'}}>For Homeowners</span>
           <h2 className="text-page-title mb-4">Your Home Deserves More Than a Colour.</h2>
@@ -366,7 +373,7 @@ export default function HomePage() {
         <div className="container-wide max-w-3xl text-center">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mx-auto mb-6" />
           <h2 className="text-page-title mb-3" style={{color:'white'}}>Tell Us What You Need to Protect.</h2>
-          <p className="text-white/40 mb-10">A home. A bridge. A railway coach. A ship. A factory. A tank. A floor. Our team will help you identify the right Anupam system.</p>
+          <p className="text-white/60 mb-10">A home. A bridge. A railway coach. A ship. A factory. A tank. A floor. Our team will help you identify the right Anupam system.</p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link href="/contact" className="bg-[var(--color-red)] text-white font-semibold px-8 py-4 inline-flex items-center gap-2 hover:opacity-90 transition" style={{borderRadius:'var(--radius-md)'}}>Find My Coating System</Link>
             <Link href="/contact" className="border border-white/20 text-white font-semibold px-8 py-4 inline-flex items-center gap-2 hover:bg-gray-50 transition" style={{borderRadius:'var(--radius-md)'}}>Request Technical Consultation</Link>
