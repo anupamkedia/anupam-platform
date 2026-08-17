@@ -14,7 +14,6 @@ const scaleData = [
   { value: '5 Acres', label: 'Manufacturing Campus' },
   { value: '~1000 KL', label: 'Monthly Capacity' },
   { value: 'In-House', label: 'Resin Manufacturing' },
-  { value: 'Decorative \u2192 Defence', label: 'Integrated Portfolio' },
   { value: 'Pan India', label: 'Supply & Application' },
 ];
 
