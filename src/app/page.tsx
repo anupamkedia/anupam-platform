@@ -137,7 +137,7 @@ export default function HomePage() {
       {/* BRAND LOGOS */}
       <section className="py-6" style={{background:'#F5F2ED',borderTop:'1px solid #E8E5E0',borderBottom:'1px solid #E8E5E0'}}>
         <div className="container-wide">
-          <img src="/img/heroes/brands-collage.png" alt="Anupam Paints Brands" className="w-full h-auto max-w-full" style={{borderRadius:'var(--radius-md)'}} />
+          <img src="/img/heroes/brands-collage.jpg" alt="Anupam Paints Brands" className="w-full h-auto max-w-full" style={{borderRadius:'var(--radius-md)'}} />
         </div>
       </section>
 
@@ -148,9 +148,9 @@ export default function HomePage() {
           <h2 className="text-page-title mb-16">One Manufacturer. Three Very Different Worlds.</h2>
         </div>
         {[
-          { name: 'Decorative & Architectural', sub: 'Colour, durability and protection for the places people live and work.', img: '/img/divisions/div-decorative.png', link: '/products/decorative', tags: ['Interior Emulsions', 'Exterior Emulsions', 'Waterproofing', 'Primers', 'Enamels', 'Textures'], accent: 'var(--accent-decorative)' },
-          { name: 'Industrial & Protective', sub: 'Engineered coating systems for corrosion, chemicals, weathering and demanding service.', img: '/img/divisions/div-industrial.png', link: '/products/industrial', tags: ['Epoxy', 'PU', 'Zinc-Rich', 'MIO', 'Heat Resistant', 'Tank Linings'], accent: 'var(--accent-industrial)' },
-          { name: 'Advanced & Critical Coatings', sub: 'Specialised coatings for assets where ordinary paint is not enough.', img: '/img/divisions/div-specialty.png', link: '/products/specialty', tags: ['Railway', 'Marine', 'Fire Protection', 'Potable Water', 'Thermal', 'Advanced'], accent: 'var(--accent-specialty)' },
+          { name: 'Decorative & Architectural', sub: 'Colour, durability and protection for the places people live and work.', img: '/img/divisions/div-decorative.jpg', link: '/products/decorative', tags: ['Interior Emulsions', 'Exterior Emulsions', 'Waterproofing', 'Primers', 'Enamels', 'Textures'], accent: 'var(--accent-decorative)' },
+          { name: 'Industrial & Protective', sub: 'Engineered coating systems for corrosion, chemicals, weathering and demanding service.', img: '/img/divisions/div-industrial.jpg', link: '/products/industrial', tags: ['Epoxy', 'PU', 'Zinc-Rich', 'MIO', 'Heat Resistant', 'Tank Linings'], accent: 'var(--accent-industrial)' },
+          { name: 'Advanced & Critical Coatings', sub: 'Specialised coatings for assets where ordinary paint is not enough.', img: '/img/divisions/div-specialty.jpg', link: '/products/specialty', tags: ['Railway', 'Marine', 'Fire Protection', 'Potable Water', 'Thermal', 'Advanced'], accent: 'var(--accent-specialty)' },
         ].map((div, i) => (
           <div key={div.name} className={`grid grid-cols-1 lg:grid-cols-2 min-h-[300px] md:min-h-[450px] ${i % 2 === 1 ? 'lg:direction-rtl' : ''}`}>
             <div className={`relative overflow-hidden ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
@@ -325,7 +325,7 @@ export default function HomePage() {
       {/* HOME PAINTING — Premium consumer section */}
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[300px] md:min-h-[500px]">
         <div className="relative overflow-hidden">
-          <img src="/img/divisions/div-decorative.png" alt="Premium interior" className="w-full h-full object-cover min-h-[250px] md:min-h-[400px]" />
+          <img src="/img/divisions/div-decorative.jpg" alt="Premium interior" className="w-full h-full object-cover min-h-[250px] md:min-h-[400px]" />
         </div>
         <div className="p-6 md:p-16 flex flex-col justify-center" style={{background:'linear-gradient(135deg, #FDF8F4 0%, #FAF0E6 100%)'}}>
           <div className="w-10 h-[2px] mb-6" style={{background:'var(--accent-decorative)'}} />

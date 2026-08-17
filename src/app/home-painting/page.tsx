@@ -24,7 +24,7 @@ export default function HomePaintingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative text-white overflow-hidden"><img src="/img/heroes/hero-homepainting.png" alt="" className="absolute inset-0 w-full h-full object-cover" /><div className="absolute inset-0 bg-[var(--color-navy)]/75" /><div className="py-20 md:py-28 relative z-10">
+      <section className="relative text-white overflow-hidden"><img src="/img/heroes/hero-homepainting.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" /><div className="absolute inset-0 bg-[var(--color-navy)]/75" /><div className="py-20 md:py-28 relative z-10">
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Transform Your Home<br /><span className="text-yellow-300">With Beautiful Colours</span>

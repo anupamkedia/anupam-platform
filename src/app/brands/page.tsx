@@ -15,7 +15,7 @@ export default function BrandsPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/heroes/hero-brands.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/heroes/hero-brands.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/80" />
         <div className="container-wide py-20 md:py-28 relative z-10">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />

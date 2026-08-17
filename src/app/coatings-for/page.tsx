@@ -19,7 +19,7 @@ export default function CoatingsForPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/app/industrial/ind-bridge-coating.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/app/industrial/ind-bridge-coating.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide"><div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />

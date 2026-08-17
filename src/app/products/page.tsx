@@ -8,11 +8,11 @@ import { ArrowRight, Package } from 'lucide-react';
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
 const divImages: Record<string, string> = {
-  decorative: '/img/divisions/div-decorative.png',
-  industrial: '/img/divisions/div-industrial.png',
-  marine: '/img/divisions/div-specialty.png',
-  railway: '/img/divisions/div-railway.png',
-  specialty: '/img/divisions/div-industrial.png',
+  decorative: '/img/divisions/div-decorative.jpg',
+  industrial: '/img/divisions/div-industrial.jpg',
+  marine: '/img/divisions/div-specialty.jpg',
+  railway: '/img/divisions/div-railway.jpg',
+  specialty: '/img/divisions/div-industrial.jpg',
 };
 
 const divAccents: Record<string, string> = {
@@ -41,7 +41,7 @@ export default function ProductsPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/heroes/hero-products.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/heroes/hero-products.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide">

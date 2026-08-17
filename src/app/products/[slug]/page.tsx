@@ -43,11 +43,11 @@ export default function DivisionPage() {
     <>
       <section className="relative text-white overflow-hidden py-16 md:py-24">
         <img src={
-          slug === 'decorative' ? '/img/divisions/div-decorative.png' :
-          slug === 'industrial' ? '/img/divisions/div-industrial.png' :
-          slug === 'marine' ? '/img/heroes/naval-vessel.png' :
-          slug === 'railway' ? '/img/heroes/railway-coach.png' :
-          '/img/divisions/div-specialty.png'
+          slug === 'decorative' ? '/img/divisions/div-decorative.jpg' :
+          slug === 'industrial' ? '/img/divisions/div-industrial.jpg' :
+          slug === 'marine' ? '/img/heroes/naval-vessel.jpg' :
+          slug === 'railway' ? '/img/heroes/railway-coach.jpg' :
+          '/img/divisions/div-specialty.jpg'
         } alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="container-wide px-4 relative z-10">

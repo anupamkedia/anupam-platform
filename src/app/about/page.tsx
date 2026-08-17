@@ -15,7 +15,7 @@ export default function AboutPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/heroes/hero-about.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/heroes/hero-about.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="container-wide py-20 md:py-28 relative z-10">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
@@ -66,7 +66,7 @@ export default function AboutPage() {
           <h2 className="text-section-heading mb-8">Chairman&apos;s Message</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-1">
-              <img src="/img/heroes/team-group.png" alt="Leadership" className="w-full h-40 object-cover object-top" style={{borderRadius:'var(--radius-md)'}} />
+              <img src="/img/heroes/team-group.jpg" alt="Leadership" className="w-full h-40 object-cover object-top" style={{borderRadius:'var(--radius-md)'}} />
               <div className="mt-3 text-center">
                 <div className="font-bold text-[var(--color-navy)] text-sm">{CHAIRMAN_MESSAGE.name}</div>
                 <div className="text-xs text-[var(--color-steel)]">{CHAIRMAN_MESSAGE.title}</div>

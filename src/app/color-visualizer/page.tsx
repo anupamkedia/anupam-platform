@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Palette, RotateCcw, Download, ArrowRight } from 'lucide-react';
 
 const rooms = [
-  { id: 'living', name: 'Living Room', img: '/img/heroes/living-room.png' },
+  { id: 'living', name: 'Living Room', img: '/img/heroes/living-room.jpg' },
   { id: 'bedroom', name: 'Bedroom', img: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80' },
   { id: 'kitchen', name: 'Kitchen', img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80' },
   { id: 'exterior', name: 'Exterior', img: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80' },

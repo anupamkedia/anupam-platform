@@ -7,7 +7,7 @@ const posts: Record<string, any> = {
   'understanding-coating-systems-for-structural-steel': {
     title: 'Understanding Coating Systems for Structural Steel: A Complete Guide',
     date: '12 August 2026', readTime: '8 min read', category: 'Technical',
-    image: '/img/app/industrial/ind-structural-spray.png',
+    image: '/img/app/industrial/ind-structural-spray.jpg',
     content: [
       'Structural steel is the backbone of modern infrastructure. Bridges, power plants, refineries, commercial buildings, and industrial facilities all depend on steel for structural integrity. But steel has one critical vulnerability — corrosion.',
       'When exposed to moisture, oxygen, and especially chlorides in coastal or industrial environments, steel corrodes. Without protection, a steel structure can lose significant cross-section within years, compromising its load-bearing capacity and safety.',
@@ -34,7 +34,7 @@ const posts: Record<string, any> = {
   'why-surface-preparation-matters-more-than-paint-quality': {
     title: 'Why Surface Preparation Matters More Than Paint Quality',
     date: '5 August 2026', readTime: '6 min read', category: 'Technical',
-    image: '/img/app/industrial/ind-zincrich.png',
+    image: '/img/app/industrial/ind-zincrich.jpg',
     content: [
       'If you could invest in only one thing to improve coating performance, it should not be a more expensive paint. It should be better surface preparation.',
       'Industry data consistently shows that 60-80% of all premature coating failures are caused by inadequate surface preparation — not by the coating itself.',
@@ -55,7 +55,7 @@ const posts: Record<string, any> = {
   'choosing-the-right-paint-for-your-home-interior': {
     title: 'Choosing the Right Paint for Your Home Interior',
     date: '28 July 2026', readTime: '5 min read', category: 'Home Painting',
-    image: '/img/app/decorative/dec-living-premium.png',
+    image: '/img/app/decorative/dec-living-premium.jpg',
     content: [
       'Selecting interior paint for your home involves more than picking a colour. The type of emulsion you choose determines how the walls look, how long the finish lasts, and how easy it is to maintain.',
       '## Luxury vs Premium vs Economy — What Is the Difference?',
@@ -76,7 +76,7 @@ const posts: Record<string, any> = {
   'rdso-approved-railway-coatings-what-makes-them-different': {
     title: 'RDSO Approved Railway Coatings: What Makes Them Different?',
     date: '20 July 2026', readTime: '7 min read', category: 'Railway',
-    image: '/img/app/railway/rly-coach-painting.png',
+    image: '/img/app/railway/rly-coach-painting.jpg',
     content: [
       'Indian Railways operates over 70,000 coaches across one of the world\'s largest rail networks. These coaches face extreme conditions — tropical UV, monsoon rains, temperature swings from 5°C to 50°C, stone chipping from ballast, chemical cleaning agents, and constant passenger use.',
       '## Why Railway Coatings Are Different',
@@ -96,7 +96,7 @@ const posts: Record<string, any> = {
   'waterproofing-your-terrace-common-mistakes-and-solutions': {
     title: 'Waterproofing Your Terrace: 5 Common Mistakes',
     date: '15 July 2026', readTime: '5 min read', category: 'Waterproofing',
-    image: '/img/app/decorative/dec-roof-waterproof.png',
+    image: '/img/app/decorative/dec-roof-waterproof.jpg',
     content: [
       'Every monsoon, thousands of homeowners discover leaking terraces. The frustrating truth: most waterproofing failures are caused by application mistakes, not product failures.',
       '## Mistake 1: Not Finding the Water Source',

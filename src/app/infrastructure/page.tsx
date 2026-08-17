@@ -38,7 +38,7 @@ export default function InfrastructurePage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/heroes/factory-exterior.png" alt="Anupam Paints Factory" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/heroes/factory-exterior.jpg" alt="Anupam Paints Factory" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="container-wide py-20 md:py-28 relative z-10">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
@@ -61,10 +61,10 @@ export default function InfrastructurePage() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <img src="/img/heroes/hero-factory-inside.png" alt="Production" className="w-full h-48 object-cover" style={{borderRadius:'var(--radius-md)'}} />
-              <img src="/img/heroes/hero-lab.png" alt="Laboratory" className="w-full h-48 object-cover" style={{borderRadius:'var(--radius-md)'}} />
-              <img src="/img/infra/infra-production.png" alt="Mixing" className="w-full h-48 object-cover" style={{borderRadius:'var(--radius-md)'}} />
-              <img src="/img/infra/infra-warehouse.png" alt="Warehouse" className="w-full h-48 object-cover" style={{borderRadius:'var(--radius-md)'}} />
+              <img src="/img/heroes/hero-factory-inside.jpg" alt="Production" className="w-full h-48 object-cover" style={{borderRadius:'var(--radius-md)'}} />
+              <img src="/img/heroes/hero-lab.jpg" alt="Laboratory" className="w-full h-48 object-cover" style={{borderRadius:'var(--radius-md)'}} />
+              <img src="/img/infra/infra-production.jpg" alt="Mixing" className="w-full h-48 object-cover" style={{borderRadius:'var(--radius-md)'}} />
+              <img src="/img/infra/infra-warehouse.jpg" alt="Warehouse" className="w-full h-48 object-cover" style={{borderRadius:'var(--radius-md)'}} />
             </div>
           </div>
         </div>
@@ -120,8 +120,8 @@ export default function InfrastructurePage() {
               </div>
             </div>
             <div>
-              <img src="/img/infra/infra-qclab.png" alt="QC Laboratory" className="w-full h-80 object-cover" style={{borderRadius:'var(--radius-md)'}} />
-              <img src="/img/heroes/hero-lab.png" alt="Testing" className="w-full h-80 object-cover mt-4" style={{borderRadius:'var(--radius-md)'}} />
+              <img src="/img/infra/infra-qclab.jpg" alt="QC Laboratory" className="w-full h-80 object-cover" style={{borderRadius:'var(--radius-md)'}} />
+              <img src="/img/heroes/hero-lab.jpg" alt="Testing" className="w-full h-80 object-cover mt-4" style={{borderRadius:'var(--radius-md)'}} />
             </div>
           </div>
         </div>

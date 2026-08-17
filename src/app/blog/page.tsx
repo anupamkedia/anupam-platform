@@ -10,7 +10,7 @@ const posts = [
     date: '12 August 2026',
     readTime: '8 min read',
     category: 'Technical',
-    image: '/img/app/industrial/ind-structural-spray.png',
+    image: '/img/app/industrial/ind-structural-spray.jpg',
   },
   {
     slug: 'why-surface-preparation-matters-more-than-paint-quality',
@@ -19,7 +19,7 @@ const posts = [
     date: '5 August 2026',
     readTime: '6 min read',
     category: 'Technical',
-    image: '/img/app/industrial/ind-zincrich.png',
+    image: '/img/app/industrial/ind-zincrich.jpg',
   },
   {
     slug: 'choosing-the-right-paint-for-your-home-interior',
@@ -28,7 +28,7 @@ const posts = [
     date: '28 July 2026',
     readTime: '5 min read',
     category: 'Home Painting',
-    image: '/img/app/decorative/dec-living-premium.png',
+    image: '/img/app/decorative/dec-living-premium.jpg',
   },
   {
     slug: 'rdso-approved-railway-coatings-what-makes-them-different',
@@ -37,7 +37,7 @@ const posts = [
     date: '20 July 2026',
     readTime: '7 min read',
     category: 'Railway',
-    image: '/img/app/railway/rly-coach-painting.png',
+    image: '/img/app/railway/rly-coach-painting.jpg',
   },
   {
     slug: 'waterproofing-your-terrace-common-mistakes-and-solutions',
@@ -46,7 +46,7 @@ const posts = [
     date: '15 July 2026',
     readTime: '5 min read',
     category: 'Waterproofing',
-    image: '/img/app/decorative/dec-roof-waterproof.png',
+    image: '/img/app/decorative/dec-roof-waterproof.jpg',
   },
 ];
 
@@ -54,7 +54,7 @@ export default function BlogPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/app/decorative/dec-colour-consult.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/app/decorative/dec-colour-consult.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="container-wide py-16 md:py-24 relative z-10">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />

@@ -4,18 +4,18 @@ import Link from 'next/link';
 import { ArrowRight, MapPin, Calendar, Layers } from 'lucide-react';
 
 const projects = [
-  { client:'Indian Railways — CLW',industry:'Railways',location:'Chittaranjan, WB',application:'Coach Exterior Coating',products:['Epoxy Zinc Phosphate Primer','Epoxy MIO','FEVE Fluoropolymer Topcoat'],year:'Ongoing',img:'/img/app/railway/rly-coach-painting.png' },
-  { client:'Indian Railways — DMW',industry:'Railways',location:'Patiala, Punjab',application:'Bogie and Underframe Coating',products:['Epoxy Zinc-Rich Primer','Epoxy High-Build'],year:'Ongoing',img:'/img/app/railway/rly-bogie.png' },
-  { client:'Indian Navy via GRSE',industry:'Marine & Defence',location:'Kolkata, WB',application:'Hull, Superstructure, Deck Coating Systems',products:['Marine Epoxy Primer','Anti-Fouling System','Naval Grey PU'],year:'Ongoing',img:'/img/app/marine/mar-drydock.png' },
-  { client:'Mazagon Dock Shipbuilders',industry:'Marine',location:'Mumbai, MH',application:'Naval Vessel Coating Systems',products:['Underwater Epoxy','Anti-Fouling','Deck Coatings'],year:'Ongoing',img:'/img/heroes/naval-vessel.png' },
-  { client:'Tata Projects',industry:'Infrastructure',location:'Pan India',application:'Structural Steel Anti-Corrosion Systems',products:['Zinc-Rich Primer','Epoxy MIO','Aliphatic PU'],year:'Multiple projects',img:'/img/app/industrial/ind-bridge-coating.png' },
-  { client:'Kalpataru Projects',industry:'Infrastructure',location:'Pan India',application:'Transmission Tower and Structural Coating',products:['Epoxy Primer','PU Topcoat'],year:'Multiple',img:'/img/app/industrial/ind-structural-spray.png' },
-  { client:'KEC International',industry:'Infrastructure',location:'Pan India',application:'Power Transmission Infrastructure',products:['Protective Coating Systems'],year:'Multiple',img:'/img/heroes/structural-steel.png' },
-  { client:'BHEL',industry:'Power',location:'Multiple locations',application:'Power Plant Equipment and Structure Coating',products:['Heat Resistant Coatings','Structural Steel Systems'],year:'Ongoing',img:'/img/app/industries/industry-power.png' },
-  { client:'Major Steel Manufacturer',industry:'Steel',location:'Eastern India',application:'Plant Structure, Equipment, and High-Temperature Areas',products:['Zinc-Rich Primer','Heat Resistant Aluminium','Epoxy Floor Coating'],year:'Ongoing',img:'/img/app/industries/industry-steel-plant.png' },
-  { client:'Shapoorji Pallonji',industry:'Real Estate',location:'Pan India',application:'Decorative and Waterproofing Systems',products:['Azura Antidirt Long Life','Arest Waterproofing','Primers'],year:'Multiple',img:'/img/app/decorative/dec-exterior-apartment.png' },
-  { client:'PWD West Bengal',industry:'Government',location:'West Bengal',application:'Institutional Building Coatings',products:['Decorative Emulsions','Primers','Enamels'],year:'Ongoing',img:'/img/solutions/sol-realestate.png' },
-  { client:'Transafe Container Manufacturing',industry:'Containers',location:'India',application:'ISO Container Coating Systems',products:['Epoxy Primer','High-Build Epoxy','PU Topcoat'],year:'Ongoing',img:'/img/heroes/structural-steel.png' },
+  { client:'Indian Railways — CLW',industry:'Railways',location:'Chittaranjan, WB',application:'Coach Exterior Coating',products:['Epoxy Zinc Phosphate Primer','Epoxy MIO','FEVE Fluoropolymer Topcoat'],year:'Ongoing',img:'/img/app/railway/rly-coach-painting.jpg' },
+  { client:'Indian Railways — DMW',industry:'Railways',location:'Patiala, Punjab',application:'Bogie and Underframe Coating',products:['Epoxy Zinc-Rich Primer','Epoxy High-Build'],year:'Ongoing',img:'/img/app/railway/rly-bogie.jpg' },
+  { client:'Indian Navy via GRSE',industry:'Marine & Defence',location:'Kolkata, WB',application:'Hull, Superstructure, Deck Coating Systems',products:['Marine Epoxy Primer','Anti-Fouling System','Naval Grey PU'],year:'Ongoing',img:'/img/app/marine/mar-drydock.jpg' },
+  { client:'Mazagon Dock Shipbuilders',industry:'Marine',location:'Mumbai, MH',application:'Naval Vessel Coating Systems',products:['Underwater Epoxy','Anti-Fouling','Deck Coatings'],year:'Ongoing',img:'/img/heroes/naval-vessel.jpg' },
+  { client:'Tata Projects',industry:'Infrastructure',location:'Pan India',application:'Structural Steel Anti-Corrosion Systems',products:['Zinc-Rich Primer','Epoxy MIO','Aliphatic PU'],year:'Multiple projects',img:'/img/app/industrial/ind-bridge-coating.jpg' },
+  { client:'Kalpataru Projects',industry:'Infrastructure',location:'Pan India',application:'Transmission Tower and Structural Coating',products:['Epoxy Primer','PU Topcoat'],year:'Multiple',img:'/img/app/industrial/ind-structural-spray.jpg' },
+  { client:'KEC International',industry:'Infrastructure',location:'Pan India',application:'Power Transmission Infrastructure',products:['Protective Coating Systems'],year:'Multiple',img:'/img/heroes/structural-steel.jpg' },
+  { client:'BHEL',industry:'Power',location:'Multiple locations',application:'Power Plant Equipment and Structure Coating',products:['Heat Resistant Coatings','Structural Steel Systems'],year:'Ongoing',img:'/img/app/industries/industry-power.jpg' },
+  { client:'Major Steel Manufacturer',industry:'Steel',location:'Eastern India',application:'Plant Structure, Equipment, and High-Temperature Areas',products:['Zinc-Rich Primer','Heat Resistant Aluminium','Epoxy Floor Coating'],year:'Ongoing',img:'/img/app/industries/industry-steel-plant.jpg' },
+  { client:'Shapoorji Pallonji',industry:'Real Estate',location:'Pan India',application:'Decorative and Waterproofing Systems',products:['Azura Antidirt Long Life','Arest Waterproofing','Primers'],year:'Multiple',img:'/img/app/decorative/dec-exterior-apartment.jpg' },
+  { client:'PWD West Bengal',industry:'Government',location:'West Bengal',application:'Institutional Building Coatings',products:['Decorative Emulsions','Primers','Enamels'],year:'Ongoing',img:'/img/solutions/sol-realestate.jpg' },
+  { client:'Transafe Container Manufacturing',industry:'Containers',location:'India',application:'ISO Container Coating Systems',products:['Epoxy Primer','High-Build Epoxy','PU Topcoat'],year:'Ongoing',img:'/img/heroes/structural-steel.jpg' },
 ];
 
 const industries = ['All','Railways','Marine & Defence','Infrastructure','Power','Steel','Real Estate','Government','Containers'];
@@ -27,7 +27,7 @@ export default function ProjectsPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/app/industrial/ind-bridge-coating.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/app/industrial/ind-bridge-coating.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="container-wide py-16 md:py-24 relative z-10">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
