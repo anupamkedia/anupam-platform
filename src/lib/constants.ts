@@ -12,7 +12,7 @@ export const SITE = {
   phone2: '033-22651205',
   email: 'care@anupampaints.com',
   website: 'www.anupampaints.com',
-  whatsapp: '+919830063651',
+  whatsapp: '+919831728605',
   employees: '150+',
   livesImpacted: '500+',
 };

@@ -365,7 +365,7 @@ export default function HomePage() {
           </div>
           <div className="flex justify-center gap-6 mt-8 text-sm text-[var(--color-steel)]">
             <a href="tel:03322651204" className="hover:text-[var(--color-navy)] transition inline-flex items-center gap-1"><Phone size={14} /> 033-2265 1204</a>
-            <a href="https://wa.me/919830063651" className="hover:text-white transition inline-flex items-center gap-1"><MessageSquare size={14} /> WhatsApp</a>
+            <a href="https://wa.me/919831728605" className="hover:text-white transition inline-flex items-center gap-1"><MessageSquare size={14} /> WhatsApp</a>
             <a href="mailto:care@anupampaints.com" className="hover:text-white transition inline-flex items-center gap-1"><Mail size={14} /> Email</a>
           </div>
         </div>

@@ -151,7 +151,7 @@ export default function Header() {
       <div className="bg-[#080F1A] text-white/80 text-xs py-2 hidden md:block">
         <div className="container-wide flex justify-between items-center">
           <div className="flex items-center gap-6">
-            <a href="tel:03322651204" className="hover:text-white transition flex items-center gap-1.5"><Phone size={11} /> 033-22651204</a>
+            <a href="tel:03322651204" className="hover:text-white transition flex items-center gap-1.5"><Phone size={11} /> 033-22651204 | +91-9831728605</a>
             <a href="mailto:care@anupampaints.com" className="hover:text-white transition flex items-center gap-1.5"><Mail size={11} /> care@anupampaints.com</a>
           </div>
           <div className="flex items-center gap-5 text-white/60">

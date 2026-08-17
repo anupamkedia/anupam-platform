@@ -52,7 +52,7 @@ export default function Footer() {
               <div className="space-y-3 text-sm">
                 <div className="flex items-start gap-2"><MapPin size={14} className="mt-1 shrink-0 text-white/30" /><span>{SITE.headOffice}</span></div>
                 <div className="flex items-start gap-2"><Factory size={14} className="mt-1 shrink-0 text-white/30" /><span>{SITE.factory}</span></div>
-                <div className="flex items-center gap-2"><Phone size={14} className="text-white/30" /><span>{SITE.phone}</span></div>
+                <div className="flex items-center gap-2"><Phone size={14} className="text-white/30" /><span>{SITE.phone} | +91-9831728605</span></div>
                 <div className="flex items-center gap-2"><Mail size={14} className="text-white/30" /><a href={`mailto:${SITE.email}`} className="hover:text-white transition">{SITE.email}</a></div>
               </div>
               {/* Brand logos */}
