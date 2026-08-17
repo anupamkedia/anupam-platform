@@ -63,11 +63,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* Bottom */}
-        <div className="p-4 border-t border-brand-400/30">
-          <Link href="/" className="flex items-center gap-3 text-brand-200 hover:text-white text-sm transition">
-            <LogOut size={18} />
-            {!collapsed && <span>Back to Website</span>}
+        <div className="p-4 border-t border-brand-400/30 space-y-1">
+          <Link href="/" className="flex items-center gap-3 text-brand-200 hover:text-white text-sm transition py-1">
+            {!collapsed && <span>← Back to Website</span>}
           </Link>
+          <button
+            onClick={async () => {
+              await fetch('/api/admin-auth', { method: 'DELETE' });
+              window.location.href = '/admin-login';
+            }}
+            className="flex items-center gap-3 text-brand-200 hover:text-white text-sm transition w-full py-1"
+          >
+            <LogOut size={18} />
+            {!collapsed && <span>Sign Out</span>}
+          </button>
         </div>
       </aside>
 
