@@ -1,0 +1,24 @@
+  ▲ Next.js 14.2.15
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+Error: supabaseUrl is required.
+    at /Users/anupamkedia/Downloads/anupam-paints/.next/server/chunks/1023.js:24:57870
+    at new r3 (/Users/anupamkedia/Downloads/anupam-paints/.next/server/chunks/1023.js:24:58121)
+    at r6 (/Users/anupamkedia/Downloads/anupam-paints/.next/server/chunks/1023.js:24:62648)
+    at 52557 (/Users/anupamkedia/Downloads/anupam-paints/.next/server/app/api/whatsapp/route.js:1:2046)
+    at t (/Users/anupamkedia/Downloads/anupam-paints/.next/server/webpack-runtime.js:1:127)
+    at 95660 (/Users/anupamkedia/Downloads/anupam-paints/.next/server/app/api/whatsapp/route.js:1:505)
+    at t (/Users/anupamkedia/Downloads/anupam-paints/.next/server/webpack-runtime.js:1:127)
+    at t (/Users/anupamkedia/Downloads/anupam-paints/.next/server/app/api/whatsapp/route.js:1:2115)
+    at /Users/anupamkedia/Downloads/anupam-paints/.next/server/app/api/whatsapp/route.js:1:2153
+    at t.X (/Users/anupamkedia/Downloads/anupam-paints/.next/server/webpack-runtime.js:1:1191)
+
+> Build error occurred
+Error: Failed to collect page data for /api/whatsapp
+    at /Users/anupamkedia/Downloads/anupam-paints/node_modules/next/dist/build/utils.js:1268:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  type: 'Error'
+}
