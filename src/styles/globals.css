@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Design Tokens — configurable */
+    --color-navy: #0F1B2D;
+    --color-navy-light: #1A2940;
+    --color-blue: #1E3A5F;
+    --color-red: #C4122F;
+    --color-red-hover: #A30F27;
+    --color-graphite: #2D3436;
+    --color-steel: #636E72;
+    --color-warm-white: #FAFAF8;
+    --color-border: #E8E8E6;
+    --color-teal: #0891B2;
+    /* Division accents */
+    --accent-decorative: #D97706;
+    --accent-industrial: #475569;
+    --accent-specialty: #0891B2;
+    --accent-marine: #1E3A5F;
+    --accent-railway: #991B1B;
+    --accent-waterproofing: #0E7490;
+    --accent-fire: #DC2626;
+    --accent-flooring: #4338CA;
+    /* Typography */
+    --font-display: 'Inter', system-ui, sans-serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    /* Spacing */
+    --space-section: clamp(4rem, 8vw, 7rem);
+    --space-content: clamp(1rem, 3vw, 2rem);
+    --max-width: 1280px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  * { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-graphite);
+    background: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-navy);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* Layout */
+  .container-wide { @apply max-w-[1280px] mx-auto px-5 md:px-8; }
+  .section-padding { padding: var(--space-section) 0; }
+
+  /* Typography Scale */
+  .text-hero { @apply text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-[1.08] tracking-tight; }
+  .text-page-title { @apply text-[clamp(2rem,4vw,3rem)] font-bold leading-tight; }
+  .text-section-heading { @apply text-[clamp(1.5rem,3vw,2rem)] font-bold; }
+  .text-card-heading { @apply text-lg font-semibold; }
+  .text-body { @apply text-base leading-relaxed; font-family: var(--font-body); }
+  .text-caption { @apply text-sm text-[var(--color-steel)]; }
+  .text-label { @apply text-xs font-semibold uppercase tracking-wider text-[var(--color-steel)]; }
+  .text-data { @apply text-3xl font-extrabold; font-family: var(--font-display); }
+  .text-technical { @apply text-sm font-mono; }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 transition-all duration-200;
+    background: var(--color-red);
+    color: white;
+    border-radius: var(--radius-md);
+  }
+  .btn-primary:hover { background: var(--color-red-hover); }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 transition-all duration-200;
+    background: var(--color-navy);
+    color: white;
+    border-radius: var(--radius-md);
+  }
+  .btn-secondary:hover { background: var(--color-navy-light); }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 border-2 transition-all duration-200;
+    border-color: var(--color-navy);
+    color: var(--color-navy);
+    border-radius: var(--radius-md);
+  }
+  .btn-outline:hover { background: var(--color-navy); color: white; }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 font-medium px-4 py-2 text-sm transition-all duration-200;
+    color: var(--color-navy);
+  }
+  .btn-ghost:hover { background: #f0f0ee; border-radius: var(--radius-md); }
+
+  .btn-white {
+    @apply inline-flex items-center justify-center gap-2 bg-white font-semibold px-6 py-3 transition-all duration-200;
+    color: var(--color-navy);
+    border-radius: var(--radius-md);
+  }
+  .btn-white:hover { background: #f5f5f3; }
+
+  /* Cards */
+  .card {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+  .card-hover:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+
+  /* Badges */
+  .badge { @apply inline-flex items-center px-2.5 py-0.5 text-xs font-medium; border-radius: var(--radius-sm); }
+  .badge-navy { @apply badge; background: #EBF0F5; color: var(--color-navy); }
+  .badge-red { @apply badge; background: #FEE; color: var(--color-red); }
+  .badge-teal { @apply badge; background: #E0F7FA; color: var(--color-teal); }
+
+  /* Form */
+  .input-field {
+    @apply w-full px-4 py-3 text-sm outline-none transition;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: white;
+  }
+  .input-field:focus {
+    border-color: var(--color-navy);
+    box-shadow: 0 0 0 3px rgba(15,27,45,0.06);
+  }
+
+  /* Data strip */
+  .data-strip {
+    @apply flex items-center gap-2 py-2 border-b;
+    border-color: var(--color-border);
+  }
+  .data-strip:last-child { border-bottom: none; }
+
+  /* Trust bar */
+  .trust-bar {
+    @apply flex items-center gap-8 py-3 text-sm font-medium;
+    color: var(--color-steel);
+  }
+
+  /* Divider */
+  .section-divider {
+    @apply w-16 h-1 mb-6;
+    background: var(--color-red);
+  }
+}
+
+/* WhatsApp button — minimal */
+.whatsapp-btn {
+  @apply fixed bottom-6 right-6 z-50 bg-green-600 text-white p-3.5 shadow-lg transition-all duration-300;
+  border-radius: var(--radius-lg);
+}
+.whatsapp-btn:hover { @apply bg-green-700 shadow-xl; transform: scale(1.05); }
+
+/* Subtle reveal animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeUp { animation: fadeUp 0.6s ease forwards; }
+
+/* Counter animation placeholder */
+@keyframes countUp {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Backward compatibility — old classes used by existing pages */
+@layer components {
+  .section-title { @apply text-section-heading; color: var(--color-navy); }
+  .section-subtitle { @apply text-caption max-w-2xl leading-relaxed; }
+  .gradient-brand { background: var(--color-navy); color: white; }
+  .gradient-light { background: var(--color-warm-white); }
+  .gradient-warm { background: linear-gradient(135deg, #FFF7ED, #FFFBEB, #FEF3C7); }
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 transition-all duration-200;
+    background: var(--color-red);
+    color: white;
+    border-radius: var(--radius-md);
+  }
+  .btn-accent:hover { background: var(--color-red-hover); }
+  .badge-blue { @apply badge; background: #EBF0F5; color: var(--color-navy); }
+  .badge-green { @apply badge; background: #ECFDF5; color: #065F46; }
+  .badge-orange { @apply badge; background: #FFF7ED; color: #9A3412; }
+  .card-glass { @apply bg-white/90 backdrop-blur-sm border border-gray-200 overflow-hidden; border-radius: var(--radius-lg); }
+  .container-wide { @apply max-w-[1280px] mx-auto px-5 md:px-8; }
+}
+
+/* Brand color compatibility for internal pages */
+@layer utilities {
+  .text-brand-500 { color: var(--color-navy); }
+  .text-brand-200 { color: rgba(255,255,255,0.5); }
+  .text-brand-300 { color: rgba(255,255,255,0.4); }
+  .text-brand-100 { color: rgba(255,255,255,0.7); }
+  .bg-brand-500 { background: var(--color-navy); }
+  .bg-brand-50 { background: #EBF0F5; }
+  .bg-brand-100 { background: #D6E1ED; }
+  .border-brand-200 { border-color: #B3C7DB; }
+  .text-accent-400 { color: var(--color-red); }
+  .text-steel-400 { color: var(--color-steel); }
+  .hover\:text-brand-500:hover { color: var(--color-navy); }
+  .hover\:bg-brand-50:hover { background: #EBF0F5; }
+  .hover\:border-brand-200:hover { border-color: #B3C7DB; }
+  .border-brand-400\/30 { border-color: rgba(30,58,95,0.3); }
+}
