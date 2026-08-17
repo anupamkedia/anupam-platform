@@ -118,12 +118,12 @@ export function getProductImage(code?: string, slug?: string, name?: string): st
 }
 
 export const brandLogos: Record<string, string> = {
-  'azura': '/img/logos/azura.jpg',
+  'azura': '/img/logos/azura.png',
   'asure': '/img/logos/asure.png',
-  'anex': '/img/logos/anex.jpg',
+  'anex': '/img/logos/anex.png',
   'atop': '/img/logos/atop.png',
   'amaje': '/img/logos/amaje.png',
-  'arest': '/img/logos/arest.jpg',
+  'arest': '/img/logos/arest.png',
 };
 
 export function getBrandLogo(brandSlug?: string): string | null {

@@ -44,7 +44,7 @@ export default function HomePaintingPage() {
       <section className="bg-white py-6 border-b border-gray-100">
         <div className="container-wide px-4 flex items-center justify-center gap-8 overflow-x-auto">
           {['azura', 'asure', 'anex', 'atop', 'amaje', 'arest'].map(brand => (
-            <img key={brand} src={`/img/logos/${brand}.${brand === 'asure' || brand === 'atop' || brand === 'amaje' ? 'png' : 'jpg'}`}
+            <img key={brand} src={`/img/logos/${brand}.${'png'}`}
               alt={brand} className="h-10 md:h-14 w-auto opacity-80 hover:opacity-100 transition" />
           ))}
         </div>
