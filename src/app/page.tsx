@@ -136,7 +136,7 @@ export default function HomePage() {
         </div>
         {/* Slide indicators */}
         <div className="absolute bottom-8 left-0 right-0 z-10">
-          <div className="container-wide flex gap-6">
+          <div className="container-wide flex gap-3 overflow-x-auto no-scrollbar no-scrollbar">
             {heroSlides.map((slide, i) => (
               <button key={i} onClick={() => setHeroIdx(i)} className={`text-xs font-medium transition-all ${i === heroIdx ? 'text-white' : 'text-white/30 hover:text-white/50'}`}>
                 <div className={`w-8 h-[2px] mb-2 transition-all ${i === heroIdx ? 'bg-[var(--color-red)]' : 'bg-white/20'}`} />

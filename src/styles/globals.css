@@ -219,3 +219,4 @@
   .hover\:border-brand-200:hover { border-color: #B3C7DB; }
   .border-brand-400\/30 { border-color: rgba(30,58,95,0.3); }
 }
+html, body { overflow-x: hidden; }
