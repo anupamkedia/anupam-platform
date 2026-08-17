@@ -70,6 +70,7 @@ const megaMenu: Record<string, { cols: { title: string; items: { label: string; 
         { label: 'Coating System Selector', href: '/#solution-finder' },
         { label: 'Paint Calculator', href: '/calculator' },
         { label: 'Find Anupam Equivalent', href: '/find-equivalent' },
+        { label: 'Downloads', href: '/downloads' },
       ]},
       { title: 'Innovation', items: [
         { label: 'Carbon Nano-Struct Technology', href: '/infrastructure' },
@@ -122,6 +123,9 @@ const navItems = [
   { label: 'Home Painting', href: '/home-painting', mega: 'Home Painting' },
   { label: 'Technical Centre', href: '/technical-library', mega: 'Technical Centre' },
   { label: 'Company', href: '/about', mega: 'Company' },
+  { label: 'Brands', href: '/brands' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Dealership', href: '/dealership' },
   { label: 'Contact', href: '/contact' },
 ];
 
