@@ -126,6 +126,7 @@ const navItems = [
   { label: 'Brands', href: '/brands' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Dealership', href: '/dealership' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
 ];
 
