@@ -143,11 +143,11 @@ export default function HomePage() {
 
       {/* THREE DIVISIONS — Full-width editorial */}
       <section className="bg-white">
-        <div className="container-wide py-20">
-          <div className="w-12 h-[2px] bg-[var(--color-red)] mb-5" />
+        <div className="container-wide py-20 text-center">
+          <div className="w-12 h-[2px] bg-[var(--color-red)] mb-5 mx-auto" />
           <div className="text-label mb-3" style={{color:'var(--color-red)'}}>Our Coating Divisions</div>
-          <h2 className="text-page-title mb-4" style={{maxWidth:'700px'}}>One Manufacturer.<br />Three Very Different Worlds.</h2>
-          <p className="text-[var(--color-steel)] text-lg max-w-xl">From the walls of your home to the hull of a naval vessel — every division is engineered with the same manufacturing discipline.</p>
+          <h2 className="text-page-title mb-4 mx-auto" style={{maxWidth:'700px'}}>One Manufacturer.<br />Three Very Different Worlds.</h2>
+          <p className="text-[var(--color-steel)] text-lg max-w-xl mx-auto">From the walls of your home to the hull of a naval vessel — every division is engineered with the same manufacturing discipline.</p>
         </div>
         {[
           { name: 'Decorative & Architectural', sub: 'Colour, durability and protection for the places people live and work.', img: '/img/divisions/div-decorative.jpg', link: '/products/decorative', tags: ['Interior Emulsions', 'Exterior Emulsions', 'Waterproofing', 'Primers', 'Enamels', 'Textures'], accent: 'var(--accent-decorative)' },
