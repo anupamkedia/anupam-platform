@@ -120,7 +120,7 @@ export default function HomePage() {
       {/* SCALE OF ANUPAM */}
       <section className="bg-[var(--color-navy)] border-t border-white/5 py-16">
         <div className="container-wide">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-center justify-items-center">
             {scaleData.map((item) => (
               <div key={item.label}>
                 <div className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">{item.value}</div>
