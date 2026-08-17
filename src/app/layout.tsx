@@ -28,6 +28,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <WhatsAppButton />
             <ExitIntent />
+      
+        <script dangerouslySetInnerHTML={{__html: `
+          document.addEventListener('contextmenu', function(e) {
+            if (!e.target.closest('a[href$=".pdf"]') && !e.target.closest('.allow-context')) {
+              e.preventDefault();
+            }
+          });
+          document.addEventListener('dragstart', function(e) {
+            if (e.target.tagName === 'IMG') e.preventDefault();
+          });
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u')) {
+              e.preventDefault();
+            }
+          });
+        `}} />
       </body>
     </html>
   );
