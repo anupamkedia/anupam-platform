@@ -181,7 +181,7 @@ export default function Header() {
 
                 {item.mega && activeMega === item.mega && megaMenu[item.mega] && (
                   <div className="absolute top-full left-0 pt-2 z-50" onMouseEnter={() => openMega(item.mega!)} onMouseLeave={closeMega}>
-                    <div className="bg-white shadow-xl border border-[var(--color-border)] p-6" style={{borderRadius:'var(--radius-lg)', minWidth: megaMenu[item.mega].cols.length > 2 ? '640px' : '420px'}}>
+                    <div className="bg-white shadow-xl border border-[var(--color-border)] p-6" style={{borderRadius:'var(--radius-lg)', maxWidth: '90vw', minWidth: megaMenu[item.mega].cols.length > 2 ? '580px' : '380px'}}>
                       <div className={`grid gap-8 ${megaMenu[item.mega].cols.length > 2 ? 'grid-cols-3' : 'grid-cols-2'}`}>
                         {megaMenu[item.mega].cols.map((col, ci) => (
                           <div key={ci}>
