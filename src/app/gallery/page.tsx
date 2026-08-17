@@ -46,7 +46,7 @@ export default function GalleryPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/app/railway/rly-workshop.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/heroes/hero-gallery.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="container-wide py-16 md:py-24 relative z-10">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />

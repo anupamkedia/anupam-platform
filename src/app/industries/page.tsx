@@ -24,7 +24,7 @@ export default function IndustriesPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/heroes/factory-aerial.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/heroes/hero-industries.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/85" />
         <div className="container-wide py-20 md:py-28 relative z-10">
           <div className="w-12 h-1 bg-[var(--color-red)] mb-6" />
