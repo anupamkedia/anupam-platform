@@ -59,7 +59,7 @@ export default function Footer() {
               <div className="flex flex-wrap gap-2 mt-6">
                 {['azura','asure','anex','atop','amaje','arest'].map(brand => (
                   <img key={brand} src={`/img/logos/${brand}.${brand==='asure'||brand==='atop'||brand==='amaje'?'png':'jpg'}`}
-                    alt={brand} className="h-6 w-auto bg-white/10 rounded px-1.5 py-0.5 opacity-60 hover:opacity-100 transition" />
+                    alt={brand} className="h-8 w-auto opacity-70 hover:opacity-100 transition" />
                 ))}
               </div>
             </div>

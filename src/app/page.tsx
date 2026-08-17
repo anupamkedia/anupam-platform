@@ -98,7 +98,7 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════ */}
 
       {/* HERO */}
-      <section className="relative h-screen flex items-center overflow-hidden bg-[var(--color-navy)]">
+      <section className="relative min-h-[80vh] md:h-screen flex items-center overflow-hidden bg-[var(--color-navy)]">
         <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-30"><source src="/video/hero.mp4" type="video/mp4" /></video>
         <div className="absolute inset-0 bg-[var(--color-navy)]/50" />
         <div className="container-wide relative z-10">
@@ -138,7 +138,7 @@ export default function HomePage() {
       {/* BRAND LOGOS */}
       <section className="py-6" style={{background:'#F5F2ED',borderTop:'1px solid #E8E5E0',borderBottom:'1px solid #E8E5E0'}}>
         <div className="container-wide">
-          <img src="/img/heroes/brands-collage.png" alt="Anupam Paints Brands" className="w-full h-auto" style={{borderRadius:'var(--radius-md)'}} />
+          <img src="/img/heroes/brands-collage.png" alt="Anupam Paints Brands" className="w-full h-auto max-w-full" style={{borderRadius:'var(--radius-md)'}} />
         </div>
       </section>
 
@@ -153,11 +153,11 @@ export default function HomePage() {
           { name: 'Industrial & Protective', sub: 'Engineered coating systems for corrosion, chemicals, weathering and demanding service.', img: '/img/divisions/div-industrial.png', link: '/products/industrial', tags: ['Epoxy', 'PU', 'Zinc-Rich', 'MIO', 'Heat Resistant', 'Tank Linings'], accent: 'var(--accent-industrial)' },
           { name: 'Advanced & Critical Coatings', sub: 'Specialised coatings for assets where ordinary paint is not enough.', img: '/img/divisions/div-specialty.png', link: '/products/specialty', tags: ['Railway', 'Marine', 'Fire Protection', 'Potable Water', 'Thermal', 'Advanced'], accent: 'var(--accent-specialty)' },
         ].map((div, i) => (
-          <div key={div.name} className={`grid grid-cols-1 lg:grid-cols-2 min-h-[450px] ${i % 2 === 1 ? 'lg:direction-rtl' : ''}`}>
+          <div key={div.name} className={`grid grid-cols-1 lg:grid-cols-2 min-h-[300px] md:min-h-[450px] ${i % 2 === 1 ? 'lg:direction-rtl' : ''}`}>
             <div className={`relative overflow-hidden ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-              <img src={div.img} alt={div.name} className="w-full h-full object-cover min-h-[350px]" />
+              <img src={div.img} alt={div.name} className="w-full h-full object-cover min-h-[250px] md:min-h-[350px]" />
             </div>
-            <div className={`p-10 md:p-16 flex flex-col justify-center ${i % 2 === 1 ? 'lg:order-1' : ''}`} style={{background: i === 0 ? '#FDF8F4' : i === 1 ? '#F5F6F8' : '#F0FAFB'}}>
+            <div className={`p-6 md:p-16 flex flex-col justify-center ${i % 2 === 1 ? 'lg:order-1' : ''}`} style={{background: i === 0 ? '#FDF8F4' : i === 1 ? '#F5F6F8' : '#F0FAFB'}}>
               <div className="w-10 h-[2px] mb-6" style={{background: div.accent}} />
               <h3 className="text-section-heading mb-3">{div.name}</h3>
               <p className="text-[var(--color-steel)] leading-relaxed mb-6">{div.sub}</p>
@@ -324,11 +324,11 @@ export default function HomePage() {
       </section>
 
       {/* HOME PAINTING — Premium consumer section */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[500px]">
+      <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[300px] md:min-h-[500px]">
         <div className="relative overflow-hidden">
-          <img src="/img/divisions/div-decorative.png" alt="Premium interior" className="w-full h-full object-cover min-h-[400px]" />
+          <img src="/img/divisions/div-decorative.png" alt="Premium interior" className="w-full h-full object-cover min-h-[250px] md:min-h-[400px]" />
         </div>
-        <div className="p-10 md:p-16 flex flex-col justify-center" style={{background:'linear-gradient(135deg, #FDF8F4 0%, #FAF0E6 100%)'}}>
+        <div className="p-6 md:p-16 flex flex-col justify-center" style={{background:'linear-gradient(135deg, #FDF8F4 0%, #FAF0E6 100%)'}}>
           <div className="w-10 h-[2px] mb-6" style={{background:'var(--accent-decorative)'}} />
           <span className="text-xs font-semibold uppercase tracking-wider mb-2" style={{color:'var(--accent-decorative)'}}>For Homeowners</span>
           <h2 className="text-page-title mb-4">Your Home Deserves More Than a Colour.</h2>

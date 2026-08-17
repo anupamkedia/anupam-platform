@@ -166,7 +166,7 @@ export default function Header() {
       <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'border-b border-[var(--color-border)]'}`}>
         <div className="container-wide flex items-center justify-between h-[60px] md:h-[68px]">
           <Link href="/" className="shrink-0">
-            <img src="/img/logos/anupam-paints-logo.png" alt="Anupam Paints" className="h-9 md:h-11 w-auto" />
+            <img src="/img/logos/anupam-paints-logo.png" alt="Anupam Paints" className="h-8 md:h-11 w-auto" />
           </Link>
 
           <nav className="hidden xl:flex items-center gap-0.5">
@@ -226,7 +226,7 @@ export default function Header() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="xl:hidden bg-white border-t border-[var(--color-border)] max-h-[80vh] overflow-y-auto">
+          <div className="xl:hidden bg-white pb-safe border-t border-[var(--color-border)] max-h-[80vh] overflow-y-auto">
             {navItems.map((item) => (
               <Link key={item.label} href={item.href} onClick={() => setMobileOpen(false)}
                 className="block px-6 py-3 text-[var(--color-graphite)] font-medium border-b border-[var(--color-border)] text-sm">{item.label}</Link>

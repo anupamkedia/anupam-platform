@@ -219,3 +219,21 @@
   .hover\:border-brand-200:hover { border-color: #B3C7DB; }
   .border-brand-400\/30 { border-color: rgba(30,58,95,0.3); }
 }
+
+/* Mobile fixes */
+@media (max-width: 768px) {
+  .text-page-title { font-size: 1.75rem !important; }
+  .text-section-heading { font-size: 1.25rem !important; }
+  .text-hero { font-size: 2rem !important; }
+  .container-wide { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .section-padding { padding-top: 3rem; padding-bottom: 3rem; }
+  h1 { font-size: 1.75rem !important; line-height: 1.2 !important; }
+  .h-screen { min-height: 80vh; height: auto; }
+  .text-\[clamp\(2\.5rem\,6vw\,5rem\)\] { font-size: 2rem !important; }
+}
+
+/* Prevent any horizontal overflow */
+html, body { overflow-x: hidden !important; max-width: 100vw !important; }
+main { overflow-x: hidden !important; }
+section { max-width: 100vw; overflow-x: clip; }
+img { max-width: 100%; height: auto; }
