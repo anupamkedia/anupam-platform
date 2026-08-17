@@ -149,7 +149,7 @@ export default function HomePage() {
               <div key={brand.name} className="text-center">
                 <img src={`/img/logos/${brand.name.toLowerCase()}.${brand.name === 'Asure' ? 'png' : 'jpg'}`} alt={brand.name} className="h-8 mx-auto mb-3" />
                 <div className="flex gap-2 justify-center">
-                  {brand.shots.map(s => <img key={s} src={`/img/products/${s}`} alt="" className="h-20 w-auto object-contain bg-white p-1.5 border border-gray-200" style={{borderRadius:'var(--radius-md)'}} />)}
+                  {brand.shots.map(s => <img key={s} src={`/img/products/${s}`} alt="" className="h-32 w-auto object-contain bg-white p-3 border border-gray-200 shadow-sm" style={{borderRadius:'var(--radius-md)'}} />)}
                 </div>
               </div>
             ))}
