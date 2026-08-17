@@ -7,20 +7,7 @@ import { ArrowRight, ChevronRight, Shield, Phone, Mail, Upload, MessageSquare } 
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
-const heroSlides = [
-  { img: '/img/divisions/div-decorative.png', label: 'Homes & Interiors' },
-  { img: '/img/heroes/structural-steel.png', label: 'Structural Steel' },
-  { img: '/img/heroes/railway-coach.png', label: 'Indian Railways' },
-  { img: '/img/heroes/naval-vessel.png', label: 'Naval Defence' },
-  { img: '/img/heroes/factory-aerial.png', label: 'Manufacturing' },
-  { img: '/img/solutions/sol-realestate.png', label: 'Architecture' },
-  { img: '/img/solutions/sol-structural.png', label: 'Bridges' },
-  { img: '/img/solutions/sol-oilgas.png', label: 'Oil \u0026 Gas' },
-  { img: '/img/solutions/sol-flooring.png', label: 'Industrial Flooring' },
-  { img: '/img/heroes/hero-lab.png', label: 'Quality Control' },
-  { img: '/img/heroes/hero-factory-inside.png', label: 'Production' },
-  { img: '/img/heroes/paint-pouring.png', label: 'Colours' },
-];
+const heroSlides: any[] = [];
 
 const scaleData = [
   { value: '1972', label: 'Established' },
@@ -69,8 +56,7 @@ export default function HomePage() {
 
   useEffect(() => {
     supabase.from('approvals').select('*').eq('is_active', true).order('sort_order').limit(10).then(r => setApprovals(r.data || []));
-    const interval = setInterval(() => setHeroIdx(i => (i + 1) % heroSlides.length), 4000);
-    return () => clearInterval(interval);
+    // video hero
   }, []);
 
   const assets = ['Structural Steel', 'Railway Asset', 'Ship / Marine', 'Roof', 'Floor', 'Tank', 'Pipeline', 'Interior Wall', 'Exterior Wall', 'Equipment', 'Concrete'];
@@ -111,16 +97,10 @@ export default function HomePage() {
       {/* CHAPTER 1 — WHO WE ARE */}
       {/* ═══════════════════════════════════════════ */}
 
-      {/* HERO — Cinematic cross-fade */}
+      {/* HERO */}
       <section className="relative h-screen flex items-center overflow-hidden bg-[var(--color-navy)]">
         <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-30"><source src="/video/hero.mp4" type="video/mp4" /></video>
         <div className="absolute inset-0 bg-[var(--color-navy)]/50" />
-        {heroSlides.map((slide, i) => (
-          <div key={i} className={`absolute inset-0 transition-opacity duration-[2000ms] ${i === heroIdx ? 'opacity-100' : 'opacity-0'}`}>
-            <img src={slide.img} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[var(--color-navy)]/60" />
-          </div>
-        ))}
         <div className="container-wide relative z-10">
           <div className="max-w-3xl">
             <div className="w-16 h-[2px] bg-[var(--color-red)] mb-10" />
@@ -134,17 +114,6 @@ export default function HomePage() {
               <Link href="/solutions" className="bg-[var(--color-red)] text-white font-semibold px-7 py-3.5 hover:bg-[var(--color-red-hover)] transition inline-flex items-center gap-2" style={{borderRadius:'var(--radius-md)'}}>Explore Our World</Link>
               <Link href="/contact" className="text-white/70 font-medium px-4 py-3.5 hover:text-white transition inline-flex items-center gap-2">Talk to a Coating Specialist <ArrowRight size={16} /></Link>
             </div>
-          </div>
-        </div>
-        {/* Slide indicators */}
-        <div className="absolute bottom-8 left-0 right-0 z-10">
-          <div className="container-wide flex gap-6">
-            {heroSlides.map((slide, i) => (
-              <button key={i} onClick={() => setHeroIdx(i)} className={`text-xs font-medium transition-all ${i === heroIdx ? 'text-white' : 'text-white/30 hover:text-white/50'}`}>
-                <div className={`w-8 h-[2px] mb-2 transition-all ${i === heroIdx ? 'bg-[var(--color-red)]' : 'bg-white/20'}`} />
-                {slide.label}
-              </button>
-            ))}
           </div>
         </div>
       </section>

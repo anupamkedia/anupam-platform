@@ -84,6 +84,13 @@ export default function Footer() {
             ))}
           </div>
         </div>
+        {/* Social */}
+        <div className="border-t border-white/10 py-4">
+          <div className="container-wide flex items-center justify-center gap-6">
+            <a href="https://www.facebook.com/anupampaintsandcoatings" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition text-sm">Facebook</a>
+            <a href="https://www.linkedin.com/company/anupam-paints-and-coatings/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition text-sm">LinkedIn</a>
+          </div>
+        </div>
         {/* Copyright */}
         <div className="border-t border-white/10 py-4">
           <div className="container-wide flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-white/30">
