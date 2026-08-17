@@ -46,8 +46,8 @@ export default function ProductsPage() {
         <div className="py-16 md:py-24 relative z-10">
         <div className="container-wide">
           <div className="section-divider !bg-[var(--color-red)] !mb-6" />
-          <h1 className="text-page-title text-white mb-3">Our Product Range</h1>
-          <p className="text-white/50 max-w-2xl">From premium decorative finishes to high-performance industrial coatings — a complete range from a single manufacturer with 50+ years of formulation expertise.</p>
+          <h1 className="text-page-title mb-3" style={{color:"white"}}>Our Product Range</h1>
+          <p style={{color:"rgba(255,255,255,0.5)"}} max-w-2xl">From premium decorative finishes to high-performance industrial coatings — a complete range from a single manufacturer with 50+ years of formulation expertise.</p>
         </div>
       </div></section>
 
