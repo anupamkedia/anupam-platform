@@ -60,7 +60,7 @@ export default function AboutPage() {
       </section>
 
       {/* Chairman's Message */}
-      <section className="section-padding bg-white">
+      <section id="leadership" className="section-padding bg-white">
         <div className="container-wide max-w-3xl">
           <div className="w-10 h-[2px] bg-[var(--color-red)] mb-6" />
           <h2 className="text-section-heading mb-8">Chairman&apos;s Message</h2>

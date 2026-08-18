@@ -103,7 +103,7 @@ const megaMenu: Record<string, { cols: { title: string; items: { label: string; 
       { title: 'About', items: [
         { label: 'Our Story', href: '/about' },
         { label: 'Manufacturing', href: '/infrastructure' },
-        { label: 'Leadership Team', href: '/about' },
+        { label: 'Leadership Team', href: '/about#leadership' },
         { label: 'Approvals & Certificates', href: '/approvals' },
       ]},
       { title: 'Partnerships', items: [
