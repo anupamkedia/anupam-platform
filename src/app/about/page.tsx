@@ -83,6 +83,35 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Leadership Team */}
+      <section id="leadership-team" className="section-padding" style={{background:'var(--color-warm-white)'}}>
+        <div className="container-wide">
+          <div className="w-10 h-[2px] bg-[var(--color-red)] mb-6" />
+          <h2 className="text-section-heading mb-3">Leadership Team</h2>
+          <p className="text-[var(--color-steel)] max-w-xl mb-10">The partners who guide Anupam Enterprises' manufacturing, technical, and business direction.</p>
+          <div className="mb-10">
+            <img src="/img/heroes/leadership-team.png" alt="Anupam Paints Leadership Team" className="w-full h-auto" style={{borderRadius:'var(--radius-lg)'}} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="card p-6" style={{borderTop:'3px solid var(--color-red)'}}>
+              <h3 className="font-bold text-[var(--color-navy)] mb-1">Manmohan Kedia</h3>
+              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Partner</p>
+              <p className="text-sm text-[var(--color-steel)] leading-relaxed">Guides the company's manufacturing operations and long-standing institutional relationships built over decades.</p>
+            </div>
+            <div className="card p-6" style={{borderTop:'3px solid var(--color-red)'}}>
+              <h3 className="font-bold text-[var(--color-navy)] mb-1">Anupam Kedia</h3>
+              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Managing Director</p>
+              <p className="text-sm text-[var(--color-steel)] leading-relaxed">Leads the company's strategic direction, technical development, and expansion into new industrial and infrastructure sectors.</p>
+            </div>
+            <div className="card p-6" style={{borderTop:'3px solid var(--color-red)'}}>
+              <h3 className="font-bold text-[var(--color-navy)] mb-1">Nirupam Kedia</h3>
+              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Partner</p>
+              <p className="text-sm text-[var(--color-steel)] leading-relaxed">Oversees business development and supply chain, strengthening Anupam's presence across new markets and channels.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Mission & Vision */}
       <section className="section-padding" style={{background:'#F0F4F8'}}>
         <div className="container-wide">
