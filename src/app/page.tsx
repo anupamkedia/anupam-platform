@@ -154,7 +154,7 @@ export default function HomePage() {
           { name: 'Industrial & Protective', sub: 'Engineered coating systems for corrosion, chemicals, weathering and demanding service.', img: '/img/divisions/div-industrial.jpg', link: '/products/industrial', tags: ['Epoxy', 'PU', 'Zinc-Rich', 'MIO', 'Heat Resistant', 'Tank Linings'], accent: 'var(--accent-industrial)' },
           { name: 'Advanced & Critical Coatings', sub: 'Specialised coatings for assets where ordinary paint is not enough.', img: '/img/divisions/div-specialty.jpg', link: '/products/specialty', tags: ['Railway', 'Marine', 'Fire Protection', 'Potable Water', 'Thermal', 'Advanced'], accent: 'var(--accent-specialty)' },
         ].map((div, i) => (
-          <div key={div.name} className={`grid grid-cols-1 lg:grid-cols-2 min-h-[300px] md:min-h-[450px] ${i % 2 === 1 ? 'lg:direction-rtl' : ''}`}>
+          <div key={div.name} className={`grid grid-cols-1 lg:grid-cols-2 min-h-[300px] md:min-h-[280px] md:min-h-[450px] ${i % 2 === 1 ? 'lg:direction-rtl' : ''}`}>
             <div className={`relative overflow-hidden ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
               <img src={div.img} alt={div.name} className="w-full h-full object-cover min-h-[250px] md:min-h-[350px]" />
             </div>
