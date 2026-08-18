@@ -95,18 +95,18 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="card p-6" style={{borderTop:'3px solid var(--color-red)'}}>
               <h3 className="font-bold text-[var(--color-navy)] mb-1">Manmohan Kedia</h3>
-              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Partner</p>
-              <p className="text-sm text-[var(--color-steel)] leading-relaxed">Guides the company's manufacturing operations and long-standing institutional relationships built over decades.</p>
+              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Chairman</p>
+              <p className="text-sm text-[var(--color-steel)] leading-relaxed">With over five decades of experience in the paints and coatings industry, Manmohan Kedia has been the guiding force behind Anupam Paints' journey and evolution. His deep industry knowledge, long-term vision and emphasis on quality have helped build the company's strong foundation and reputation. He continues to provide strategic direction and mentorship to the leadership team. His focus remains on sustainable growth, strong customer relationships and preserving the values on which Anupam Paints was built.</p>
             </div>
             <div className="card p-6" style={{borderTop:'3px solid var(--color-red)'}}>
               <h3 className="font-bold text-[var(--color-navy)] mb-1">Anupam Kedia</h3>
-              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Managing Director</p>
-              <p className="text-sm text-[var(--color-steel)] leading-relaxed">Leads the company's strategic direction, technical development, and expansion into new industrial and infrastructure sectors.</p>
+              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Director</p>
+              <p className="text-sm text-[var(--color-steel)] leading-relaxed">Anupam Kedia spearheads Marketing, Finance and the overall growth strategy of Anupam Paints. He plays a key role in expanding the company's presence across industrial, infrastructure, railway, marine, defence and decorative coating segments while developing new markets and strategic customer relationships. He also leads financial planning, business development and new growth initiatives for the organisation. His focus is on transforming Anupam Paints into a stronger, more innovative and nationally recognised coatings company.</p>
             </div>
             <div className="card p-6" style={{borderTop:'3px solid var(--color-red)'}}>
               <h3 className="font-bold text-[var(--color-navy)] mb-1">Nirupam Kedia</h3>
-              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Partner</p>
-              <p className="text-sm text-[var(--color-steel)] leading-relaxed">Oversees business development and supply chain, strengthening Anupam's presence across new markets and channels.</p>
+              <p className="text-xs text-[var(--color-steel)] uppercase tracking-wider font-semibold mb-3">Director</p>
+              <p className="text-sm text-[var(--color-steel)] leading-relaxed">Nirupam Kedia leads the Technical, Procurement and Manufacturing operations of Anupam Paints. He oversees product development, raw-material sourcing, production systems and the efficient functioning of the company's manufacturing facility. Working closely with the technical and quality teams, he ensures that products consistently meet demanding performance and quality requirements. His focus on process improvement, manufacturing efficiency and technical excellence forms a critical part of Anupam Paints' growth.</p>
             </div>
           </div>
         </div>
