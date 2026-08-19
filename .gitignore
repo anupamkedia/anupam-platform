@@ -1,2 +1,11 @@
 node_modules/
 .next/
+
+# script backups
+*.backup-*
+*.altbackup-*
+*.herobackup-*
+*.bannerbackup-*
+*.mobbackup-*
+*.loginbackup-*
+*.portalbackup-*
