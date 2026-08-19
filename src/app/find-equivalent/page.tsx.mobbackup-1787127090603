@@ -22,11 +22,11 @@ export default function FindEquivalentPage() {
     <>
       <section className="relative overflow-hidden bg-white">
         <img src="/img/heroes/hero-find-equivalent.jpg" alt="Find an Anupam equivalent — matching a competitor product to an Anupam coating" className="w-full h-auto block" />
-        <div className="not-sr-only md:sr-only container-wide px-4 py-6 md:py-0">
+        <div className="sr-only">
         <div className="container-wide max-w-3xl">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
-          <h1 className="text-page-title text-[var(--color-navy)] mb-4">Find an Anupam Equivalent</h1>
-          <p className="text-gray-600 leading-relaxed">Using a competitor product? Tell us the product name, specification, or upload a TDS — our technical team will review and recommend a technically equivalent Anupam coating system within 24 hours.</p>
+          <h1 className="text-page-title text-white mb-4">Find an Anupam Equivalent</h1>
+          <p className="text-white/50 leading-relaxed">Using a competitor product? Tell us the product name, specification, or upload a TDS — our technical team will review and recommend a technically equivalent Anupam coating system within 24 hours.</p>
         </div>
       </div></section>
 
