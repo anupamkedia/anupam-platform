@@ -1,0 +1,675 @@
+======================================================================
+ANUPAM PAINTS — HERO DIAGNOSTIC REPORT
+======================================================================
+files scanned: 135
+
+### 1. PAGES WITH NO IMAGE PATH — first 45 lines of each
+
+----------------------------------------------------------------------
+/dealers
+----------------------------------------------------------------------
+  1 | 'use client';
+  2 | import { useState } from 'react';
+  3 | import { MapPin, Search, Phone, Store, ArrowRight, CheckCircle } from 'lucide-react';
+  4 | import Link from 'next/link';
+  5 | 
+  6 | const dealerBenefits = [
+  7 |   'Attractive dealer margins and credit terms',
+  8 |   'Complete product range — decorative through industrial',
+  9 |   'Marketing support — branding, POS materials, digital assets',
+ 10 |   'Technical training and product knowledge sessions',
+ 11 |   'Dedicated sales representative support',
+ 12 |   'Loyalty programme — Silver, Gold, Platinum, Diamond tiers',
+ 13 |   'Priority access to new product launches',
+ 14 |   'Warranty registration and management tools',
+ 15 | ];
+ 16 | 
+ 17 | export default function DealersPage() {
+ 18 |   const [searchCity, setSearchCity] = useState('');
+ 19 | 
+ 20 |   return (
+ 21 |     <>
+ 22 |       <section className="gradient-brand text-white py-16 md:py-24">
+ 23 |         <div className="container-wide px-4">
+ 24 |           <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">Dealer Network</p>
+ 25 |           <h1 className="text-4xl md:text-5xl font-bold mb-4">Find or Become a Dealer</h1>
+ 26 |           <p className="text-lg text-brand-200 max-w-2xl">Join the Anupam Paints network — backed by 50+ years of manufacturing trust.</p>
+ 27 |         </div>
+ 28 |       </section>
+ 29 | 
+ 30 |       {/* Find a dealer */}
+ 31 |       <section className="section-padding bg-white">
+ 32 |         <div className="container-wide max-w-3xl">
+ 33 |           <h2 className="section-title text-center mb-8">Find a Dealer Near You</h2>
+ 34 |           <div className="card p-6">
+ 35 |             <div className="flex gap-3">
+ 36 |               <input type="text" placeholder="Enter city, state, or PIN code" className="input-field flex-1"
+ 37 |                 value={searchCity} onChange={e => setSearchCity(e.target.value)} />
+ 38 |               <button className="btn-primary"><Search size={18} className="mr-2" /> Search</button>
+ 39 |             </div>
+ 40 |             <div className="mt-6 bg-brand-50 rounded-xl p-8 text-center">
+ 41 |               <MapPin className="mx-auto text-brand-400 mb-2" size={32} />
+ 42 |               <p className="text-sm text-brand-500">[Dealer search results with map will appear here once dealer data is populated]</p>
+ 43 |             </div>
+ 44 |           </div>
+ 45 |         </div>
+... (50 more lines)
+
+----------------------------------------------------------------------
+/calculator
+----------------------------------------------------------------------
+  1 | 'use client';
+  2 | import { useState } from 'react';
+  3 | import { Calculator, ArrowRight } from 'lucide-react';
+  4 | 
+  5 | export default function CalculatorPage() {
+  6 |   const [calcType, setCalcType] = useState<'wall' | 'industrial' | 'roof'>('wall');
+  7 |   const [inputs, setInputs] = useState({ length: '', width: '', height: '', doors: '1', windows: '2', area: '', dft: '', solids: '', coats: '2' });
+  8 |   const [result, setResult] = useState<any>(null);
+  9 | 
+ 10 |   const calculate = () => {
+ 11 |     if (calcType === 'wall') {
+ 12 |       const l = parseFloat(inputs.length) || 0;
+ 13 |       const w = parseFloat(inputs.width) || 0;
+ 14 |       const h = parseFloat(inputs.height) || 0;
+ 15 |       const doors = parseInt(inputs.doors) || 0;
+ 16 |       const windows = parseInt(inputs.windows) || 0;
+ 17 |       const wallArea = 2 * (l + w) * h;
+ 18 |       const deductions = doors * 2.1 + windows * 1.2;
+ 19 |       const paintableArea = wallArea - deductions;
+ 20 |       const coats = parseInt(inputs.coats) || 2;
+ 21 |       const coveragePerLitre = 12; // sq.m per litre per coat
+ 22 |       const litresNeeded = (paintableArea * coats) / coveragePerLitre;
+ 23 |       const primerLitres = paintableArea / 10;
+ 24 |       setResult({ paintableArea: paintableArea.toFixed(1), litresNeeded: Math.ceil(litresNeeded), primerLitres: Math.ceil(primerLitres), coats });
+ 25 |     } else if (calcType === 'industrial') {
+ 26 |       const area = parseFloat(inputs.area) || 0;
+ 27 |       const dft = parseFloat(inputs.dft) || 0;
+ 28 |       const solids = parseFloat(inputs.solids) || 50;
+ 29 |       const lossFactor = 1.3;
+ 30 |       const litres = (area * dft * lossFactor) / (solids * 10);
+ 31 |       setResult({ area, dft, litresNeeded: Math.ceil(litres), lossFactor: '30%' });
+ 32 |     } else {
+ 33 |       const area = parseFloat(inputs.area) || 0;
+ 34 |       const coats = parseInt(inputs.coats) || 2;
+ 35 |       const coverage = 3; // sq.m/litre/coat for roof coatings
+ 36 |       const litres = (area * coats) / coverage;
+ 37 |       setResult({ area, litresNeeded: Math.ceil(litres), coats });
+ 38 |     }
+ 39 |   };
+ 40 | 
+ 41 |   return (
+ 42 |     <>
+ 43 |       <section className="gradient-brand text-white py-16 md:py-24">
+ 44 |         <div className="container-wide px-4">
+ 45 |           <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">Tools</p>
+... (108 more lines)
+
+----------------------------------------------------------------------
+/careers
+----------------------------------------------------------------------
+  1 | import { Metadata } from 'next';
+  2 | import { Briefcase, MapPin, Clock, Upload } from 'lucide-react';
+  3 | 
+  4 | export const metadata: Metadata = { title: 'Careers', description: 'Join Anupam Paints — career opportunities in sales, R&D, production, QC, technical service, and marketing.' };
+  5 | 
+  6 | const departments = ['Sales & Marketing', 'Research & Development', 'Production', 'Quality Control', 'Technical Service', 'Accounts & Finance', 'Human Resources', 'Dispatch & Logistics'];
+  7 | 
+  8 | export default function CareersPage() {
+  9 |   return (
+ 10 |     <>
+ 11 |       <section className="gradient-brand text-white py-16 md:py-24">
+ 12 |         <div className="container-wide px-4">
+ 13 |           <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">Careers</p>
+ 14 |           <h1 className="text-4xl md:text-5xl font-bold mb-4">Join Our Team</h1>
+ 15 |           <p className="text-lg text-brand-200 max-w-2xl">Build your career with a 50+ year legacy of manufacturing excellence.</p>
+ 16 |         </div>
+ 17 |       </section>
+ 18 |       <section className="section-padding bg-white">
+ 19 |         <div className="container-wide max-w-4xl">
+ 20 |           <h2 className="section-title text-center mb-8">Departments</h2>
+ 21 |           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+ 22 |             {departments.map((dept) => (
+ 23 |               <div key={dept} className="card p-4 text-center text-sm font-medium text-gray-700">
+ 24 |                 <Briefcase className="mx-auto text-brand-400 mb-2" size={24} />
+ 25 |                 {dept}
+ 26 |               </div>
+ 27 |             ))}
+ 28 |           </div>
+ 29 |           <div className="card p-8 text-center">
+ 30 |             <h3 className="text-xl font-bold text-brand-500 mb-2">Open Positions</h3>
+ 31 |             <p className="text-gray-600 mb-6">Current openings will be listed here. Send your resume for future opportunities.</p>
+ 32 |             <div className="bg-brand-50 rounded-xl p-6">
+ 33 |               <Upload className="mx-auto text-brand-400 mb-2" size={32} />
+ 34 |               <p className="text-sm text-gray-600 mb-4">Send your resume to <strong>hr@anupampaints.com</strong></p>
+ 35 |             </div>
+ 36 |           </div>
+ 37 |         </div>
+ 38 |       </section>
+ 39 |     </>
+ 40 |   );
+ 41 | }
+ 42 | 
+
+----------------------------------------------------------------------
+/approvals
+----------------------------------------------------------------------
+  1 | 'use client';
+  2 | import { useState, useEffect } from 'react';
+  3 | import { createClient } from '@supabase/supabase-js';
+  4 | import { Shield, Download } from 'lucide-react';
+  5 | const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+  6 | 
+  7 | const categoryColors: Record<string, string> = {
+  8 |   'ISO': 'bg-blue-50 text-blue-700 border-blue-200', 'Railway': 'bg-red-50 text-red-700 border-red-200',
+  9 |   'Defence': 'bg-green-50 text-green-700 border-green-200', 'Infrastructure': 'bg-purple-50 text-purple-700 border-purple-200',
+ 10 |   'Energy': 'bg-amber-50 text-amber-700 border-amber-200', 'Green Building': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+ 11 |   'Potable Water': 'bg-cyan-50 text-cyan-700 border-cyan-200', 'Registration': 'bg-gray-50 text-gray-700 border-gray-200',
+ 12 | };
+ 13 | 
+ 14 | export default function ApprovalsPage() {
+ 15 |   const [approvals, setApprovals] = useState<any[]>([]);
+ 16 |   useEffect(() => { supabase.from('approvals').select('*').order('sort_order').then(r => setApprovals(r.data || [])); }, []);
+ 17 |   const categories = Array.from(new Set(approvals.map(a => a.category)));
+ 18 |   return (
+ 19 |     <>
+ 20 |       <section className="bg-[var(--color-navy)] text-white py-16 md:py-24">
+ 21 |         <div className="container-wide px-4">
+ 22 |           <p className="text-white/50 text-sm font-medium mb-2 tracking-wider uppercase">Approvals</p>
+ 23 |           <h1 className="text-4xl md:text-5xl font-bold mb-4">Approvals & Certifications</h1>
+ 24 |           <p className="text-lg text-white/50 max-w-2xl">Trusted and approved by India&apos;s most demanding institutions — Railways, Defence, Energy, and Infrastructure.</p>
+ 25 |         </div>
+ 26 |       </section>
+ 27 |       <section className="section-padding bg-white">
+ 28 |         <div className="container-wide">
+ 29 |           {categories.map((cat) => (
+ 30 |             <div key={cat} className="mb-12 last:mb-0">
+ 31 |               <h2 className="text-2xl font-bold text-[var(--color-navy)] mb-6 flex items-center gap-2"><Shield size={24} /> {cat}</h2>
+ 32 |               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+ 33 |                 {approvals.filter(a => a.category === cat).map((approval) => (
+ 34 |                   <div key={approval.id} className={`rounded-xl border p-5 ${categoryColors[cat] || 'bg-gray-50 text-gray-700 border-gray-200'}`}>
+ 35 |                     <h3 className="font-bold text-lg">{approval.name}</h3>
+ 36 |                     <p className="text-sm opacity-80 mt-1">{approval.description}</p>
+ 37 |                     {approval.reference_number && <p className="text-xs opacity-60 mt-2">Ref: {approval.reference_number}</p>}
+ 38 |                   </div>
+ 39 |                 ))}
+ 40 |               </div>
+ 41 |             </div>
+ 42 |           ))}
+ 43 |         </div>
+ 44 |       </section>
+ 45 |     </>
+... (2 more lines)
+
+### 2. SHARED HERO COMPONENTS
+
+----------------------------------------------------------------------
+src/components/ui/PageHero.tsx
+----------------------------------------------------------------------
+  1 | export default function PageHero({ image, title, subtitle }: { image: string; title: string; subtitle?: string }) {
+  2 |   return (
+  3 |     <section className="relative text-white overflow-hidden">
+  4 |       <img src={image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+  5 |       <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+  6 |       <div className="container-wide py-16 md:py-24 relative z-10">
+  7 |         <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
+  8 |         <h1 className="text-page-title text-white mb-3">{title}</h1>
+  9 |         {subtitle && <p className="text-white/50 max-w-xl">{subtitle}</p>}
+ 10 |       </div>
+ 11 |     </section>
+ 12 |   );
+ 13 | }
+ 14 | 
+
+### 3. SOLUTIONS ROUTE STRUCTURE
+  src/app/solutions/ contains:
+    [dir] [slug]
+          page.tsx
+
+----------------------------------------------------------------------
+src/app/solutions/[slug]/page.tsx   (dynamic route — first 60 lines)
+----------------------------------------------------------------------
+  1 | 'use client';
+  2 | import { useState } from 'react';
+  3 | import Link from 'next/link';
+  4 | import { useParams } from 'next/navigation';
+  5 | import { ArrowRight, Layers, Shield, Clock, Ruler, Paintbrush, ChevronRight, CheckCircle, AlertTriangle, Factory } from 'lucide-react';
+  6 | 
+  7 | type CoatingLayer = {
+  8 |   layer: string;
+  9 |   product: string;
+ 10 |   type: string;
+ 11 |   dft: string;
+ 12 |   coats: string;
+ 13 |   method: string;
+ 14 |   purpose: string;
+ 15 | };
+ 16 | 
+ 17 | type SolutionData = {
+ 18 |   title: string;
+ 19 |   subtitle: string;
+ 20 |   industry: string;
+ 21 |   icon: string;
+ 22 |   heroImage: string;
+ 23 |   description: string;
+ 24 |   surfacePrep: string[];
+ 25 |   totalDFT: string;
+ 26 |   serviceLife: string;
+ 27 |   standards: string[];
+ 28 |   environment: string;
+ 29 |   layers: CoatingLayer[];
+ 30 |   applications: string[];
+ 31 |   whyAnupam: string[];
+ 32 | };
+ 33 | 
+ 34 | const solutionsData: Record<string, SolutionData> = {
+ 35 |   'railway-coaches': {
+ 36 |     title: 'Railway Coach Coating System',
+ 37 |     subtitle: 'RDSO / ICF / CLW Approved',
+ 38 |     industry: 'Railways',
+ 39 |     icon: '🚂',
+ 40 |     heroImage: '/img/heroes/railway-coach.jpg',
+ 41 |     description: 'Complete RDSO and ICF approved coating system for railway coach exteriors, interiors, bogies, and underframes. EN 45545 HL3 fire and smoke compliant products for passenger safety.',
+ 42 |     surfacePrep: ['Blast cleaning to Sa 2.5 (ISO 8501-1)', 'Remove all rust, mill scale, and contaminants', 'Surface profile 40-75 microns', 'Apply primer within 4 hours of blasting'],
+ 43 |     totalDFT: '180-250 microns',
+ 44 |     serviceLife: '10-12 years between repaints',
+ 45 |     standards: ['RDSO Specification', 'ICF Specification', 'EN 45545-2 HL3', 'IS 15927'],
+ 46 |     environment: 'C3-C4 (Atmospheric, all weather zones of India)',
+ 47 |     layers: [
+ 48 |       { layer: 'Primer', product: 'Epoxy Zinc Phosphate Primer (RDSO Approved)', type: 'Two-pack epoxy', dft: '35-50 microns', coats: '1', method: 'Airless spray', purpose: 'Anti-corrosive base protection and adhesion to steel substrate' },
+ 49 |       { layer: 'Intermediate', product: 'Epoxy MIO (Micaceous Iron Oxide)', type: 'Two-pack epoxy MIO', dft: '100-125 microns', coats: '1', method: 'Airless spray', purpose: 'Barrier protection with lamellar MIO pigment structure' },
+ 50 |       { layer: 'Topcoat', product: 'FEVE Fluoropolymer Coach Exterior Coating', type: 'FEVE Fluoropolymer', dft: '30-40 microns', coats: '1', method: 'Airless spray', purpose: 'Superior gloss retention, UV resistance, colour stability for 10+ years' },
+ 51 |     ],
+ 52 |     applications: ['LHB coaches', 'ICF coaches', 'Metro coaches', 'EMU/MEMU coaches', 'Locomotive shells', 'Wagon exteriors'],
+ 53 |     whyAnupam: ['35+ years supplying Indian Railways', 'RDSO, ICF, CLW, DMW, RCF, MCF approved', 'EN 45545 HL3 fire-safe products', 'FEVE technology for 10+ year gloss retention', 'Active supply to all major workshops'],
+ 54 |   },
+ 55 |   'railway-bogies': {
+ 56 |     title: 'Bogie & Underframe Coating System',
+ 57 |     subtitle: 'Heavy-Duty Anti-Corrosion',
+ 58 |     industry: 'Railways',
+ 59 |     icon: '🔧',
+ 60 |     heroImage: '/img/heroes/structural-steel.jpg',
+... (339 more lines)
+
+### 4. FILES CONTAINING THE SOLUTION SLUGS
+
+----------------------------------------------------------------------
+src/app/coating-failures/page.tsx   (133 lines)
+----------------------------------------------------------------------
+  ... showing lines 1-24 around the first "oil-gas" match
+   1 | 'use client';
+   2 | import { useState } from 'react';
+   3 | import Link from 'next/link';
+   4 | import { AlertTriangle, ChevronRight, Camera, Send, CheckCircle } from 'lucide-react';
+   5 | 
+   6 | const failures = [
+   7 |   { id: 'rusting', name: 'Rusting / Corrosion', symptom: 'Red-brown rust spots, surface pitting, or widespread oxidation appearing through or under the coating film.', causes: ['Insufficient surface preparation — mill scale, rust or contaminants not removed before coating', 'Inadequate DFT — coating too thin to provide barrier protection', 'Wrong primer selection — non-inhibitive primer used in corrosive environment', 'Damage to coating exposing bare steel', 'Exceeded recoat interval between primer and topcoat'], confirm: 'Check DFT with gauge. Check adhesion with cross-cut test. Check if original surface prep met specification.', corrective: 'Remove all rust by blast cleaning to Sa 2.5. Apply full coating system — zinc-rich or inhibitive primer, intermediate, and topcoat to specified DFT.', prevent: 'Specify correct surface preparation standard. Use zinc-rich primer for C4-CX environments. Ensure DFT meets specification. Inspect recoat intervals.', products: ['Inorganic Zinc Silicate Primer', 'Epoxy Zinc Phosphate Primer', 'Epoxy MIO Intermediate', 'Aliphatic PU Topcoat'], solution: '/solutions/structural-steel' },
+   8 |   { id: 'blistering', name: 'Blistering', symptom: 'Dome-shaped bubbles or blisters in the coating film, ranging from pinpoint to large areas. May contain liquid or be dry.', causes: ['Moisture trapped under coating — painting over damp surface or in high humidity', 'Solvent entrapment — overcoating before previous coat has cured', 'Osmotic blistering — in immersion service, water migrates through coating to soluble salts on steel', 'Contamination under coating — oil, grease, or salt not removed'], confirm: 'Cut open blister. If liquid inside, test for salts. Check if blistering is at steel interface or between coats.', corrective: 'Remove all blistered coating back to sound substrate. Clean thoroughly. Recoat with appropriate system ensuring surface is dry and clean.', prevent: 'Check dew point before application — surface must be 3°C above dew point. Test for salt contamination. Observe solvent flash-off times. Monitor humidity.', products: ['Solventless Epoxy Tank Lining', 'Epoxy High-Build Coating'], solution: '/solutions/tank-lining' },
+   9 |   { id: 'peeling', name: 'Peeling / Flaking', symptom: 'Coating lifting and peeling away from the substrate or from the previous coat in sheets or flakes.', causes: ['Poor surface preparation — coating applied over loose or powdery surface', 'Incompatible coating layers — wrong system combination', 'Exceeded maximum recoat interval — poor inter-coat adhesion', 'Surface contamination — dust, grease, or moisture between coats', 'Painting over chalked or degraded existing coating without preparation'], confirm: 'Adhesion test (cross-cut or pull-off). Check at which interface the failure occurs — substrate or inter-coat.', corrective: 'Remove all loose and poorly adhered coating. Prepare surface to specification. Apply compatible system.', prevent: 'Follow recoat intervals strictly. Clean surface between coats. Use recommended primers for each substrate. Test adhesion before full application.', products: ['Azura Damp Arrestor Primer', 'Epoxy Primer'], solution: '/products/decorative' },
+  10 |   { id: 'chalking', name: 'Chalking', symptom: 'Powdery white residue on the coating surface when touched. Colour appears faded and dull.', causes: ['UV degradation of the resin binder — common in exterior coatings', 'Inferior grade topcoat not designed for exterior UV exposure', 'Over-thinning of coating reducing binder concentration', 'Natural weathering beyond the coating design life'], confirm: 'Rub surface with dark cloth — white powder transfer confirms chalking. Measure remaining DFT.', corrective: 'If DFT is adequate, wash and apply fresh topcoat. If DFT is low, full system recoat required.', prevent: 'Use aliphatic PU or FEVE topcoat for long-term UV resistance. Ensure correct DFT. Do not over-thin.', products: ['Aliphatic PU Topcoat', 'FEVE Fluoropolymer Coating', 'Azura Antidirt Long Life'], solution: '/products/industrial' },
+  11 |   { id: 'cracking', name: 'Cracking', symptom: 'Visible cracks in the coating surface — from fine hairline cracks to deep splits exposing the substrate.', causes: ['Coating too rigid for substrate movement — thermal expansion/contraction', 'DFT too high in a single coat — stress cracking', 'Wrong coating flexibility for the application', 'Substrate cracking transmitting through the coating', 'Coating aged beyond its service life'], confirm: 'Examine crack pattern. Mud-cracking indicates excess DFT. Check if cracks reach substrate or are surface-only.', corrective: 'Remove cracked coating. Address substrate cracks if present. Apply flexible system suitable for expected movement.', prevent: 'Do not exceed maximum recommended DFT per coat. Use flexible coatings where substrate movement is expected. Select crack-bridging products for masonry.', products: ['Arest Elastomeric Waterproof Coating', 'Azura Antidirt Long Life', 'Arest Crack Filler'], solution: '/solutions/real-estate' },
+  12 |   { id: 'dampness', name: 'Dampness / Water Seepage', symptom: 'Wet patches, water stains, damp marks, or efflorescence (white salt deposits) on walls or ceilings.', causes: ['Water ingress from exterior — cracks in plaster, faulty waterproofing', 'Rising damp from ground level', 'Plumbing leaks within walls', 'Condensation due to temperature differentials', 'Painting over damp surface without damp-proofing primer'], confirm: 'Moisture meter test on wall. Check for external cracks. Trace water source.', corrective: 'Fix water source first. Allow wall to dry completely. Apply Arest Damp Block 2K system. Then repaint with damp arrestor primer and topcoat.', prevent: 'Use Azura Damp Arrestor Primer on all exterior and damp-prone walls. Apply Arest waterproofing on terraces and external walls. Ensure proper drainage.', products: ['Arest Damp Block 2K', 'Azura Damp Arrestor Primer', 'Arest Cool Roof Coating', 'Arest Crack Filler'], solution: '/products/decorative' },
+  13 |   { id: 'fungal', name: 'Fungal / Algae Growth', symptom: 'Dark patches, green or black spots, mould growth on painted walls — especially in humid or shaded areas.', causes: ['High humidity and poor ventilation', 'Coating without anti-fungal properties used in damp environment', 'Organic matter or dirt accumulation providing nutrients', 'North-facing or shaded walls with persistent moisture'], confirm: 'Visual inspection. Wipe with diluted bleach — if marks disappear, it is biological growth not staining.', corrective: 'Clean surface with Azura Biowash. Allow to dry. Apply anti-fungal primer. Topcoat with fungal-resistant emulsion.', prevent: 'Use Azura or Asure range with built-in anti-fungal and anti-algal properties. Ensure ventilation. Apply Biowash before repainting exterior surfaces.', products: ['Azura Hi-Efficient Biowash', 'Azura Antidirt Long Life', 'Asure Radiance Exterior'], solution: '/products/decorative' },
+  14 |   { id: 'floor-delam', name: 'Floor Coating Delamination', symptom: 'Epoxy or PU floor coating lifting from concrete substrate in sheets. Often starts at edges or joints.', causes: ['Concrete moisture exceeding 4% — moisture vapour trapped under coating', 'Laitance or curing compound not removed from concrete', 'Contamination — oil, grease, or chemical on concrete surface', 'Insufficient surface preparation — no grinding or blasting', 'Coating applied below minimum temperature'], confirm: 'Pull-off adhesion test. Moisture test on concrete. Check if failure is at concrete interface or between coats.', corrective: 'Remove delaminated coating. Shot-blast or diamond-grind concrete. Test moisture. Apply moisture-tolerant primer if needed. Recoat with Duraflo system.', prevent: 'Always test concrete moisture before application. Diamond-grind or shot-blast to remove laitance. Use penetrating primer. Observe temperature and humidity limits.', products: ['Epoxy Self-Levelling Floor Coating', 'Polyaspartic Floor Coating', 'Epoxy Floor Primer'], solution: '/solutions/industrial-flooring' },
+  15 | ];
+  16 | 
+  17 | export default function CoatingFailuresPage() {
+  18 |   const [selected, setSelected] = useState<string | null>(null);
+  19 |   const [showForm, setShowForm] = useState(false);
+  20 |   const [formData, setFormData] = useState({ name: '', phone: '', email: '', company: '', failure: '', message: '' });
+  21 |   const [submitted, setSubmitted] = useState(false);
+  22 | 
+  23 |   const active = failures.find(f => f.id === selected);
+  24 | 
+
+----------------------------------------------------------------------
+src/app/coating-systems/page.tsx   (77 lines)
+----------------------------------------------------------------------
+  ... showing lines 5-41 around the first "oil-gas" match
+   5 | 
+   6 | const systems = [
+   7 |   { code:'AP-STL-001', name:'Structural Steel — General Industrial', env:'C3', life:'15-20 yrs', primer:'Inorganic Zinc Silicate (60-75μm)', intermediate:'Epoxy MIO (100-150μm)', topcoat:'Aliphatic PU (40-60μm)', dft:'200-285μm', category:'Steel', link:'/solutions/structural-steel' },
+   8 |   { code:'AP-STL-002', name:'Structural Steel — Coastal', env:'C4-C5', life:'15-20 yrs', primer:'Inorganic Zinc Silicate (75μm)', intermediate:'Epoxy High-Build (150-200μm)', topcoat:'Polysiloxane (50-60μm)', dft:'275-335μm', category:'Steel', link:'/solutions/structural-steel' },
+   9 |   { code:'AP-STL-003', name:'PEB — Quick Dry', env:'C3', life:'10-15 yrs', primer:'Epoxy Zinc Phosphate (50μm)', intermediate:'Epoxy MIO (100μm)', topcoat:'Aliphatic PU (40μm)', dft:'190μm', category:'Steel', link:'/solutions/structural-steel' },
+  10 |   { code:'AP-RLY-001', name:'Railway Coach Exterior', env:'C3-C4', life:'10-12 yrs', primer:'Epoxy Zinc Phosphate (35-50μm)', intermediate:'Epoxy MIO (100-125μm)', topcoat:'FEVE Fluoropolymer (30-40μm)', dft:'165-215μm', category:'Railway', link:'/solutions/railway-coaches' },
+  11 |   { code:'AP-RLY-002', name:'Railway Bogie & Underframe', env:'C4-C5', life:'8-10 yrs', primer:'Epoxy Zinc-Rich (60-80μm)', intermediate:'Epoxy High-Build (125-200μm)', topcoat:'N/A', dft:'185-280μm', category:'Railway', link:'/solutions/railway-bogies' },
+  12 |   { code:'AP-MAR-001', name:'Marine Underwater Hull', env:'Im2', life:'5 yr docking', primer:'Marine Epoxy (125-200μm)', intermediate:'Epoxy High-Build (100-150μm)', topcoat:'Anti-Fouling (100-150μm)', dft:'325-500μm', category:'Marine', link:'/solutions/marine-hull' },
+  13 |   { code:'AP-MAR-002', name:'Marine Superstructure', env:'C5-M', life:'5-7 yrs', primer:'Marine Epoxy (75-100μm)', intermediate:'Epoxy MIO (75-100μm)', topcoat:'Aliphatic PU (40-60μm)', dft:'190-260μm', category:'Marine', link:'/solutions/marine-superstructure' },
+  14 |   { code:'AP-TNK-001', name:'Potable Water Tank', env:'Im1', life:'15-20 yrs', primer:'Solventless Epoxy (150-250μm)', intermediate:'N/A', topcoat:'Solventless Epoxy (150-250μm)', dft:'300-500μm', category:'Tank', link:'/solutions/tank-lining' },
+  15 |   { code:'AP-FIRE-001', name:'Structural Fire Protection 60min', env:'Interior', life:'Structure life', primer:'Epoxy Zinc Phosphate (35-50μm)', intermediate:'Intumescent (750-1500μm)', topcoat:'Aliphatic PU for exterior (50μm)', dft:'835-1600μm', category:'Fire', link:'/solutions/fire-protection' },
+  16 |   { code:'AP-FLR-001', name:'Industrial Concrete Floor', env:'Interior', life:'10-15 yrs', primer:'Epoxy Floor Primer (100-200μm)', intermediate:'Duraflo Self-Levelling (1-3mm)', topcoat:'Polyaspartic (100-200μm)', dft:'1.2-3.4mm', category:'Floor', link:'/solutions/industrial-flooring' },
+  17 |   { code:'AP-OG-001', name:'Oil & Gas — Structural', env:'CX', life:'15-25 yrs', primer:'Inorganic Zinc Silicate (75μm)', intermediate:'Glass Flake Epoxy (200-500μm)', topcoat:'Aliphatic PU (50-60μm)', dft:'325-635μm', category:'Oil & Gas', link:'/solutions/oil-gas' },
+  18 |   { code:'AP-DEC-001', name:'Exterior Wall — Premium', env:'Atmospheric', life:'15 yrs', primer:'Azura Damp Arrestor Primer', intermediate:'Cement Putty', topcoat:'Azura Antidirt Long Life (2 coats)', dft:'Per spec', category:'Decorative', link:'/products/decorative' },
+  19 |   { code:'AP-DEC-002', name:'Interior Wall — Luxury', env:'Interior', life:'7-8 yrs', primer:'Azura Damp Arrestor / Amaje Primer', intermediate:'Acrylic Wall Putty', topcoat:'Azura Pearl Glow (2-3 coats)', dft:'Per spec', category:'Decorative', link:'/products/decorative' },
+  20 |   { code:'AP-WP-001', name:'Roof Waterproofing', env:'Exterior', life:'10-12 yrs', primer:'Arest Base Coat', intermediate:'Arest Crack Filler', topcoat:'Arest Cool Roof Coat (3 coats)', dft:'Per spec', category:'Waterproofing', link:'/products/decorative' },
+  21 | ];
+  22 | 
+  23 | const categories = ['All', 'Steel', 'Railway', 'Marine', 'Tank', 'Fire', 'Floor', 'Oil & Gas', 'Decorative', 'Waterproofing'];
+  24 | 
+  25 | export default function CoatingSystemsPage() {
+  26 |   const [cat, setCat] = useState('All');
+  27 |   const [search, setSearch] = useState('');
+  28 |   const filtered = systems.filter(s => (cat === 'All' || s.category === cat) && (search === '' || s.name.toLowerCase().includes(search.toLowerCase()) || s.code.toLowerCase().includes(search.toLowerCase())));
+  29 | 
+  30 |   return (
+  31 |     <>
+  32 |       <section className="relative text-white overflow-hidden">
+  33 |         <img src="/img/heroes/hero-systems.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+  34 |         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+  35 |         <div className="py-16 md:py-24 relative z-10">
+  36 |         <div className="container-wide">
+  37 |           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-6" />
+  38 |           <h1 className="text-page-title text-white mb-4">Coating System Library</h1>
+  39 |           <p className="text-white/50 max-w-xl mb-8">Complete pre-engineered coating systems with system codes, layer specifications, and DFT data.</p>
+  40 |           <div className="relative max-w-md"><Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+  41 |             <input className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/40 outline-none" style={{borderRadius:'var(--radius-md)'}} placeholder="Search systems..." value={search} onChange={e=>setSearch(e.target.value)} /></div>
+
+----------------------------------------------------------------------
+src/app/coatings-for/page.tsx   (45 lines)
+----------------------------------------------------------------------
+  ... showing lines 1-24 around the first "oil-gas" match
+   1 | 'use client';
+   2 | import Link from 'next/link';
+   3 | import { ArrowRight } from 'lucide-react';
+   4 | 
+   5 | const pages = [
+   6 |   { title:'Coatings for Steel Plants', slug:'steel-plants', desc:'Complete coating systems across the steel-making process — from raw material handling to finished product storage.', link:'/industries' },
+   7 |   { title:'Coatings for Railway Bogies', slug:'railway-bogies', desc:'Heavy-duty anti-corrosion systems for bogies, underframes and components exposed to ballast impact and water spray.', link:'/solutions/railway-bogies' },
+   8 |   { title:'Marine Antifouling Coatings', slug:'marine-antifouling', desc:'Biocide-free silicone-epoxy hybrid foul-release systems for naval and commercial vessels.', link:'/solutions/marine-hull' },
+   9 |   { title:'Epoxy Coating for Potable Water Tanks', slug:'potable-water', desc:'WRAS approved solventless epoxy lining for drinking water tanks — zero VOC, FDA compliant.', link:'/solutions/tank-lining' },
+  10 |   { title:'Coatings for Coastal Structural Steel', slug:'coastal-steel', desc:'C4-C5 environment protection systems with zinc-rich primers, high-build epoxy, and polysiloxane topcoats.', link:'/solutions/structural-steel' },
+  11 |   { title:'Fire Protection Coating for Steel', slug:'fire-protection', desc:'FireSeal intumescent coatings providing up to 120-minute fire rating for structural steel members.', link:'/solutions/fire-protection' },
+  12 |   { title:'Epoxy Flooring for Factories', slug:'factory-flooring', desc:'Self-levelling epoxy and polyaspartic floor systems for warehouses, manufacturing, and logistics.', link:'/solutions/industrial-flooring' },
+  13 |   { title:'Quick Dry Paint for Scaffolding', slug:'scaffolding', desc:'Rapid-drying DTM coatings for high-throughput scaffolding and formwork production.', link:'/products/industrial' },
+  14 |   { title:'Protective Coatings for PEB', slug:'peb-coatings', desc:'Cost-effective protection systems for pre-engineered buildings — economy to severe-duty specifications.', link:'/solutions/structural-steel' },
+  15 |   { title:'Industrial Coatings for Auto Components', slug:'auto-components', desc:'Epoxy primers, stoving enamels, zinc-flake systems for automotive axles, chassis, and engineering components.', link:'/products/specialty' },
+  16 | ];
+  17 | 
+  18 | export default function CoatingsForPage() {
+  19 |   return (
+  20 |     <>
+  21 |       <section className="relative text-white overflow-hidden">
+  22 |         <img src="/img/app/industrial/ind-bridge-coating.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+  23 |         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
+  24 |         <div className="py-16 md:py-24 relative z-10">
+
+----------------------------------------------------------------------
+src/app/industries/page.tsx   (64 lines)
+----------------------------------------------------------------------
+  ... showing lines 1-32 around the first "oil-gas" match
+   1 | 'use client';
+   2 | import Link from 'next/link';
+   3 | import { ArrowRight } from 'lucide-react';
+   4 | 
+   5 | const industries = [
+   6 |   { name: 'Indian Railways', icon: '🚂', desc: 'RDSO, ICF, CLW, DMW, RCF, MCF approved. FEVE fluoropolymer coach coatings, EN 45545 HL3 fire-safe systems, bogie and underframe protection. Serving all major railway workshops for 35+ years.', solutions: ['Coach Exterior', 'Bogie & Underframe', 'Interior Panels', 'Heat Reflective Roof'], link: '/solutions/railway-coaches', img: '/img/heroes/railway-coach.jpg', color: '#991B1B' },
+   7 |   { name: 'Indian Navy & Marine', icon: '🚢', desc: 'DQAN approved for naval vessels. Anti-fouling, hull coating, deck coatings, ballast tank, and safety systems. Supplying GRSE, Mazagon Dock, Cochin Shipyard for 35+ years.', solutions: ['Hull System', 'Superstructure', 'Anti-Fouling', 'Glow-in-Dark Safety'], link: '/solutions/marine-hull', img: '/img/heroes/naval-vessel.jpg', color: '#1E3A5F' },
+   8 |   { name: 'Oil, Gas & Petrochemical', icon: '⛽', desc: 'High-performance systems for refineries, pipelines, storage tanks, and offshore platforms. Glass flake epoxy, novolac, heat resistant up to 600°C. EIL approved.', solutions: ['Pipeline Coating', 'Tank Lining', 'Structural Steel', 'Heat Resistant'], link: '/solutions/oil-gas', img: '/img/solutions/sol-oilgas.jpg', color: '#B45309' },
+   9 |   { name: 'Power & Energy', icon: '⚡', desc: 'Coatings for thermal power plants, substations, cooling towers, and transmission infrastructure. High-temperature aluminium paints, structural protection systems.', solutions: ['High Temp Coatings', 'Structural Steel', 'Chimney & Stacks', 'Cooling Towers'], link: '/solutions/power-cement', img: '/img/heroes/structural-steel.jpg', color: '#7C3AED' },
+  10 |   { name: 'Infrastructure & Construction', icon: '🏗️', desc: 'Anti-corrosion systems for bridges, flyovers, PEB structures, metros, and commercial buildings. ISO 12944 compliant for 15-25 year service life.', solutions: ['Structural Steel', 'PEB Coating', 'Bridge Protection', 'Metro Infrastructure'], link: '/solutions/structural-steel', img: '/img/solutions/sol-structural.jpg', color: '#475569' },
+  11 |   { name: 'Real Estate & Housing', icon: '🏢', desc: 'Complete decorative range under 6 brands — AZURA (luxury), ASURE (premium), ANEX (mainstream), ATOP (economy), AMAJE (primers), AREST (waterproofing). Up to 15 years warranty.', solutions: ['Interior Painting', 'Exterior Protection', 'Waterproofing', 'Texture Finishes'], link: '/solutions/real-estate', img: '/img/divisions/div-decorative.jpg', color: '#D97706' },
+  12 |   { name: 'Shipbuilding', icon: '⚓', desc: 'Complete marine coating systems for new-build vessels. Supplying GRSE Kolkata, Mazagon Dock Mumbai, Cochin Shipyard, and private shipyards across India.', solutions: ['Hull Protection', 'Tank Coatings', 'Deck Systems', 'Naval Grey'], link: '/solutions/marine-hull', img: '/img/heroes/naval-vessel.jpg', color: '#0E7490' },
+  13 |   { name: 'Automobile & OEM', icon: '🚗', desc: 'Quick-drying automotive coatings, stoving enamels, and DTM systems for OEM manufacturing and aftermarket applications. Compatible with automated spray systems.', solutions: ['Quick-Dry Paint', 'Stoving Enamel', 'DTM Coatings', 'Primer Systems'], link: '/products/specialty', img: '/img/divisions/div-industrial.jpg', color: '#DC2626' },
+  14 |   { name: 'Water Infrastructure', icon: '💧', desc: 'WRAS and FDA approved coatings for potable water tanks, water treatment plants, swimming pools, and sewage treatment facilities. Zero VOC solventless systems.', solutions: ['Potable Water Lining', 'ETP Coating', 'Swimming Pool', 'Pipeline Lining'], link: '/solutions/tank-lining', img: '/img/solutions/sol-tanklining.jpg', color: '#0891B2' },
+  15 |   { name: 'Warehousing & Logistics', icon: '🏭', desc: 'Industrial flooring systems — epoxy self-levelling, polyaspartic fast-cure, anti-static floors for warehouses, logistics parks, cold storage, and manufacturing plants.', solutions: ['Epoxy Flooring', 'Polyaspartic', 'Anti-Static', 'Line Marking'], link: '/solutions/industrial-flooring', img: '/img/solutions/sol-flooring.jpg', color: '#4338CA' },
+  16 |   { name: 'Steel & Cement Plants', icon: '🔩', desc: 'Coatings for blast furnaces, cement kilns, coal handling, ESP structures. Heat resistant, abrasion resistant, and chemical resistant systems for harsh plant environments.', solutions: ['Heat Resistant', 'Abrasion Resistant', 'Structural Steel', 'Chemical Resistant'], link: '/solutions/power-cement', img: '/img/heroes/hero-factory-inside.jpg', color: '#78716C' },
+  17 |   { name: 'Food & Pharma', icon: '🏥', desc: 'Food-grade epoxy coatings, hygienic wall and floor systems, anti-bacterial coatings for food processing plants, pharmaceutical facilities, and cleanrooms.', solutions: ['Food Grade Lining', 'Hygienic Flooring', 'Anti-Bacterial', 'Clean Room Coating'], link: '/products/specialty', img: '/img/heroes/hero-lab.jpg', color: '#059669' },
+  18 |   { name: 'Defence & Ordnance', icon: '🛡️', desc: 'MES approved coatings for defence establishments. Camouflage coatings, NBC protection, and specialized defence specification paints. Ordnance Factory Board certified.', solutions: ['Defence Spec Paint', 'Camouflage', 'MES Projects', 'NBC Coatings'], link: '/products/marine', img: '/img/heroes/naval-vessel.jpg', color: '#1F2937' },
+  19 |   { name: 'Mining & Heavy Engineering', icon: '⛏️', desc: 'Abrasion and impact resistant coatings for mining equipment, conveyor systems, and heavy fabrication. Chemical resistant systems for harsh mining environments.', solutions: ['Abrasion Resistant', 'Impact Resistant', 'Chemical Resistant', 'Equipment Coating'], link: '/products/industrial', img: '/img/divisions/div-industrial.jpg', color: '#92400E' },
+  20 |   { name: 'Containers & Freight', icon: '📦', desc: 'High-performance coating systems for ISO containers, freight wagons, tank containers, and transport equipment. Impact and weather resistant.', solutions: ['Container Coating', 'Wagon Protection', 'Tank Container', 'Trailer Coating'], link: '/solutions/containers', img: '/img/heroes/structural-steel.jpg', color: '#6D28D9' },
+  21 | ];
+  22 | 
+  23 | export default function IndustriesPage() {
+  24 |   return (
+  25 |     <>
+  26 |       <section className="relative text-white overflow-hidden">
+  27 |         <img src="/img/heroes/hero-industries.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+  28 |         <div className="absolute inset-0 bg-[var(--color-navy)]/85" />
+  29 |         <div className="container-wide py-20 md:py-28 relative z-10">
+  30 |           <div className="w-12 h-1 bg-[var(--color-red)] mb-6" />
+  31 |           <h1 className="text-page-title text-white mb-3">Industries We Serve</h1>
+  32 |           <p className="text-white/50 max-w-xl">From railways to refineries, from homes to warships — Anupam Paints provides coating solutions for every industry across India.</p>
+
+----------------------------------------------------------------------
+src/app/page.tsx   (377 lines)
+----------------------------------------------------------------------
+  ... showing lines 1-24 around the first "oil-gas" match
+   1 | 'use client';
+   2 | import { useState, useEffect, useRef } from 'react';
+   3 | import Link from 'next/link';
+   4 | import { SITE, STATS, WHY_ANUPAM, CHAIRMAN_MESSAGE } from '@/lib/constants';
+   5 | import { createClient } from '@supabase/supabase-js';
+   6 | import { ArrowRight, ChevronRight, Shield, Phone, Mail, Upload, MessageSquare } from 'lucide-react';
+   7 | 
+   8 | const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+   9 | 
+  10 | const heroSlides: any[] = [];
+  11 | 
+  12 | const scaleData = [
+  13 |   { value: '1972', label: 'Established' },
+  14 |   { value: '5 Acres', label: 'Manufacturing Campus' },
+  15 |   { value: '~1000 KL', label: 'Monthly Capacity' },
+  16 |   { value: 'In-House', label: 'Resin Manufacturing' },
+  17 |   { value: 'Pan India', label: 'Supply & Application' },
+  18 | ];
+  19 | 
+  20 | const processSteps = [
+  21 |   { num: '01', title: 'Raw Materials', desc: 'Controlled sourcing and incoming quality checks on every batch.' },
+  22 |   { num: '02', title: 'In-House Resin', desc: 'Alkyd resin manufacturing for tighter formulation control.' },
+  23 |   { num: '03', title: 'Dispersion & Mixing', desc: 'High-speed dispersers, ball mills, and dyno mills for precise manufacturing.' },
+  24 |   { num: '04', title: 'Quality Control', desc: 'Raw material, in-process and finished-product testing at every stage.' },
+
+----------------------------------------------------------------------
+src/app/solutions/[slug]/page.tsx   (399 lines)
+----------------------------------------------------------------------
+  ... showing lines 165-201 around the first "oil-gas" match
+ 165 |     environment: 'Interior and Exterior, all Indian climate zones',
+ 166 |     layers: [
+ 167 |       { layer: 'Surface Prep', product: 'Azura Hi-Efficient Biowash (for repaint)', type: 'Wall cleaning solution', dft: 'N/A', coats: '1', method: 'Spray/Brush', purpose: 'Removes algae, mould, mildew, and contaminants before painting' },
+ 168 |       { layer: 'Primer (Exterior)', product: 'Azura Damp Arrestor Alkali Block Dual Primer', type: 'Water-based dual primer', dft: 'N/A', coats: '1-2', method: 'Brush/Spray', purpose: 'Fiber-reinforced. Blocks alkali, arrests dampness, strengthens surface' },
+ 169 |       { layer: 'Primer (Interior)', product: 'Amaje Universal Primer WT', type: 'Water-based universal', dft: 'N/A', coats: '1-2', method: 'Brush/Spray', purpose: 'Fills porosity, hides stains, levels surface for topcoat' },
+ 170 |       { layer: 'Topcoat (Exterior)', product: 'Azura Exterior Emulsion Long Life Anti Dirt 15', type: 'Premium exterior emulsion', dft: 'N/A', coats: '2', method: 'Brush/Roller/Spray', purpose: '15-year dirt resistance with Polysiloxane + PU hybrid technology' },
+ 171 |       { layer: 'Topcoat (Interior)', product: 'Azura Pearl Glow / Asure CleanWalls', type: 'Luxury interior emulsion', dft: 'N/A', coats: '2-3', method: 'Brush/Roller', purpose: 'Premium silk/sheen finish with washability and colour retention' },
+ 172 |       { layer: 'Waterproofing', product: 'Arest Advance PU RoofCoat + Base Coat', type: 'Elastomeric waterproofing', dft: 'N/A', coats: '3-4', method: 'Brush/Roller', purpose: 'Waterproofing + heat reflection. Reduces temperature by 10C' },
+ 173 |     ],
+ 174 |     applications: ['Residential apartments', 'Villas and bungalows', 'Commercial offices', 'Shopping malls', 'Hotels and hospitality', 'Educational institutions', 'Hospitals'],
+ 175 |     whyAnupam: ['Full decorative range under 6 brands (Azura to Atop)', 'Up to 15 years warranty', 'IGBC Green Building certified', '10-15% cost saving vs Asian Paints/Berger', 'Supplied to Shapoorji Pallonji, Lodha, IndoSpace'],
+ 176 |   },
+ 177 |   'oil-gas': {
+ 178 |     title: 'Oil & Gas Coating Systems',
+ 179 |     subtitle: 'Refineries, Pipelines, Tanks, Offshore',
+ 180 |     industry: 'Oil & Gas',
+ 181 |     icon: '⛽',
+ 182 |     heroImage: '/img/heroes/factory-aerial.jpg',
+ 183 |     description: 'High-performance coating systems for oil and gas facilities including refineries, pipelines, storage tanks, offshore platforms, and petrochemical plants. Designed for extreme corrosion, chemical, and temperature resistance.',
+ 184 |     surfacePrep: ['Blast cleaning to Sa 2.5 or Sa 3 (ISO 8501-1)', 'Surface profile 50-100 microns per spec', 'Salt contamination test before coating', 'Strict environmental controls during application'],
+ 185 |     totalDFT: '350-1000+ microns (system dependent)',
+ 186 |     serviceLife: '15-25 year design life',
+ 187 |     standards: ['NACE SP0188', 'ISO 12944-9', 'SSPC', 'ASTM B117', 'API Standards'],
+ 188 |     environment: 'CX (Extreme — chemical, immersion, high temp)',
+ 189 |     layers: [
+ 190 |       { layer: 'Primer', product: 'Inorganic Zinc Silicate Primer', type: 'Self-curing IZS', dft: '60-75 microns', coats: '1', method: 'Airless spray', purpose: 'Maximum cathodic protection for structural steel in aggressive environments' },
+ 191 |       { layer: 'Intermediate', product: 'Glass Flake Epoxy Coating', type: 'Glass flake reinforced epoxy', dft: '200-500 microns', coats: '1-2', method: 'Airless spray', purpose: 'Superior barrier properties for chemical and immersion resistance' },
+ 192 |       { layer: 'Topcoat', product: 'Aliphatic Polyurethane Topcoat', type: 'Aliphatic PU', dft: '50-60 microns', coats: '1', method: 'Airless spray', purpose: 'UV stable, chemical resistant finish in safety colour coding' },
+ 193 |     ],
+ 194 |     applications: ['Refineries', 'Petrochemical plants', 'Oil and gas pipelines', 'Storage tanks (external)', 'Offshore platforms and jackets', 'Flare stacks and chimneys', 'LPG cylinders'],
+ 195 |     whyAnupam: ['Complete range from primers to specialty topcoats', 'Glass flake and novolac epoxy for extreme environments', 'Heat resistant coatings up to 600C', 'Supplied to IOCL, HPCL, ONGC facilities', 'EIL approved products'],
+ 196 |   },
+ 197 |   'tank-lining': {
+ 198 |     title: 'Tank Lining Systems',
+ 199 |     subtitle: 'Potable Water, Chemical, Fuel Tanks',
+ 200 |     industry: 'Water & Chemical',
+ 201 |     icon: '💧',
+
+----------------------------------------------------------------------
+src/app/solutions/page.tsx   (69 lines)
+----------------------------------------------------------------------
+  ... showing lines 7-43 around the first "oil-gas" match
+   7 |     { slug: 'railway-coaches', title: 'Coach Exterior Coating System', icon: '🚂', desc: 'RDSO/ICF approved. FEVE fluoropolymer topcoat. EN 45545 HL3 fire-safe.' },
+   8 |     { slug: 'railway-bogies', title: 'Bogie & Underframe System', icon: '🔧', desc: 'Heavy-duty zinc-rich + high-build epoxy for impact and abrasion resistance.' },
+   9 |   ]},
+  10 |   { category: 'Marine & Defence', items: [
+  11 |     { slug: 'marine-hull', title: 'Hull Coating System', icon: '🚢', desc: 'Indian Navy approved. Anti-fouling with 5-year dry-docking interval.' },
+  12 |     { slug: 'marine-superstructure', title: 'Superstructure & Deck System', icon: '⚓', desc: 'Naval grey, non-skid deck, glow-in-dark safety coatings.' },
+  13 |   ]},
+  14 |   { category: 'Infrastructure', items: [
+  15 |     { slug: 'structural-steel', title: 'Structural Steel System', icon: '🏗️', desc: 'PEB, bridges, buildings. IZS + MIO + PU for 15-20 year service life.' },
+  16 |     { slug: 'containers', title: 'Container & Freight System', icon: '📦', desc: 'Shipping containers, wagons, trailers. Impact and weather resistant.' },
+  17 |   ]},
+  18 |   { category: 'Oil & Gas', items: [
+  19 |     { slug: 'oil-gas', title: 'Refinery & Pipeline System', icon: '⛽', desc: 'Glass flake epoxy, novolac, high-temp. 15-25 year design life.' },
+  20 |     { slug: 'tank-lining', title: 'Tank Lining System', icon: '💧', desc: 'WRAS approved solventless epoxy. Potable water, fuel, chemical tanks.' },
+  21 |   ]},
+  22 |   { category: 'Real Estate & Construction', items: [
+  23 |     { slug: 'real-estate', title: 'Complete Building Coating', icon: '🏢', desc: 'Exterior weathershield + interior luxury + waterproofing. Up to 15yr warranty.' },
+  24 |     { slug: 'industrial-flooring', title: 'Industrial Flooring System', icon: '🏭', desc: 'Epoxy self-levelling + polyaspartic. Fast return to service.' },
+  25 |   ]},
+  26 |   { category: 'Safety & Specialty', items: [
+  27 |     { slug: 'fire-protection', title: 'Passive Fire Protection', icon: '🔥', desc: 'FireSeal intumescent. Up to 120-minute fire rating for structural steel.' },
+  28 |     { slug: 'power-cement', title: 'Power & Cement Plants', icon: '⚡', desc: 'High-temp aluminium 600°C + structural steel + chemical resistant.' },
+  29 |   ]},
+  30 | ];
+  31 | 
+  32 | export default function SolutionsPage() {
+  33 |   return (
+  34 |     <>
+  35 |       <section className="relative text-white overflow-hidden">
+  36 |         <img src="/img/heroes/hero-solutions.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+  37 |         <div className="absolute inset-0 bg-brand-500/85" />
+  38 |         <div className="container-wide px-4 py-20 md:py-28 relative z-10">
+  39 |           <p className="text-white/50 text-sm font-medium mb-2 tracking-wider uppercase">Solutions</p>
+  40 |           <h1 className="text-4xl md:text-5xl font-bold mb-4">Coating Solutions by Industry</h1>
+  41 |           <p className="text-lg text-white/50 max-w-2xl">Pre-engineered coating systems with layer-by-layer specifications, DFT, application methods, and product recommendations for your specific industry.</p>
+  42 |         </div>
+  43 |       </section>
+
+----------------------------------------------------------------------
+src/components/layout/Footer.tsx   (110 lines)
+----------------------------------------------------------------------
+  ... showing lines 5-41 around the first "oil-gas" match
+   5 | const footerLinks = [
+   6 |   { title: 'Products', links: [
+   7 |     { label: 'Decorative Coatings', href: '/products/decorative' },
+   8 |     { label: 'Industrial Protective', href: '/products/industrial' },
+   9 |     { label: 'Marine & Defence', href: '/products/marine' },
+  10 |     { label: 'Railway Coatings', href: '/products/railway' },
+  11 |     { label: 'Specialty Coatings', href: '/products/specialty' },
+  12 |   ]},
+  13 |   { title: 'Solutions', links: [
+  14 |     { label: 'Structural Steel', href: '/solutions/structural-steel' },
+  15 |     { label: 'Railways', href: '/solutions/railway-coaches' },
+  16 |     { label: 'Marine & Navy', href: '/solutions/marine-hull' },
+  17 |     { label: 'Oil & Gas', href: '/solutions/oil-gas' },
+  18 |     { label: 'Fire Protection', href: '/solutions/fire-protection' },
+  19 |     { label: 'Industrial Flooring', href: '/solutions/industrial-flooring' },
+  20 |   ]},
+  21 |   { title: 'Company', links: [
+  22 |     { label: 'About Us', href: '/about' },
+  23 |     { label: 'Manufacturing', href: '/infrastructure' },
+  24 |     { label: 'Approvals', href: '/approvals' },
+  25 |     { label: 'Clients', href: '/clients' },
+  26 |     { label: 'Careers', href: '/careers' },
+  27 |     { label: 'Contact', href: '/contact' },
+  28 |   ]},
+  29 |   { title: 'Resources', links: [
+  30 |     { label: 'Technical Library', href: '/technical-library' },
+  31 |     { label: 'Paint Calculator', href: '/calculator' },
+  32 |     { label: 'Colour Visualizer', href: '/color-visualizer' },
+  33 |     { label: 'Shade Card', href: '/shade-card' },
+  34 |     { label: 'Home Painting', href: '/home-painting' },
+  35 |     { label: 'Find a Dealer', href: '/dealers' },
+  36 |   ]},
+  37 | ];
+  38 | 
+  39 | export default function Footer() {
+  40 |   return (
+  41 |     <footer>
+
+----------------------------------------------------------------------
+src/components/layout/Header.tsx   (245 lines)
+----------------------------------------------------------------------
+  ... showing lines 33-69 around the first "oil-gas" match
+  33 |         { label: 'Industrial Flooring', href: '/products/specialty' },
+  34 |         { label: 'Advanced Coatings', href: '/products/specialty' },
+  35 |       ]},
+  36 |     ],
+  37 |     featured: { label: 'Find Anupam Equivalent', desc: 'Upload a competitor spec — we recommend our alternative.', href: '/find-equivalent' },
+  38 |   },
+  39 |   Solutions: {
+  40 |     cols: [
+  41 |       { title: 'By Problem', items: [
+  42 |         { label: 'Corrosion Protection', href: '/solutions/structural-steel' },
+  43 |         { label: 'Fire Protection', href: '/solutions/fire-protection' },
+  44 |         { label: 'Waterproofing', href: '/solutions/real-estate' },
+  45 |         { label: 'Chemical Resistance', href: '/solutions/oil-gas' },
+  46 |         { label: 'Heat Resistance', href: '/solutions/power-cement' },
+  47 |       ]},
+  48 |       { title: 'By Asset', items: [
+  49 |         { label: 'Structural Steel', href: '/solutions/structural-steel' },
+  50 |         { label: 'Tanks & Vessels', href: '/solutions/tank-lining' },
+  51 |         { label: 'Floors', href: '/solutions/industrial-flooring' },
+  52 |         { label: 'Roofs', href: '/solutions/real-estate' },
+  53 |         { label: 'Pipelines', href: '/solutions/oil-gas' },
+  54 |         { label: 'Containers', href: '/solutions/containers' },
+  55 |       ]},
+  56 |       { title: 'By Industry', items: [
+  57 |         { label: 'Railways', href: '/solutions/railway-coaches' },
+  58 |         { label: 'Marine & Defence', href: '/solutions/marine-hull' },
+  59 |         { label: 'Oil & Gas', href: '/solutions/oil-gas' },
+  60 |         { label: 'Power & Cement', href: '/solutions/power-cement' },
+  61 |         { label: 'Real Estate', href: '/solutions/real-estate' },
+  62 |       ]},
+  63 |     ],
+  64 |   },
+  65 |   'Technical Centre': {
+  66 |     cols: [
+  67 |       { title: 'Resources', items: [
+  68 |         { label: 'Technical Library / TDS', href: '/technical-library' },
+  69 |         { label: 'Approvals & Certificates', href: '/approvals' },
+
+----------------------------------------------------------------------
+src/lib/constants.ts   (182 lines)
+----------------------------------------------------------------------
+  ... showing lines 113-149 around the first "oil-gas" match
+ 113 |       { label: 'Product Finder', href: '/product-finder' },
+ 114 |     ],
+ 115 |   },
+ 116 |   {
+ 117 |     label: 'Solutions', href: '/solutions',
+ 118 |     children: [
+ 119 |       { label: 'Structural Steel Systems', href: '/solutions/structural-steel' },
+ 120 |       { label: 'Railway Coating Systems', href: '/solutions/railway-systems' },
+ 121 |       { label: 'Marine Coating Systems', href: '/solutions/marine-systems' },
+ 122 |       { label: 'Industrial Flooring', href: '/solutions/industrial-flooring' },
+ 123 |       { label: 'Roof Waterproofing', href: '/solutions/roof-waterproofing' },
+ 124 |       { label: 'Fire Protection', href: '/solutions/fire-protection' },
+ 125 |       { label: 'Oil & Gas', href: '/solutions/oil-gas' },
+ 126 |       { label: 'View All Solutions', href: '/solutions' },
+ 127 |     ],
+ 128 |   },
+ 129 |   {
+ 130 |     label: 'Home Painting', href: '/home-painting',
+ 131 |     children: [
+ 132 |       { label: 'Interior Painting', href: '/home-painting' },
+ 133 |       { label: 'Exterior Painting', href: '/home-painting' },
+ 134 |       { label: 'Waterproofing', href: '/home-painting' },
+ 135 |       { label: 'Colour Visualizer', href: '/color-visualizer' },
+ 136 |       { label: 'Shade Card', href: '/shade-card' },
+ 137 |       { label: 'Paint Calculator', href: '/calculator' },
+ 138 |     ],
+ 139 |   },
+ 140 |   { label: 'Approvals', href: '/approvals' },
+ 141 |   { label: 'Clients', href: '/clients' },
+ 142 |   { label: 'Contact', href: '/contact' },
+ 143 | ];
+ 144 | 
+ 145 | export const STATS = [
+ 146 |   { value: '50+', label: 'Years of Excellence', suffix: '' },
+ 147 |   { value: '1000', label: 'KL/Month Capacity', suffix: '+' },
+ 148 |   { value: '5', label: 'Acre Manufacturing Plant', suffix: '' },
+ 149 |   { value: '500', label: 'Products', suffix: '+' },
+
+### 5. IMAGE FIELD NAMES FOUND ACROSS THE CODEBASE
+  img                38
+  image              20
+  heroImage          13

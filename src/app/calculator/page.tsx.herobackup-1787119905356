@@ -40,10 +40,8 @@ export default function CalculatorPage() {
 
   return (
     <>
-      <section className="relative text-white overflow-hidden py-16 md:py-24">
-        <img src="/img/heroes/hero-calculator.jpg" alt="Estimating paint quantity from a floor plan with Anupam Paints" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
-        <div className="container-wide px-4 relative z-10">
+      <section className="gradient-brand text-white py-16 md:py-24">
+        <div className="container-wide px-4">
           <p className="text-brand-200 text-sm font-medium mb-2 tracking-wider uppercase">Tools</p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Paint Calculator</h1>
           <p className="text-lg text-brand-200 max-w-2xl">Calculate the quantity of paint needed for your project.</p>

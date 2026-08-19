@@ -50,7 +50,7 @@ export default function ShadeCardPage() {
   return (
     <>
       <section className="relative text-white overflow-hidden">
-        <img src="/img/heroes/hero-shade-card.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/img/app/decorative/dec-colour-consult.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
         <div className="container-wide py-16 md:py-20 relative z-10">
           <div className="w-12 h-[2px] bg-[var(--color-red)] mb-5" />
