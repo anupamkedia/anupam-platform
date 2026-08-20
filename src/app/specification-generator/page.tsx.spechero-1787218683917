@@ -308,14 +308,15 @@ export default function SpecificationGenerator() {
   return (
     <div className="min-h-screen bg-[#FAF8F4]">
       {/* ---------- masthead ---------- */}
-      <section className="print:hidden relative overflow-hidden bg-white">
-        <img src="/img/heroes/hero-spec-generator.jpg" alt="Building a coating specification with Anupam Paints — substrate, environment and the resulting coat schedule" className="w-full h-auto block" />
-        <div className="not-sr-only md:sr-only max-w-7xl mx-auto px-5 py-6">
-          <p className="text-[11px] tracking-[0.28em] uppercase text-slate-500 mb-3">Specifier Centre</p>
+      <section className="print:hidden relative text-white overflow-hidden">
+        <img src="/img/heroes/hero-technical-library.jpg" alt="Reviewing Anupam Paints technical data sheets and specifications" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/78" />
+        <div className="max-w-7xl mx-auto px-5 py-12 relative z-10">
+          <p className="text-[11px] tracking-[0.28em] uppercase text-[#7FA8DC] mb-3">Specifier Centre</p>
           <h1 className="text-3xl md:text-5xl font-semibold leading-[1.1] max-w-3xl">
             Coating Specification Generator
           </h1>
-          <p className="mt-5 text-[15px] leading-relaxed text-slate-600 max-w-2xl">
+          <p className="mt-5 text-[15px] leading-relaxed text-blue-100/90 max-w-2xl">
             Build a project-ready protective coating specification to ISO 12944. Select the substrate,
             corrosivity category and required durability — the tool returns the full system, surface
             preparation standard, film thickness schedule and applicable test references, ready to
