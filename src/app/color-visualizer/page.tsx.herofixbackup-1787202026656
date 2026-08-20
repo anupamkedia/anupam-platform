@@ -391,12 +391,8 @@ export default function ColourVisualiser() {
   /* ---------------------------------------------------------------- view */
   return (
     <div className="min-h-screen bg-[#F7F6F3]">
-      <section className="relative text-white overflow-hidden">
-        <img src="/img/heroes/hero-colour-visualiser.jpg"
-          alt="Visualising Anupam paint shades on a wall using a tablet"
-          className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[var(--color-navy)]/75" />
-        <div className="max-w-7xl mx-auto px-5 py-10 md:py-14 relative z-10">
+      <div className="bg-[#0B2A5B] text-white">
+        <div className="max-w-7xl mx-auto px-5 py-10 md:py-14">
           <p className="text-[11px] tracking-[0.28em] uppercase text-[#7FA8DC] mb-3">Colour Visualiser</p>
           <h1 className="text-3xl md:text-5xl font-semibold leading-[1.1] max-w-3xl">
             Your wall. Your photo. Your colour.
@@ -406,7 +402,7 @@ export default function ColourVisualiser() {
             with the shadows, sunlight and texture of the actual surface preserved.
           </p>
         </div>
-      </section>
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-5 py-6 md:py-8 grid lg:grid-cols-[1fr_380px] gap-6 items-start">
         {/* ------------------------------------------------ canvas ------- */}
