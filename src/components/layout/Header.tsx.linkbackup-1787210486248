@@ -67,7 +67,7 @@ const megaMenu: Record<string, { cols: { title: string; items: { label: string; 
       { title: 'Resources', items: [
         { label: 'Technical Library / TDS', href: '/technical-library' },
         { label: 'Approvals & Certificates', href: '/approvals' },
-        { label: 'Coating System Selector', href: '/specification-generator' },
+        { label: 'Coating System Selector', href: '/#solution-finder' },
         { label: 'Paint Calculator', href: '/calculator' },
         { label: 'Find Anupam Equivalent', href: '/find-equivalent' },
         { label: 'Downloads', href: '/downloads' },

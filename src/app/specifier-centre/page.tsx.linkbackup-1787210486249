@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FileText, Search, Shield, Download, Layers, Send, ArrowRight, Users, Building2, ClipboardList } from 'lucide-react';
 
 const tools = [
-  { icon: Layers, title: 'Coating System Selector', desc: 'Select your asset, substrate, and environment — get a complete coating system recommendation with DFT and products.', href: '/specification-generator', cta: 'Build a System' },
+  { icon: Layers, title: 'Coating System Selector', desc: 'Select your asset, substrate, and environment — get a complete coating system recommendation with DFT and products.', href: '/#solution-finder', cta: 'Build a System' },
   { icon: Search, title: 'Product Finder', desc: 'Search our complete product catalogue by chemistry, application, substrate, or industry.', href: '/technical-library', cta: 'Search Products' },
   { icon: Shield, title: 'Approval Finder', desc: 'Find Anupam products approved by RDSO, Indian Navy, MES, EIL, AAI, CMRL, HPCL, WRAS and other bodies.', href: '/approvals', cta: 'Find Approvals' },
   { icon: FileText, title: 'TDS Library', desc: 'Access Technical Data Sheets for every product in our range. Request specific documents.', href: '/technical-library', cta: 'Browse TDS' },
