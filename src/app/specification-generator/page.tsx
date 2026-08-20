@@ -1,573 +1,413 @@
 "use client";
 
 import { useState, useMemo, type ReactNode } from "react";
+import {
+  PRODUCTS, PREP, SECTORS, SYSTEMS, FLAGS,
+  type System,
+} from "@/data/coating-systems";
 
 /* ============================================================================
-   PRODUCT REGISTRY  —  EDIT ONLY THIS BLOCK TO CORRECT NAMES / DATA
-   Every product name shown on the generated specification comes from here.
-   Change a name once and it updates across every system the tool produces.
-   vs      = volume solids %
-   theoretical spreading rate is computed from vs, so keep it accurate.
+   Coating Specification Generator
+   ----------------------------------------------------------------------------
+   Sector -> asset -> exposure -> requirements. ISO 12944 corrosivity applies
+   only where it belongs (steel in atmosphere); a coach interior, a potable
+   water tank and a terrace are not described by it.
    ========================================================================== */
-const PRODUCTS: Record<string, { name: string; generic: string; vs: number; std?: string }> = {
-  EPZP:   { name: "Anupam Epoxy Zinc Phosphate Primer",      generic: "Two-pack epoxy polyamide, zinc phosphate pigmented", vs: 55, std: "IS 14589 / ASTM D3363" },
-  ZNEP:   { name: "Anupam Zinc Rich Epoxy Primer",           generic: "Two-pack epoxy, min. 80% zinc in dry film",          vs: 62, std: "ISO 12944-5 / SSPC-Paint 20 Level 2" },
-  IZS:    { name: "Anupam Inorganic Zinc Silicate Primer",   generic: "Ethyl silicate, self-curing, zinc rich",             vs: 60, std: "SSPC-Paint 20 Level 1 / ASTM D520 Type II" },
-  EPMIO:  { name: "Anupam Epoxy MIO Intermediate",           generic: "Two-pack high-build epoxy, micaceous iron oxide",    vs: 65, std: "ISO 12944-5" },
-  EPMAS:  { name: "Anupam Epoxy Mastic HB",                  generic: "Two-pack surface-tolerant high-build epoxy mastic",  vs: 80 },
-  GFEP:   { name: "Anupam Glass Flake Epoxy",                generic: "Two-pack solvent-free glass flake reinforced epoxy", vs: 90, std: "ISO 20340 / NORSOK M-501" },
-  CTE:    { name: "Anupam Coal Tar Epoxy",                   generic: "Two-pack coal tar modified epoxy",                   vs: 72, std: "IS 13183 Gr.1" },
-  NOVO:   { name: "Anupam Novolac Epoxy Tank Lining",        generic: "Solvent-free amine cured novolac epoxy",             vs: 98, std: "ASTM D6943 immersion" },
-  PUTOP:  { name: "Anupam PU Topcoat",                       generic: "Two-pack aliphatic acrylic polyurethane",            vs: 55, std: "ISO 12944-6 / ASTM D822" },
-  PASP:   { name: "Anupam Polyaspartic Topcoat",             generic: "Two-pack polyaspartic ester, fast return to service", vs: 85 },
-  PSX:    { name: "Anupam Polysiloxane Finish",              generic: "Epoxy-siloxane hybrid, isocyanate free",             vs: 88 },
-  ETCH:   { name: "Anupam Etch Primer",                      generic: "Two-pack polyvinyl butyral wash primer",             vs: 12, std: "IS 5666" },
-  EPSEAL: { name: "Anupam Epoxy Concrete Sealer",            generic: "Low viscosity solvent-free epoxy penetrating sealer", vs: 95 },
-  EPSCR:  { name: "Anupam Epoxy Screed / Self Levelling",    generic: "Solvent-free epoxy resin screed",                    vs: 100 },
-  PUREA:  { name: "Anupam Polyurea Membrane",                generic: "Spray applied pure polyurea elastomer",              vs: 100, std: "ASTM D412 / ASTM D624" },
-  SILAL:  { name: "Anupam Heat Resistant Silicone Aluminium", generic: "Silicone resin, leafing aluminium pigmented",       vs: 32 },
-  SILAL6: { name: "Anupam Heat Resistant Aluminium 600°C",   generic: "High-temperature silicone / aluminium",               vs: 30 },
-  MODSIL: { name: "Anupam Modified Silicone Primer",         generic: "Heat resistant silicone modified primer",            vs: 35 },
-  CR:     { name: "Anupam Chlorinated Rubber Finish",        generic: "Single-pack chlorinated rubber",                     vs: 40 },
-  AFOUL:  { name: "Anupam Antifouling",                      generic: "Self-polishing copolymer antifouling",               vs: 58 },
-  INTUM:  { name: "Anupam Fireseal Intumescent",             generic: "Water-based / solvent-based thin film intumescent",  vs: 70, std: "BS 476 Part 20/21" },
-  ANTICARB: { name: "Anupam Anti-Carbonation Coating",       generic: "Elastomeric acrylic, CO2 diffusion resistant",       vs: 45, std: "EN 1062-6" },
-};
 
-/* Surface preparation standards */
-const PREP: Record<string, { std: string; profile: string; note: string }> = {
-  SA25:  { std: "Sa 2½ (ISO 8501-1) / SSPC-SP10 / NACE No. 2", profile: "40–75 µm (ISO 8503-2, Medium G)", note: "Dry abrasive blast to near-white metal. Remove all soluble salts; test to ISO 8502-6/-9, chloride ≤ 20 mg/m²." },
-  SA3:   { std: "Sa 3 (ISO 8501-1) / SSPC-SP5 / NACE No. 1",   profile: "50–85 µm (ISO 8503-2, Medium/Coarse G)", note: "White metal blast. Mandatory for immersion and CX service. Soluble salt limit ≤ 10 mg/m²." },
-  ST3:   { std: "St 3 (ISO 8501-1) / SSPC-SP3",                profile: "Not applicable",             note: "Power tool clean to bare metal where blasting is not permitted. Reduces achievable durability by one class." },
-  SP16:  { std: "SSPC-SP16 (non-ferrous brush-off blast)",     profile: "20–40 µm",                   note: "Sweep blast at reduced pressure. Do not remove base metal or galvanized layer." },
-  SP1:   { std: "SSPC-SP1 solvent clean",                      profile: "Not applicable",             note: "Degrease to remove oil, grease and zinc salts before any mechanical preparation." },
-  CSP3:  { std: "ICRI CSP 3–5 / SSPC-SP13 / NACE No. 6",       profile: "Open textured, laitance free", note: "Concrete min. 28 days cured, moisture ≤ 4% (ASTM D4263 / ISO 7783 Class III). pH 7–11. Grind or captive shot blast." },
-};
-
-type Env = "C2" | "C3" | "C4" | "C5I" | "C5M" | "CX" | "Im1" | "Im2" | "Im3";
-type Dur = "M" | "H" | "VH";
-type Sub = "carbon" | "galv" | "alu" | "concrete" | "ss";
-
-interface Coat { id: string; coats: number; dftMin: number; dftMax: number; role: string }
-interface Spec {
-  prep: keyof typeof PREP;
-  coats: Coat[];
-  notes: string[];
-  tests: string[];
-  warn?: string;
-}
-
-const ENV_LABEL: Record<Env, string> = {
+const ENV_LABEL: Record<string, string> = {
   C2: "C2 — Low (dry rural, unheated buildings)",
-  C3: "C3 — Medium (urban, inland industrial, coastal low salinity)",
-  C4: "C4 — High (chemical plant, coastal, swimming pools)",
-  C5I: "C5-I — Very high, industrial (high humidity, aggressive atmosphere)",
-  C5M: "C5-M — Very high, marine (coastal / offshore topside)",
-  CX:  "CX — Extreme (offshore splash zone, tropical marine, high salinity)",
+  C3: "C3 — Medium (urban, inland industrial)",
+  C4: "C4 — High (chemical plant, coastal)",
+  C5I: "C5-I — Very high, industrial",
+  C5M: "C5-M — Very high, marine",
+  CX: "CX — Extreme (offshore, splash zone)",
   Im1: "Im1 — Immersion, fresh water",
-  Im2: "Im2 — Immersion, sea or brackish water",
+  Im2: "Im2 — Immersion, sea water",
   Im3: "Im3 — Buried in soil",
 };
-
-const DUR_LABEL: Record<Dur, string> = {
-  M: "Medium — 7 to 15 years to first major maintenance",
-  H: "High — 15 to 25 years to first major maintenance",
-  VH: "Very High — over 25 years to first major maintenance",
-};
-
-const SUB_LABEL: Record<Sub, string> = {
-  carbon: "Carbon steel / structural steel",
-  galv: "Hot dip galvanized steel",
-  alu: "Aluminium / non-ferrous",
-  concrete: "Concrete / cementitious",
-  ss: "Stainless steel",
-};
-
-/* ============================================================================
-   RULE ENGINE
-   ========================================================================== */
-function buildSpec(sub: Sub, env: Env, dur: Dur, temp: number, fire: boolean, potable: boolean): Spec {
-  const notes: string[] = [];
-  const tests: string[] = [];
-  const immersion = env === "Im1" || env === "Im2" || env === "Im3";
-
-  /* --- high temperature overrides everything --- */
-  if (temp > 200) {
-    const hot: Spec = {
-      prep: "SA25",
-      coats: temp > 400
-        ? [{ id: "SILAL6", coats: 2, dftMin: 20, dftMax: 25, role: "Primer + Finish" }]
-        : [
-            { id: "MODSIL", coats: 1, dftMin: 20, dftMax: 25, role: "Heat resistant primer" },
-            { id: "SILAL", coats: 2, dftMin: 20, dftMax: 25, role: "Heat resistant finish" },
-          ],
-      notes: [
-        `Service temperature declared as ${temp} °C. Conventional epoxy and polyurethane systems are excluded above 120 °C dry heat.`,
-        "Total DFT must be kept low. Excess film thickness on high-temperature silicone systems causes cracking and disbondment on thermal cycling.",
-        "Cure is heat-initiated: the coating develops final properties on first heat-up. Do not immerse or expose to condensate before first firing.",
-        "Where the asset cycles between ambient and service temperature, specify cyclic thermal testing before mass application.",
-      ],
-      tests: ["ASTM D2485 — evaluation of coatings for high temperature service", "ISO 4628 — degradation assessment after thermal cycling", "ASTM D3359 — adhesion by tape test, before and after heat cycling"],
-    };
-    return hot;
-  }
-
-  if (temp > 120 && !immersion) {
-    notes.push(`Declared service temperature of ${temp} °C exceeds the continuous dry heat limit of standard epoxy (approx. 120 °C). Confirm hot-face temperature before ordering; a silicone or epoxy-phenolic system may be required.`);
-  }
-
-  /* --- non-ferrous and concrete substrates --- */
-  if (sub === "galv") {
-    return {
-      prep: "SP16",
-      coats: [
-        { id: "ETCH", coats: 1, dftMin: 8, dftMax: 12, role: "Adhesion promoter" },
-        { id: "EPZP", coats: 1, dftMin: 50, dftMax: 75, role: "Primer" },
-        { id: dur === "M" ? "PUTOP" : "PSX", coats: dur === "VH" ? 2 : 1, dftMin: 50, dftMax: 60, role: "Finish" },
-      ],
-      notes: [
-        "Weathered galvanizing must be washed to remove zinc corrosion products before sweep blasting.",
-        "Do not apply alkaline-sensitive coatings directly to new galvanizing without an etch or tie coat — saponification causes early adhesion loss.",
-        "Where sweep blasting is not permitted, a proprietary adhesion-promoting primer may be substituted; confirm by site trial patch to ASTM D3359.",
-      ],
-      tests: ["ASTM D3359 — cross cut adhesion", "ASTM D522 — mandrel bend for formed sections", "ASTM B117 — 500 h salt spray on duplex system"],
-    };
-  }
-
-  if (sub === "alu" || sub === "ss") {
-    return {
-      prep: "SP16",
-      coats: [
-        { id: "ETCH", coats: 1, dftMin: 8, dftMax: 12, role: "Adhesion promoter" },
-        { id: "EPZP", coats: 1, dftMin: 50, dftMax: 75, role: "Primer (chromate and zinc-dust free)" },
-        { id: "PUTOP", coats: dur === "M" ? 1 : 2, dftMin: 50, dftMax: 60, role: "Finish" },
-      ],
-      notes: [
-        sub === "ss"
-          ? "Use only chloride-free abrasive on stainless steel. Carbon steel grit will cause ferrous contamination and pitting."
-          : "Zinc rich primers must not be used on aluminium — galvanic incompatibility.",
-        "Mechanical keying is essential. Chemically clean but unabraded non-ferrous surfaces will not hold a coating in service.",
-      ],
-      tests: ["ASTM D3359 — adhesion", "ASTM B117 — salt spray, scribed panel", "ISO 2409 — cross cut"],
-    };
-  }
-
-  if (sub === "concrete") {
-    const conc: Coat[] = [{ id: "EPSEAL", coats: 1, dftMin: 60, dftMax: 100, role: "Penetrating sealer / primer" }];
-    if (immersion || env === "CX" || env === "C5M" || env === "C5I") {
-      conc.push({ id: "NOVO", coats: 2, dftMin: 250, dftMax: 400, role: "Chemical resistant build coat" });
-    } else if (dur === "VH") {
-      conc.push({ id: "EPSCR", coats: 1, dftMin: 1000, dftMax: 3000, role: "Epoxy screed build coat" });
-      conc.push({ id: "PASP", coats: 1, dftMin: 75, dftMax: 100, role: "UV stable seal coat" });
-    } else {
-      conc.push({ id: "ANTICARB", coats: 2, dftMin: 100, dftMax: 150, role: "Protective / anti-carbonation finish" });
-    }
-    return {
-      prep: "CSP3",
-      coats: conc,
-      notes: [
-        "Concrete must be minimum 28 days cured. Moisture content ≤ 4% by ASTM D4263 plastic sheet test or ≤ 75% RH by in-situ probe.",
-        "All laitance, curing compound and surface contamination to be removed by captive shot blasting or diamond grinding.",
-        "Blowholes and honeycombing to be filled with epoxy mortar and cut back flush before coating.",
-        "Provide anchor grooves at all terminations and perimeters at 6 mm × 6 mm minimum.",
-        potable ? "For potable water contact, only WRAS-approved grades to be used. Confirm approval certificate reference at order stage." : "",
-      ].filter(Boolean),
-      tests: ["ASTM D4541 / ISO 4624 — pull-off adhesion, min. 1.5 MPa or concrete failure", "ASTM D4263 — moisture", "EN 1062-6 — CO₂ diffusion resistance (anti-carbonation systems)"],
-    };
-  }
-
-  /* --- carbon steel: the main path --- */
-  let coats: Coat[] = [];
-  let prep: keyof typeof PREP = "SA25";
-
-  if (immersion) {
-    prep = "SA3";
-    if (env === "Im2") {
-      coats = [
-        { id: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, role: "Primer" },
-        { id: "GFEP", coats: 2, dftMin: 200, dftMax: 250, role: "Barrier build coat" },
-      ];
-      notes.push("Sea water immersion. Cathodic protection compatibility must be confirmed — the system is to withstand cathodic disbondment testing to ISO 15711 Method A.");
-      tests.push("ISO 15711 — cathodic disbondment", "ISO 2812-2 — water immersion 2000 h", "ISO 20340 Annex A — cyclic ageing for offshore");
-    } else if (env === "Im3") {
-      coats = [
-        { id: "EPZP", coats: 1, dftMin: 50, dftMax: 75, role: "Primer" },
-        { id: "CTE", coats: 2, dftMin: 175, dftMax: 200, role: "Buried service barrier" },
-      ];
-      notes.push("Buried service. Holiday testing of 100% of the coated surface is mandatory before backfill.");
-      tests.push("ASTM G62 / NACE SP0188 — holiday detection", "ASTM G8 — cathodic disbonding of pipeline coatings", "ASTM G14 — impact resistance");
-    } else {
-      coats = [
-        { id: potable ? "NOVO" : "EPZP", coats: potable ? 2 : 1, dftMin: potable ? 200 : 50, dftMax: potable ? 250 : 75, role: potable ? "Potable water lining" : "Primer" },
-      ];
-      if (!potable) coats.push({ id: "NOVO", coats: 2, dftMin: 150, dftMax: 200, role: "Immersion grade build coat" });
-      notes.push("Fresh water immersion. Solvent-free amine cured grades only — solvent retention in immersion service causes blistering.");
-      tests.push("ISO 2812-2 — water immersion", "ASTM D714 — blistering", "ASTM D4541 — pull-off adhesion after immersion");
-      if (potable) notes.push("Potable water service: WRAS approved grade to be specified. Full cure and flushing regime to be followed before commissioning.");
-    }
-  } else {
-    /* atmospheric carbon steel */
-    const primer = (): Coat => {
-      if (env === "CX" || env === "C5M" || (env === "C5I" && dur !== "M")) return { id: dur === "VH" ? "IZS" : "ZNEP", coats: 1, dftMin: 60, dftMax: 75, role: "Anti-corrosive primer" };
-      if (env === "C4" && dur !== "M") return { id: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, role: "Anti-corrosive primer" };
-      return { id: "EPZP", coats: 1, dftMin: 50, dftMax: 75, role: "Anti-corrosive primer" };
-    };
-
-    coats.push(primer());
-
-    /* intermediate build coats */
-    const midCoats =
-      env === "CX" ? 2 :
-      env === "C5M" || env === "C5I" ? (dur === "M" ? 1 : 2) :
-      env === "C4" ? 1 :
-      env === "C3" ? (dur === "M" ? 0 : 1) : 0;
-
-    if (midCoats > 0) {
-      coats.push({ id: env === "CX" ? "EPMAS" : "EPMIO", coats: midCoats, dftMin: env === "CX" ? 125 : 100, dftMax: env === "CX" ? 150 : 125, role: "High-build intermediate" });
-    }
-
-    /* finish */
-    const finishId = env === "CX" || dur === "VH" ? "PASP" : env === "C5M" || env === "C5I" ? "PSX" : "PUTOP";
-    coats.push({
-      id: finishId,
-      coats: dur === "M" ? 1 : env === "C2" || env === "C3" ? 1 : 2,
-      dftMin: finishId === "PASP" ? 75 : finishId === "PSX" ? 75 : 50,
-      dftMax: finishId === "PASP" ? 100 : finishId === "PSX" ? 100 : 60,
-      role: "UV stable finish coat",
-    });
-
-    if (env === "CX") prep = "SA3";
-
-    tests.push(
-      "ASTM B117 / ISO 9227 — neutral salt spray, scribed panel",
-      "ISO 4624 / ASTM D4541 — pull-off adhesion, min. 5 MPa on blasted steel",
-      "ISO 2409 / ASTM D3359 — cross cut adhesion",
-    );
-    if (env === "C5M" || env === "CX") tests.push("ISO 20340 / NORSOK M-501 — cyclic ageing for offshore and marine exposure");
-    if (dur === "VH") tests.push("ISO 16474-2 / ASTM G154 — accelerated weathering, gloss and colour retention");
-  }
-
-  /* fire protection add-on */
-  if (fire) {
-    const primerIdx = 0;
-    coats = [
-      coats[primerIdx],
-      { id: "INTUM", coats: 1, dftMin: 500, dftMax: 3000, role: "Intumescent fire protection (DFT per fire rating)" },
-      { id: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, role: "Sealer / decorative topcoat" },
-    ];
-    notes.push("Intumescent DFT is not a coating decision — it is derived from the section factor (Hp/A), required fire rating and critical steel temperature. A loading schedule must be issued per member before application.");
-    notes.push("Topcoat over intumescent is mandatory in exposed or semi-exposed conditions and must be from an approved compatible range only.");
-    tests.push("BS 476 Part 20/21 — fire resistance", "EN 13381-8 — fire protection to steel members", "ASTM E119 / UL 263 where US specification applies");
-  }
-
-  /* universal notes */
-  notes.push(
-    "All DFT values are dry film thickness per coat. Wet film thickness to be monitored during application and DFT verified to SSPC-PA2 (80/20 rule) after cure.",
-    "Overcoating intervals are product and temperature specific. Where the maximum overcoating interval is exceeded, the surface must be abraded and solvent wiped before the next coat.",
-    "Stripe coat by brush is mandatory on all edges, welds, bolt heads, back-to-back angles and cut-outs, applied before or after each full coat as specified.",
-    "Do not apply when steel temperature is less than 3 °C above dew point, when relative humidity exceeds 85%, or when substrate temperature is below the minimum stated on the product data sheet.",
-  );
-
-  return { prep, coats, notes, tests };
-}
 
 function spreadRate(vs: number, dft: number) {
   return ((vs * 10) / dft).toFixed(1);
 }
 
-/* ============================================================================
-   PAGE
-   ========================================================================== */
 export default function SpecificationGenerator() {
-  const [sub, setSub] = useState<Sub>("carbon");
-  const [env, setEnv] = useState<Env>("C4");
-  const [dur, setDur] = useState<Dur>("H");
-  const [temp, setTemp] = useState(60);
-  const [fire, setFire] = useState(false);
-  const [potable, setPotable] = useState(false);
+  const [sector, setSector] = useState<string>("buildings");
+  const [asset, setAsset] = useState<string>(SECTORS.buildings.assets[0]);
+  const [flags, setFlags] = useState<string[]>([]);
+  const [systemId, setSystemId] = useState<string | null>(null);
 
   const [project, setProject] = useState("");
   const [client, setClient] = useState("");
-  const [asset, setAsset] = useState("");
-  const [area, setArea] = useState("");
   const [ref, setRef] = useState("");
+  const [area, setArea] = useState("");
+  const [loss, setLoss] = useState(30);
 
-  const spec = useMemo(() => buildSpec(sub, env, dur, temp, fire, potable), [sub, env, dur, temp, fire, potable]);
+  /* systems matching the asset */
+  const matches = useMemo(
+    () => SYSTEMS.filter((s) => s.sector === sector && s.asset === asset),
+    [sector, asset]
+  );
 
-  const totalMin = spec.coats.reduce((s, c) => s + c.coats * c.dftMin, 0);
-  const totalMax = spec.coats.reduce((s, c) => s + c.coats * c.dftMax, 0);
+  /* systems that also satisfy every requested requirement */
+  const filtered = useMemo(() => {
+    if (!flags.length) return matches;
+    return matches.filter((s) => flags.every((f) => (s.flags || []).includes(f)));
+  }, [matches, flags]);
 
-  const today = new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
-  const specNo = ref || `AP/SPEC/${sub.slice(0, 2).toUpperCase()}${env.replace("-", "")}/${new Date().getFullYear()}`;
+  const system: System | undefined =
+    filtered.find((s) => s.id === systemId) ?? filtered[0] ?? matches[0];
+
+  /* requirements that no system for this asset can satisfy */
+  const unmet = flags.filter((f) => !matches.some((s) => (s.flags || []).includes(f)));
+
+  /* other sectors that DO cover an unmet requirement */
+  const elsewhere = useMemo(() => {
+    if (!unmet.length) return [];
+    return SYSTEMS.filter((s) => unmet.every((f) => (s.flags || []).includes(f)))
+      .slice(0, 4);
+  }, [unmet]);
+
+  const pickSector = (k: string) => {
+    setSector(k); setAsset(SECTORS[k].assets[0]); setSystemId(null);
+  };
+  const pickAsset = (a: string) => { setAsset(a); setSystemId(null); };
+  const toggleFlag = (f: string) =>
+    setFlags((x) => (x.includes(f) ? x.filter((y) => y !== f) : [...x, f]));
+
+  const totalMin = system ? system.coats.reduce((n, c) => n + c.coats * c.dftMin, 0) : 0;
+  const totalMax = system ? system.coats.reduce((n, c) => n + c.coats * c.dftMax, 0) : 0;
 
   const areaNum = parseFloat(area);
-  const showQty = !isNaN(areaNum) && areaNum > 0;
+  const showQty = !isNaN(areaNum) && areaNum > 0 && !!system;
 
-  const envOptions: Env[] = ["C2", "C3", "C4", "C5I", "C5M", "CX", "Im1", "Im2", "Im3"];
+  const today = new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+  const specNo = ref || (system ? `AP/SPEC/${system.id.toUpperCase()}/${new Date().getFullYear()}` : "");
 
   return (
     <div className="min-h-screen bg-[#FAF8F4]">
-      {/* ---------- masthead ---------- */}
+      {/* hero — composed banner, no overlay */}
       <section className="print:hidden relative overflow-hidden bg-white">
-        <img src="/img/heroes/hero-spec-generator.jpg" alt="Building a coating specification with Anupam Paints — substrate, environment and the resulting coat schedule" className="w-full h-auto block" />
+        <img src="/img/heroes/hero-spec-generator.jpg"
+          alt="Building a coating specification with Anupam Paints"
+          className="w-full h-auto block" />
         <div className="not-sr-only md:sr-only max-w-7xl mx-auto px-5 py-6">
-          <p className="text-[11px] tracking-[0.28em] uppercase text-slate-500 mb-3">Specifier Centre</p>
-          <h1 className="text-3xl md:text-5xl font-semibold leading-[1.1] max-w-3xl">
-            Coating Specification Generator
-          </h1>
-          <p className="mt-5 text-[15px] leading-relaxed text-slate-600 max-w-2xl">
-            Build a project-ready protective coating specification to ISO 12944. Select the substrate,
-            corrosivity category and required durability — the tool returns the full system, surface
-            preparation standard, film thickness schedule and applicable test references, ready to
-            issue or attach to a tender document.
+          <p className="text-[11px] tracking-[0.28em] uppercase text-slate-500 mb-2">Specifier Centre</p>
+          <h1 className="text-2xl font-semibold text-[var(--color-navy)]">Coating Specification Generator</h1>
+          <p className="mt-2 text-[13px] text-slate-600">
+            Every division, every substrate — from an interior wall to an offshore jacket.
           </p>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-5 py-10 grid lg:grid-cols-[380px_1fr] gap-8 items-start">
-        {/* ---------- input panel ---------- */}
-        <div className="print:hidden bg-white rounded-xl border border-slate-200 p-6 lg:sticky lg:top-6">
-          <h2 className="text-xs tracking-[0.18em] uppercase text-slate-500 mb-5">Specification inputs</h2>
-
-          <Field label="Substrate">
-            <select value={sub} onChange={(e) => setSub(e.target.value as Sub)} className={SEL}>
-              {Object.entries(SUB_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-            </select>
-          </Field>
-
-          <Field label="Environment — ISO 12944-2 corrosivity category">
-            <select value={env} onChange={(e) => setEnv(e.target.value as Env)} className={SEL}>
-              {envOptions.map((k) => <option key={k} value={k}>{ENV_LABEL[k]}</option>)}
-            </select>
-          </Field>
-
-          <Field label="Durability to first major maintenance — ISO 12944-1">
-            <select value={dur} onChange={(e) => setDur(e.target.value as Dur)} className={SEL}>
-              {Object.entries(DUR_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-            </select>
-          </Field>
-
-          <Field label={`Maximum service temperature — ${temp} °C`}>
-            <input type="range" min={-20} max={600} step={10} value={temp}
-              onChange={(e) => setTemp(parseInt(e.target.value))}
-              className="w-full accent-[#1E5AA8]" />
-            <div className="flex justify-between text-[11px] text-slate-400 mt-1">
-              <span>−20</span><span>120</span><span>400</span><span>600 °C</span>
+      <div className="max-w-7xl mx-auto px-4 md:px-5 py-8 grid lg:grid-cols-[360px_1fr] gap-7 items-start">
+        {/* ---------------------------------------------- inputs ---------- */}
+        <div className="print:hidden lg:sticky lg:top-6 space-y-5">
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <Step n="1" title="Sector" />
+            <div className="grid gap-1 mt-3">
+              {Object.entries(SECTORS).map(([k, v]) => (
+                <button key={k} onClick={() => pickSector(k)}
+                  className={`text-left px-3 py-2 rounded-lg text-[13px] transition-colors ${
+                    sector === k ? "bg-[#0B2A5B] text-white" : "text-slate-700 hover:bg-slate-100"}`}>
+                  {v.label}
+                </button>
+              ))}
             </div>
-          </Field>
-
-          <div className="space-y-3 mt-5 pt-5 border-t border-slate-100">
-            <Check checked={fire} onChange={setFire} label="Passive fire protection required" />
-            <Check checked={potable} onChange={setPotable} label="Potable water / food contact service" />
+            <p className="text-[11.5px] text-slate-500 mt-3 leading-snug">{SECTORS[sector].blurb}</p>
           </div>
 
-          <div className="mt-6 pt-5 border-t border-slate-100 space-y-3">
-            <h3 className="text-xs tracking-[0.18em] uppercase text-slate-500 mb-1">Project details (optional)</h3>
-            <Inp v={project} set={setProject} p="Project name" />
-            <Inp v={client} set={setClient} p="Client / consultant" />
-            <Inp v={asset} set={setAsset} p="Structure or asset described" />
-            <Inp v={ref} set={setRef} p="Your specification reference" />
-            <Inp v={area} set={setArea} p="Surface area (m²) — for quantities" />
-          </div>
-
-          <button onClick={() => window.print()}
-            className="mt-6 w-full bg-[#1E5AA8] hover:bg-[#164683] text-white text-sm font-medium py-3 rounded-lg transition-colors">
-            Download specification as PDF
-          </button>
-          <p className="mt-2 text-[11px] text-slate-500 leading-relaxed">
-            Opens your print dialog — choose “Save as PDF”. Only the specification sheet is printed.
-          </p>
-        </div>
-
-        {/* ---------- specification document ---------- */}
-        <div id="spec-doc" className="bg-white rounded-xl border border-slate-200 print:border-0 print:rounded-none">
-          {/* document header */}
-          <div className="px-8 pt-8 pb-6 border-b-2 border-[#0B2A5B]">
-            <div className="flex justify-between items-start gap-6 flex-wrap">
-              <div>
-                <p className="text-[19px] font-semibold text-[#0B2A5B] tracking-tight">ANUPAM PAINTS</p>
-                <p className="text-[11px] text-slate-500 mt-0.5">Anupam Enterprises · Established 1972 · ISO 9001 / 14001 / 45001</p>
-              </div>
-              <div className="text-right text-[11px] text-slate-600 leading-relaxed">
-                <p className="font-medium text-slate-800">Protective Coating Specification</p>
-                <p>Spec. No. {specNo}</p>
-                <p>Date of issue {today}</p>
-              </div>
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <Step n="2" title="Asset or surface" />
+            <div className="grid gap-1 mt-3">
+              {SECTORS[sector].assets.map((a) => (
+                <button key={a} onClick={() => pickAsset(a)}
+                  className={`text-left px-3 py-2 rounded-lg text-[13px] transition-colors ${
+                    asset === a ? "bg-blue-50 text-[#0B2A5B] font-medium ring-1 ring-[#1E5AA8]/30" : "text-slate-700 hover:bg-slate-100"}`}>
+                  {a}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* project meta */}
-          {(project || client || asset) && (
-            <div className="px-8 py-5 border-b border-slate-200 grid sm:grid-cols-3 gap-4">
-              {project && <Meta k="Project" v={project} />}
-              {client && <Meta k="Client / consultant" v={client} />}
-              {asset && <Meta k="Structure / asset" v={asset} />}
+          <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <Step n="3" title="Special requirements" />
+            <p className="text-[11.5px] text-slate-500 mt-1 mb-3">Optional. Narrows to systems that satisfy all of them.</p>
+            <div className="flex flex-wrap gap-1.5">
+              {Object.entries(FLAGS).map(([k, label]) => (
+                <button key={k} onClick={() => toggleFlag(k)}
+                  className={`text-[11.5px] px-2.5 py-1 rounded-full border transition-colors ${
+                    flags.includes(k) ? "bg-[#0B2A5B] text-white border-[#0B2A5B]"
+                      : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"}`}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            {unmet.length > 0 && (
+              <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                <p className="text-[12px] text-amber-900 leading-snug">
+                  No system for <span className="font-medium">{asset}</span> covers{" "}
+                  {unmet.map((f) => FLAGS[f]).join(" and ")}.
+                </p>
+                {elsewhere.length > 0 && (
+                  <>
+                    <p className="text-[11.5px] text-amber-800 mt-2 mb-1">Covered elsewhere by:</p>
+                    {elsewhere.map((s) => (
+                      <button key={s.id}
+                        onClick={() => { setSector(s.sector); setAsset(s.asset); setSystemId(s.id); }}
+                        className="block text-left text-[11.5px] text-amber-900 underline hover:no-underline">
+                        {SECTORS[s.sector].label} → {s.asset}
+                      </button>
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+
+          {filtered.length > 1 && (
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
+              <Step n="4" title="System" />
+              <div className="grid gap-2 mt-3">
+                {filtered.map((s) => (
+                  <button key={s.id} onClick={() => setSystemId(s.id)}
+                    className={`text-left px-3 py-2.5 rounded-lg border text-[12.5px] transition-colors ${
+                      system?.id === s.id ? "border-[#1E5AA8] ring-2 ring-[#1E5AA8]/20" : "border-slate-200 hover:border-slate-300"}`}>
+                    <span className="font-medium text-slate-900 block">{s.label}</span>
+                    <span className="text-slate-500">{s.life}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
-          {/* basis of design */}
-          <Section n="1" title="Basis of specification">
-            <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
-              <Row k="Substrate" v={SUB_LABEL[sub]} />
-              <Row k="Corrosivity category" v={ENV_LABEL[env]} />
-              <Row k="Design durability" v={DUR_LABEL[dur]} />
-              <Row k="Max. service temperature" v={`${temp} °C`} />
-              {fire && <Row k="Fire protection" v="Passive fire protection to steel required" />}
-              {potable && <Row k="Special service" v="Potable water / food contact" />}
-              <Row k="Reference standard" v="ISO 12944 Parts 1–6, ISO 8501-1, SSPC-PA2" />
+          <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
+            <Step n={filtered.length > 1 ? "5" : "4"} title="Project details" />
+            <Inp v={project} set={setProject} p="Project name" />
+            <Inp v={client} set={setClient} p="Client / consultant" />
+            <Inp v={ref} set={setRef} p="Your specification reference" />
+            <Inp v={area} set={setArea} p="Surface area (m²) — for quantities" />
+            <div>
+              <label className="block text-[11.5px] text-slate-600 mb-1">Loss factor {loss}%</label>
+              <input type="range" min={10} max={70} step={5} value={loss}
+                onChange={(e) => setLoss(parseInt(e.target.value))} className="w-full accent-[#1E5AA8]" />
+              <p className="text-[10.5px] text-slate-400 leading-snug">
+                15% plate and tank · 30% structural steel · 50%+ lattice, handrail, complex sections
+              </p>
             </div>
-          </Section>
+            <button onClick={() => window.print()}
+              className="w-full bg-[#1E5AA8] hover:bg-[#164683] text-white text-sm font-medium py-3 rounded-lg transition-colors">
+              Download specification as PDF
+            </button>
+          </div>
+        </div>
 
-          {/* surface preparation */}
-          <Section n="2" title="Surface preparation">
-            <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
-              <Row k="Preparation standard" v={PREP[spec.prep].std} />
-              <Row k="Surface profile" v={PREP[spec.prep].profile} />
+        {/* ---------------------------------------------- document -------- */}
+        <div id="spec-doc" className="bg-white rounded-xl border border-slate-200 print:border-0 print:rounded-none">
+          {!system ? (
+            <div className="p-10 text-center text-slate-600 text-[14px]">
+              No system matches that combination. Clear a requirement to see the options.
             </div>
-            <p className="mt-4 text-[13px] leading-relaxed text-slate-700">{PREP[spec.prep].note}</p>
-          </Section>
+          ) : (
+            <>
+              <div className="px-6 md:px-8 pt-8 pb-6 border-b-2 border-[#0B2A5B]">
+                <div className="flex justify-between items-start gap-6 flex-wrap">
+                  <div>
+                    <p className="text-[19px] font-semibold text-[#0B2A5B] tracking-tight">ANUPAM PAINTS</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
+                      Anupam Enterprises · Established 1972 · ISO 9001 / 14001 / 45001
+                    </p>
+                  </div>
+                  <div className="text-right text-[11px] text-slate-600 leading-relaxed">
+                    <p className="font-medium text-slate-800">Protective Coating Specification</p>
+                    <p>Spec. No. {specNo}</p>
+                    <p>Date of issue {today}</p>
+                  </div>
+                </div>
+              </div>
 
-          {/* coating schedule */}
-          <Section n="3" title="Coating schedule">
-            <div className="overflow-x-auto -mx-1">
-              <table className="w-full text-[12.5px] border-collapse">
-                <thead>
-                  <tr className="bg-[#0B2A5B] text-white text-left">
-                    <Th>Coat</Th><Th>Product</Th><Th>Generic type</Th>
-                    <Th className="text-center">Vol. solids</Th>
-                    <Th className="text-center">No. of coats</Th>
-                    <Th className="text-center">DFT / coat</Th>
-                    <Th className="text-center">Theor. rate</Th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {spec.coats.map((c, i) => {
-                    const p = PRODUCTS[c.id];
-                    return (
-                      <tr key={i} className={i % 2 ? "bg-slate-50/70" : ""}>
-                        <Td className="whitespace-nowrap text-slate-500">{c.role}</Td>
-                        <Td className="font-medium text-slate-900">{p.name}</Td>
-                        <Td className="text-slate-600">{p.generic}</Td>
-                        <Td className="text-center">{p.vs}%</Td>
-                        <Td className="text-center">{c.coats}</Td>
-                        <Td className="text-center whitespace-nowrap">{c.dftMin}–{c.dftMax} µm</Td>
-                        <Td className="text-center whitespace-nowrap text-slate-600">{spreadRate(p.vs, (c.dftMin + c.dftMax) / 2)} m²/L</Td>
+              {(project || client) && (
+                <div className="px-6 md:px-8 py-5 border-b border-slate-200 grid sm:grid-cols-3 gap-4">
+                  {project && <Meta k="Project" v={project} />}
+                  {client && <Meta k="Client / consultant" v={client} />}
+                  <Meta k="Application" v={`${SECTORS[system.sector].label} — ${system.asset}`} />
+                </div>
+              )}
+
+              <Section n="1" title="System selected">
+                <p className="text-[15px] font-semibold text-[#0B2A5B] mb-1">{system.label}</p>
+                <p className="text-[13px] text-slate-700 leading-relaxed mb-4">{system.blurb}</p>
+                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+                  <Row k="Sector" v={SECTORS[system.sector].label} />
+                  <Row k="Asset" v={system.asset} />
+                  <Row k="Expected service life" v={system.life} />
+                  {system.envs && <Row k="Suits corrosivity" v={system.envs.map((e) => ENV_LABEL[e]?.split(" —")[0] ?? e).join(", ")} />}
+                  {system.tempMax && <Row k="Max service temperature" v={`${system.tempMax} °C`} />}
+                  {system.flags && system.flags.length > 0 &&
+                    <Row k="Satisfies" v={system.flags.map((f) => FLAGS[f]).join(", ")} />}
+                </div>
+              </Section>
+
+              <Section n="2" title="Surface preparation">
+                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
+                  <Row k="Preparation standard" v={PREP[system.prep].std} />
+                  <Row k="Surface profile" v={PREP[system.prep].profile} />
+                </div>
+                <p className="mt-4 text-[13px] leading-relaxed text-slate-700">{PREP[system.prep].note}</p>
+              </Section>
+
+              <Section n="3" title="Coating schedule">
+                <div className="overflow-x-auto -mx-1">
+                  <table className="w-full text-[12.5px] border-collapse">
+                    <thead>
+                      <tr className="bg-[#0B2A5B] text-white text-left">
+                        <Th>Coat</Th><Th>Product</Th><Th>Generic type</Th>
+                        <Th className="text-center">Vol. solids</Th>
+                        <Th className="text-center">Coats</Th>
+                        <Th className="text-center">DFT / coat</Th>
+                        <Th className="text-center">Method</Th>
                       </tr>
-                    );
-                  })}
-                  <tr className="border-t-2 border-[#0B2A5B] font-semibold">
-                    <Td colSpan={5} className="text-right pr-4">Total system dry film thickness</Td>
-                    <Td className="text-center whitespace-nowrap text-[#0B2A5B]">{totalMin}–{totalMax} µm</Td>
-                    <Td />
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                    </thead>
+                    <tbody>
+                      {system.coats.map((c, i) => {
+                        const p = PRODUCTS[c.product];
+                        return (
+                          <tr key={i} className={i % 2 ? "bg-slate-50/70" : ""}>
+                            <Td className="whitespace-nowrap text-slate-500">{c.role}</Td>
+                            <Td className="font-medium text-slate-900">{p.name}</Td>
+                            <Td className="text-slate-600">{p.generic}</Td>
+                            <Td className="text-center">{p.vs}%</Td>
+                            <Td className="text-center">{c.coats}</Td>
+                            <Td className="text-center whitespace-nowrap">{c.dftMin}–{c.dftMax} µm</Td>
+                            <Td className="text-center text-slate-600">{c.method}</Td>
+                          </tr>
+                        );
+                      })}
+                      <tr className="border-t-2 border-[#0B2A5B] font-semibold">
+                        <Td colSpan={5} className="text-right pr-4">Total system dry film thickness</Td>
+                        <Td className="text-center whitespace-nowrap text-[#0B2A5B]">{totalMin}–{totalMax} µm</Td>
+                        <Td />
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-            {/* film stack visual */}
-            <div className="mt-6 print:mt-4">
-              <p className="text-[11px] tracking-[0.16em] uppercase text-slate-500 mb-2">Film cross-section, proportional to thickness</p>
-              <div className="flex rounded-md overflow-hidden border border-slate-300 h-11">
-                {spec.coats.map((c, i) => {
-                  const share = ((c.coats * ((c.dftMin + c.dftMax) / 2)) / ((totalMin + totalMax) / 2)) * 100;
-                  const shades = ["#0B2A5B", "#1E5AA8", "#4A82C4", "#8FB3DC", "#C3D6EC"];
-                  return (
-                    <div key={i} style={{ width: `${share}%`, background: shades[i % shades.length] }}
-                      className="flex items-center justify-center text-[10px] text-white font-medium overflow-hidden px-1">
-                      {share > 12 ? `${c.coats * c.dftMin}–${c.coats * c.dftMax} µm` : ""}
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                <span>Substrate</span><span>Exposed face</span>
-              </div>
-            </div>
-
-            {/* quantities */}
-            {showQty && (
-              <div className="mt-6">
-                <p className="text-[11px] tracking-[0.16em] uppercase text-slate-500 mb-2">
-                  Indicative material quantity for {areaNum.toLocaleString("en-IN")} m²
-                </p>
-                <table className="w-full text-[12.5px] border-collapse">
-                  <thead>
-                    <tr className="bg-slate-100 text-left text-slate-700">
-                      <Th light>Product</Th>
-                      <Th light className="text-center">Theoretical litres</Th>
-                      <Th light className="text-center">Practical litres (30% loss)</Th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {spec.coats.map((c, i) => {
-                      const p = PRODUCTS[c.id];
-                      const dft = ((c.dftMin + c.dftMax) / 2) * c.coats;
-                      const theo = (areaNum * dft) / (p.vs * 10);
+                <div className="mt-6">
+                  <p className="text-[11px] tracking-[0.16em] uppercase text-slate-500 mb-2">
+                    Film cross-section, proportional to thickness
+                  </p>
+                  <div className="flex rounded-md overflow-hidden border border-slate-300 h-11">
+                    {system.coats.map((c, i) => {
+                      const share = ((c.coats * ((c.dftMin + c.dftMax) / 2)) / ((totalMin + totalMax) / 2)) * 100;
+                      const shades = ["#0B2A5B", "#1E5AA8", "#4A82C4", "#8FB3DC", "#C3D6EC"];
                       return (
-                        <tr key={i} className={i % 2 ? "bg-slate-50/70" : ""}>
-                          <Td>{p.name}</Td>
-                          <Td className="text-center">{theo.toFixed(0)} L</Td>
-                          <Td className="text-center font-medium">{(theo * 1.43).toFixed(0)} L</Td>
-                        </tr>
+                        <div key={i} style={{ width: `${share}%`, background: shades[i % shades.length] }}
+                          className="flex items-center justify-center text-[10px] text-white font-medium overflow-hidden px-1">
+                          {share > 14 ? `${c.coats * c.dftMin}–${c.coats * c.dftMax} µm` : ""}
+                        </div>
                       );
                     })}
-                  </tbody>
-                </table>
-                <p className="mt-2 text-[11px] text-slate-500 leading-relaxed">
-                  Loss factor of 30% assumed for airless spray on structural steel. Adjust to 15% for
-                  plate and tank surfaces, and to 50% or above for lattice towers, handrails and
-                  complex sections.
+                  </div>
+                  <div className="flex justify-between text-[10px] text-slate-500 mt-1">
+                    <span>Substrate</span><span>Exposed face</span>
+                  </div>
+                </div>
+
+                {showQty && (
+                  <div className="mt-6">
+                    <p className="text-[11px] tracking-[0.16em] uppercase text-slate-500 mb-2">
+                      Indicative material quantity for {areaNum.toLocaleString("en-IN")} m²
+                    </p>
+                    <table className="w-full text-[12.5px] border-collapse">
+                      <thead>
+                        <tr className="bg-slate-100 text-left text-slate-700">
+                          <Th>Product</Th>
+                          <Th className="text-center">Coverage</Th>
+                          <Th className="text-center">Theoretical</Th>
+                          <Th className="text-center">Practical (+{loss}%)</Th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {system.coats.map((c, i) => {
+                          const p = PRODUCTS[c.product];
+                          const dft = ((c.dftMin + c.dftMax) / 2) * c.coats;
+                          const theo = (areaNum * dft) / (p.vs * 10);
+                          return (
+                            <tr key={i} className={i % 2 ? "bg-slate-50/70" : ""}>
+                              <Td>{p.name}</Td>
+                              <Td className="text-center text-slate-600">
+                                {spreadRate(p.vs, (c.dftMin + c.dftMax) / 2)} m²/L
+                              </Td>
+                              <Td className="text-center">{theo.toFixed(0)} L</Td>
+                              <Td className="text-center font-medium">{(theo * (1 + loss / 100)).toFixed(0)} L</Td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </Section>
+
+              <Section n="4" title="Application requirements">
+                <ol className="space-y-2.5">
+                  {[...system.notes,
+                    "All DFT values are dry film thickness. Monitor wet film during application and verify DFT to SSPC-PA2 after cure.",
+                    "Stripe coat all edges, welds, bolt heads and cut-outs by brush where the substrate is steel.",
+                    "Do not apply when the substrate is less than 3 °C above dew point, when relative humidity exceeds 85%, or below the minimum temperature on the product data sheet.",
+                    "Observe minimum and maximum overcoating intervals. Where the maximum is exceeded, abrade and solvent wipe before the next coat.",
+                  ].map((n, i) => (
+                    <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-slate-700">
+                      <span className="text-slate-400 tabular-nums shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                      <span>{n}</span>
+                    </li>
+                  ))}
+                </ol>
+              </Section>
+
+              <Section n="5" title="Standards and testing">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-[11px] tracking-[0.16em] uppercase text-slate-500 mb-2">Applicable standards</p>
+                    <ul className="space-y-1.5">
+                      {system.standards.map((s) => (
+                        <li key={s} className="text-[13px] text-slate-700 flex gap-2">
+                          <span className="text-[#1E5AA8]">▪</span><span>{s}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-[11px] tracking-[0.16em] uppercase text-slate-500 mb-2">Testing and acceptance</p>
+                    <ul className="space-y-1.5">
+                      {system.tests.map((t) => (
+                        <li key={t} className="text-[13px] text-slate-700 flex gap-2">
+                          <span className="text-[#1E5AA8]">▪</span><span>{t}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </Section>
+
+              <div className="px-6 md:px-8 py-6 border-t border-slate-200 text-[11px] leading-relaxed text-slate-500">
+                <p className="mb-2">
+                  <span className="font-medium text-slate-700">Basis of issue.</span> Generated from the
+                  selections recorded in Section 1 and issued for guidance. Final selection must be
+                  confirmed against the current product technical data sheet, the project specification
+                  and site conditions. Anupam Enterprises will issue a countersigned specification on
+                  request following technical review.
+                </p>
+                <p>
+                  Anupam Enterprises (Anupam Paints) · Poddar Point, 113 Park Street, 5th Floor, Block-B,
+                  Kolkata 700016 · Works: Foundry Park, Laskarpur, Ranihati Amta Road, Howrah 711414 ·
+                  033-22651204 · care@anupampaints.com · anupampaints.com
                 </p>
               </div>
-            )}
-          </Section>
-
-          {/* application notes */}
-          <Section n="4" title="Application requirements">
-            <ol className="space-y-2.5">
-              {spec.notes.map((n, i) => (
-                <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-slate-700">
-                  <span className="text-slate-400 tabular-nums shrink-0">{String(i + 1).padStart(2, "0")}</span>
-                  <span>{n}</span>
-                </li>
-              ))}
-            </ol>
-          </Section>
-
-          {/* testing */}
-          <Section n="5" title="Testing and acceptance">
-            <ul className="space-y-2">
-              {spec.tests.map((t, i) => (
-                <li key={i} className="text-[13px] text-slate-700 flex gap-3">
-                  <span className="text-[#1E5AA8] shrink-0">▪</span><span>{t}</span>
-                </li>
-              ))}
-              <li className="text-[13px] text-slate-700 flex gap-3">
-                <span className="text-[#1E5AA8] shrink-0">▪</span>
-                <span>SSPC-PA2 — dry film thickness measurement and acceptance criteria. Batch test certificates to be issued against every despatch.</span>
-              </li>
-            </ul>
-          </Section>
-
-          {/* footer */}
-          <div className="px-8 py-6 border-t border-slate-200 text-[11px] leading-relaxed text-slate-500">
-            <p className="mb-2">
-              <span className="font-medium text-slate-700">Basis of issue.</span> This specification is
-              generated from the design inputs recorded in Section 1 and is issued for guidance. Final
-              selection must be confirmed against the current product technical data sheet, the project
-              specification and site conditions at the time of application. Anupam Enterprises will issue
-              a countersigned specification on request following technical review.
-            </p>
-            <p>
-              Anupam Enterprises (Anupam Paints) · Poddar Point, 113 Park Street, 5th Floor, Block-B,
-              Kolkata 700016 · Works: Foundry Park, Laskarpur, Ranihati Amta Road, Howrah 711414 ·
-              033-22651204 · care@anupampaints.com · anupampaints.com
-            </p>
-          </div>
+            </>
+          )}
         </div>
       </div>
 
-      {/* print rules */}
       <style jsx global>{`
         @media print {
           body { background: #fff !important; }
@@ -575,7 +415,6 @@ export default function SpecificationGenerator() {
           #spec-doc { box-shadow: none !important; border: 0 !important; }
           @page { margin: 12mm; size: A4; }
           section { break-inside: avoid; }
-          table { break-inside: auto; }
           tr { break-inside: avoid; }
         }
       `}</style>
@@ -583,35 +422,26 @@ export default function SpecificationGenerator() {
   );
 }
 
-/* ---------- small presentational helpers ---------- */
-const SEL = "w-full border border-slate-300 rounded-lg px-3 py-2.5 text-[13px] bg-white focus:outline-none focus:ring-2 focus:ring-[#1E5AA8]/40 focus:border-[#1E5AA8]";
-
-function Field({ label, children }: { label: string; children: ReactNode }) {
+/* ---------- pieces ---------- */
+function Step({ n, title }: { n: string; title: string }) {
   return (
-    <div className="mb-4">
-      <label className="block text-[12px] font-medium text-slate-700 mb-1.5">{label}</label>
-      {children}
+    <div className="flex items-baseline gap-2.5">
+      <span className="text-[11px] tabular-nums text-[#1E5AA8] font-semibold">{n}</span>
+      <h2 className="text-[13px] font-semibold text-[#0B2A5B]">{title}</h2>
     </div>
   );
 }
 
 function Inp({ v, set, p }: { v: string; set: (s: string) => void; p: string }) {
-  return <input value={v} onChange={(e) => set(e.target.value)} placeholder={p} className={SEL} />;
-}
-
-function Check({ checked, onChange, label }: { checked: boolean; onChange: (b: boolean) => void; label: string }) {
   return (
-    <label className="flex items-center gap-2.5 cursor-pointer">
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)}
-        className="w-4 h-4 accent-[#1E5AA8]" />
-      <span className="text-[13px] text-slate-700">{label}</span>
-    </label>
+    <input value={v} onChange={(e) => set(e.target.value)} placeholder={p}
+      className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-[#1E5AA8]/40 focus:border-[#1E5AA8]" />
   );
 }
 
 function Section({ n, title, children }: { n: string; title: string; children: ReactNode }) {
   return (
-    <section className="px-8 py-6 border-b border-slate-200">
+    <section className="px-6 md:px-8 py-6 border-b border-slate-200">
       <div className="flex items-baseline gap-3 mb-4">
         <span className="text-[11px] tabular-nums text-[#1E5AA8] font-semibold">{n}</span>
         <h2 className="text-[15px] font-semibold text-[#0B2A5B] tracking-tight">{title}</h2>
@@ -639,8 +469,8 @@ function Meta({ k, v }: { k: string; v: string }) {
   );
 }
 
-function Th({ children, className = "", light = false }: { children?: ReactNode; className?: string; light?: boolean }) {
-  return <th className={`px-3 py-2.5 font-medium text-[11px] tracking-wide ${light ? "text-slate-700" : ""} ${className}`}>{children}</th>;
+function Th({ children, className = "" }: { children?: ReactNode; className?: string }) {
+  return <th className={`px-3 py-2.5 font-medium text-[11px] tracking-wide ${className}`}>{children}</th>;
 }
 
 function Td({ children, className = "", colSpan }: { children?: ReactNode; className?: string; colSpan?: number }) {
