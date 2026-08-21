@@ -1,0 +1,1291 @@
+/* ============================================================================
+   ANUPAM PAINTS — COATING SYSTEMS CATALOGUE
+   ----------------------------------------------------------------------------
+   EDIT THIS FILE to correct product names, volume solids and DFT figures.
+   The generator reads everything from here.
+
+   Volume solids (vs) drives coverage and litreage on every specification the
+   tool produces. A wrong figure here puts wrong numbers on a document an
+   engineer may hand to a client. Please check these against your TDS.
+   ========================================================================== */
+
+export interface Product { name: string; generic: string; vs: number }
+
+export const PRODUCTS: Record<string, Product> = {
+  /* --- primers, ferrous --- */
+  EPZP:    { name: "Anupam Epoxy Zinc Phosphate Primer", generic: "Two-pack epoxy polyamide, zinc phosphate", vs: 55 },
+  ZNEP:    { name: "Anupam Zinc Rich Epoxy Primer",      generic: "Two-pack epoxy, min. 80% zinc in dry film", vs: 62 },
+  IZS:     { name: "Anupam Inorganic Zinc Silicate",     generic: "Ethyl silicate, self-curing zinc rich", vs: 60 },
+  REDOX:   { name: "Anupam Red Oxide Primer",            generic: "Alkyd red oxide zinc chromate free", vs: 48 },
+  SHOPP:   { name: "Anupam Shop Primer",                 generic: "Fast-dry weldable holding primer", vs: 30 },
+  ETCH:    { name: "Anupam Etch Primer",                 generic: "Two-pack polyvinyl butyral wash primer", vs: 12 },
+  EPOXYHB: { name: "Anupam Epoxy High Build",            generic: "Two-pack high-build epoxy", vs: 72 },
+
+  /* --- intermediates and barriers --- */
+  EPMIO:   { name: "Anupam Epoxy MIO Intermediate",      generic: "Two-pack epoxy, micaceous iron oxide", vs: 65 },
+  EPMAS:   { name: "Anupam Epoxy Mastic HB",             generic: "Surface-tolerant high-build epoxy mastic", vs: 80 },
+  GFEP:    { name: "Anupam Glass Flake Epoxy",           generic: "Solvent-free glass flake reinforced epoxy", vs: 90 },
+  CTE:     { name: "Anupam Coal Tar Epoxy",              generic: "Coal tar modified epoxy", vs: 72 },
+  NOVO:    { name: "Anupam Novolac Epoxy Lining",        generic: "Solvent-free amine cured novolac epoxy", vs: 98 },
+  EPPOT:    { name: "Anupam Potable Water Epoxy",        generic: "Solvent-free epoxy, WRAS approved grade", vs: 100 },
+
+  /* --- finishes --- */
+  PUTOP:   { name: "Anupam PU Topcoat",                  generic: "Two-pack aliphatic acrylic polyurethane", vs: 55 },
+  PASP:    { name: "Anupam Polyaspartic Topcoat",        generic: "Two-pack polyaspartic ester", vs: 85 },
+  PSX:     { name: "Anupam Polysiloxane Finish",         generic: "Epoxy-siloxane hybrid, isocyanate free", vs: 88 },
+  FEVE:    { name: "Anupam FEVE Fluoropolymer",          generic: "Fluoroethylene vinyl ether, super-durable", vs: 52 },
+  ALKENAM: { name: "Anupam Synthetic Enamel",            generic: "Single-pack alkyd enamel", vs: 52 },
+  QDENAM:  { name: "Anupam Quick Dry Enamel",            generic: "Short oil alkyd, fast air dry", vs: 45 },
+  STOVE:   { name: "Anupam Stoving Enamel",              generic: "Amino-alkyd, oven cured 120-150 C", vs: 50 },
+  CRUB:    { name: "Anupam Chlorinated Rubber Finish",   generic: "Single-pack chlorinated rubber", vs: 40 },
+  COIL:    { name: "Anupam Coil Coating",                generic: "Polyester / SMP coil coating, oven cured", vs: 55 },
+
+  /* --- elastomeric and fast-cure --- */
+  PUREA:   { name: "Anupam Polyurea Membrane",           generic: "Spray applied pure polyurea elastomer", vs: 100 },
+  PUDECK:  { name: "Anupam PU Deck Coating",             generic: "Elastomeric polyurethane traffic deck system", vs: 82 },
+  AREST:   { name: "Anupam Arest Elastomeric Waterproof", generic: "Acrylic elastomeric, crack bridging", vs: 55 },
+  AREST2K: { name: "Anupam Arest Damp Block 2K",         generic: "Two-pack cementitious polymer", vs: 100 },
+
+  /* --- architectural --- */
+  DAMPP:   { name: "Anupam Azura Damp Arrestor Primer",  generic: "Water-based alkali blocking damp primer, fibre reinforced", vs: 40 },
+  UNIPRIM: { name: "Anupam Amaje Universal Primer",      generic: "Water-based universal wall primer", vs: 38 },
+  EXTEM:   { name: "Anupam Azura Exterior Emulsion",     generic: "Premium acrylic exterior emulsion", vs: 42 },
+  INTEM:   { name: "Anupam Azura Interior Emulsion",     generic: "Luxury acrylic interior emulsion", vs: 40 },
+  ANTICARB:{ name: "Anupam Anti-Carbonation Coating",    generic: "Elastomeric acrylic, CO2 diffusion resistant", vs: 45 },
+  ROOFCOOL:{ name: "Anupam Arest Cool Roof Coating",     generic: "Heat reflective elastomeric roof coating", vs: 52 },
+  WOODPU:  { name: "Anupam PU Wood Finish",              generic: "Two-pack polyurethane wood coating", vs: 40 },
+  WOODSEAL:{ name: "Anupam Wood Sealer",                 generic: "Sanding sealer for interior joinery", vs: 30 },
+
+  /* --- flooring --- */
+  EPFPRIM: { name: "Anupam Epoxy Floor Primer",          generic: "Solvent-free epoxy penetrating primer", vs: 95 },
+  EPSL:    { name: "Anupam Epoxy Self Levelling",        generic: "Solvent-free epoxy screed", vs: 100 },
+  ESD:     { name: "Anupam Anti-Static Epoxy",           generic: "Conductive epoxy, ESD controlled", vs: 98 },
+  FLRMARK: { name: "Anupam Floor Line Marking",          generic: "Two-pack epoxy line marking", vs: 60 },
+
+  /* --- specialty --- */
+  SILAL:   { name: "Anupam Heat Resistant Aluminium",    generic: "Silicone / leafing aluminium, to 600 C", vs: 32 },
+  MODSIL:  { name: "Anupam Modified Silicone Primer",    generic: "Heat resistant silicone modified primer", vs: 35 },
+  INTUM:   { name: "Anupam Fireseal Intumescent",        generic: "Thin film intumescent for structural steel", vs: 70 },
+  GLOW:    { name: "Anupam Photoluminescent Coating",    generic: "Strontium aluminate glow-in-the-dark finish", vs: 45 },
+  GLOWBASE:{ name: "Anupam Photoluminescent Base",       generic: "High opacity white base for glow coatings", vs: 50 },
+  AFOUL:   { name: "Anupam Antifouling",                 generic: "Self-polishing copolymer antifouling", vs: 58 },
+  NONSKID: { name: "Anupam Non-Skid Deck Coating",       generic: "Epoxy with aggregate, anti-slip deck", vs: 88 },
+  ROADTP:  { name: "Anupam Thermoplastic Road Marking",  generic: "Hot applied thermoplastic with glass beads", vs: 100 },
+  ROADCOLD:{ name: "Anupam Cold Applied Road Marking",   generic: "Chlorinated rubber road marking", vs: 55 },
+  GRAPH:   { name: "Anupam Graphite Coating",            generic: "Graphite filled release / lubricating coating", vs: 40 },
+  ANTIGRAF:{ name: "Anupam Anti-Graffiti Clear",         generic: "Two-pack sacrificial / permanent clear", vs: 35 },
+};
+
+export type PrepKey = "SA25" | "SA3" | "SA2" | "ST3" | "SP16" | "SP1" | "CSP3" | "MASONRY" | "WOOD" | "NONE";
+
+export const PREP: Record<PrepKey, { std: string; profile: string; note: string }> = {
+  SA25:    { std: "Sa 2½ (ISO 8501-1) / SSPC-SP10 / NACE No. 2", profile: "40–75 µm", note: "Dry abrasive blast to near-white metal. Test soluble salts to ISO 8502-6/-9; chloride ≤ 20 mg/m²." },
+  SA3:     { std: "Sa 3 (ISO 8501-1) / SSPC-SP5 / NACE No. 1", profile: "50–85 µm", note: "White metal blast. Mandatory for immersion and CX service. Chloride ≤ 10 mg/m²." },
+  SA2:     { std: "Sa 2 (ISO 8501-1) / SSPC-SP6 commercial blast", profile: "30–50 µm", note: "Commercial blast. Adequate for shop primers and lower durability systems." },
+  ST3:     { std: "St 3 (ISO 8501-1) / SSPC-SP3", profile: "Not applicable", note: "Power tool clean to bare metal where blasting is not permitted. Reduces achievable durability by one class." },
+  SP16:    { std: "SSPC-SP16 brush-off blast, non-ferrous", profile: "20–40 µm", note: "Sweep blast at reduced pressure. Do not cut through galvanizing or base metal." },
+  SP1:     { std: "SSPC-SP1 solvent clean", profile: "Not applicable", note: "Degrease to remove oil, grease and salts before any mechanical preparation." },
+  CSP3:    { std: "ICRI CSP 3–5 / SSPC-SP13 / NACE No. 6", profile: "Open textured, laitance free", note: "Concrete min. 28 days cured, moisture ≤ 4% (ASTM D4263). Grind or captive shot blast; remove all laitance and curing compound." },
+  MASONRY: { std: "Clean, sound, dry plaster or masonry", profile: "Not applicable", note: "Remove loose material, efflorescence and biological growth. Moisture ≤ 12%. New plaster to cure 28 days; surface pH below 10 before painting." },
+  WOOD:    { std: "Sanded to 220 grit, dust free", profile: "Not applicable", note: "Moisture content 8–12%. Fill grain and knots. Seal knots before priming." },
+  NONE:    { std: "As specified by the applicator", profile: "—", note: "Confirm surface preparation with the technical team for this application." },
+};
+
+/* -------------------------------------------------------------------------- */
+
+export interface Coat {
+  role: string; product: keyof typeof PRODUCTS;
+  coats: number; dftMin: number; dftMax: number; method: string;
+}
+
+export interface System {
+  id: string;
+  sector: string;
+  asset: string;
+  label: string;
+  blurb: string;
+  prep: PrepKey;
+  coats: Coat[];
+  life: string;
+  standards: string[];
+  tests: string[];
+  notes: string[];
+  /* optional filters */
+  envs?: string[];        // ISO 12944 categories this suits
+  flags?: string[];       // special requirements it satisfies
+  tempMax?: number;       // max service temperature, °C
+}
+
+export const SECTORS: Record<string, { label: string; blurb: string; assets: string[] }> = {
+  buildings: { label: "Buildings & Architecture", blurb: "Residential, commercial and institutional construction.",
+    assets: ["Exterior masonry wall", "Interior masonry wall", "Terrace & roof", "Bathroom & wet area", "RCC structure (anti-carbonation)", "Wooden doors & joinery", "MS gates, grills & railings", "Building structural steel", "Basement & parking floor"] },
+  railways: { label: "Railways & Metro", blurb: "Rolling stock, depots and station infrastructure.",
+    assets: ["Coach exterior", "Coach interior", "Bogie & underframe", "Wagon exterior", "Locomotive shell", "Station & viaduct steel", "Platform safety marking"] },
+  automotive: { label: "Automotive & OEM", blurb: "Vehicle assembly, components and engineering fabrication.",
+    assets: ["Component primer & enamel", "Chassis & axle", "Commercial vehicle body", "Engineering component (coil / sheet)"] },
+  aviation: { label: "Aviation Infrastructure", blurb: "Airport buildings, hangars, ground equipment and pavement.",
+    assets: ["Hangar & terminal steel", "Hangar floor", "Ground support equipment", "Apron & runway marking"] },
+  oilgas: { label: "Oil, Gas & Petrochemical", blurb: "Refineries, terminals, pipelines and offshore.",
+    assets: ["Structural steel", "Storage tank exterior", "Tank internal lining", "Buried pipeline", "Above-ground hot pipework", "Passive fire protection", "Flare stack & high temperature", "Secondary containment / bund"] },
+  marine: { label: "Marine & Defence", blurb: "Naval and commercial vessels, shipyards and defence works.",
+    assets: ["Underwater hull & antifouling", "Boot top & topside", "Superstructure", "Deck & non-skid", "Ballast tank", "Escape route marking"] },
+  power: { label: "Power, Steel & Cement", blurb: "Generation, heavy plant and process industry.",
+    assets: ["Chimney & stack", "Cooling tower", "Coal handling structure", "Turbine hall steel", "Plant structural steel"] },
+  fabrication: { label: "Steel & Heavy Fabrication", blurb: "PEB, bridges, cranes and fabrication shops.",
+    assets: ["Pre-engineered building", "Bridge & flyover", "Crane & EOT structure", "Shop / holding primer"] },
+  water: { label: "Water & Food", blurb: "Potable water, treatment plants and food processing.",
+    assets: ["Potable water tank", "ETP / STP concrete", "Swimming pool", "Food processing floor & wall"] },
+  flooring: { label: "Warehousing & Flooring", blurb: "Industrial floors, logistics and car parks.",
+    assets: ["Epoxy industrial floor", "Fast return-to-service floor", "Anti-static floor", "Car park deck", "Line marking"] },
+  roads: { label: "Roads & Infrastructure", blurb: "Highways, tunnels and urban infrastructure.",
+    assets: ["Road marking", "Tunnel lining", "Metro viaduct steel", "Crash barrier & street furniture"] },
+};
+
+export const FLAGS: Record<string, string> = {
+  fire: "Passive fire protection required",
+  glow: "Photoluminescent / glow in the dark",
+  potable: "Potable water or food contact",
+  chemical: "Chemical or acid resistance",
+  hygiene: "Hygienic / cleanroom",
+  esd: "Anti-static / ESD control",
+  heat: "High temperature service",
+  reflective: "Heat reflective",
+  fast: "Fast return to service",
+  graffiti: "Anti-graffiti",
+};
+
+/* -------------------------------------------------------------------------- */
+
+export const SYSTEMS: System[] = [
+  /* ============================ BUILDINGS ================================ */
+  {
+    id: "bld-ext", sector: "buildings", asset: "Exterior masonry wall",
+    label: "Exterior Wall System — Premium",
+    blurb: "Damp-resistant, alkali-blocking build for Indian monsoon and UV exposure.",
+    prep: "MASONRY", life: "7–10 years to first repaint",
+    coats: [
+      { role: "Primer", product: "DAMPP", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / roller" },
+      { role: "Finish", product: "EXTEM", coats: 2, dftMin: 30, dftMax: 40, method: "Brush / roller / spray" },
+    ],
+    standards: ["IS 15489", "ASTM D3359 adhesion", "ASTM D4585 humidity"],
+    tests: ["ASTM D4585 — condensation resistance", "ASTM G154 — accelerated weathering", "IS 101 — general paint tests"],
+    notes: [
+      "Fibre-reinforced damp arrestor primer blocks alkali and bridges hairline cracks.",
+      "Do not apply to walls with a moisture content above 12%. Trace and fix the water source before painting.",
+      "Anupam does not manufacture putty — any good general-purpose market putty may be used where levelling is required.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-int", sector: "buildings", asset: "Interior masonry wall",
+    label: "Interior Wall System — Luxury",
+    blurb: "Washable low-VOC interior finish for occupied spaces.",
+    prep: "MASONRY", life: "5–7 years",
+    coats: [
+      { role: "Primer", product: "UNIPRIM", coats: 1, dftMin: 25, dftMax: 35, method: "Brush / roller" },
+      { role: "Finish", product: "INTEM", coats: 2, dftMin: 25, dftMax: 35, method: "Brush / roller" },
+    ],
+    standards: ["IS 15489", "ASTM D2486 scrub resistance", "IGBC low-VOC"],
+    tests: ["ASTM D2486 — scrub resistance", "ASTM D3273 — mould resistance"],
+    notes: [
+      "Low VOC, suitable for green building credit documentation.",
+      "Allow new plaster 28 days to cure and confirm surface pH below 10 before priming.",
+    ],
+    flags: ["hygiene"],
+  },
+  {
+    id: "bld-roof", sector: "buildings", asset: "Terrace & roof",
+    label: "Terrace Waterproofing with Heat Reflection",
+    blurb: "Elastomeric membrane that waterproofs and lowers roof surface temperature.",
+    prep: "MASONRY", life: "8–10 years",
+    coats: [
+      { role: "Crack treatment", product: "AREST2K", coats: 1, dftMin: 500, dftMax: 800, method: "Trowel to cracks and junctions" },
+      { role: "Base", product: "AREST", coats: 1, dftMin: 150, dftMax: 200, method: "Brush / roller" },
+      { role: "Finish", product: "ROOFCOOL", coats: 2, dftMin: 150, dftMax: 200, method: "Brush / roller" },
+    ],
+    standards: ["ASTM D6083 — liquid applied acrylic roofing", "ASTM C1549 — solar reflectance", "ASTM D412 — elongation"],
+    tests: ["ASTM C1549 — solar reflectance, initial and after 3 years", "ASTM D6083 — elongation and tensile", "Ponding test 48 h before handover"],
+    notes: [
+      "Treat all cracks, junctions and parapet coves before the base coat. Most terrace failures start at a detail, not the field.",
+      "Reflectance falls as the surface soils. Periodic washing restores most of the benefit.",
+      "Reflective coating reduces heat entering the roof; it is not a substitute for insulation.",
+    ],
+    flags: ["reflective"],
+  },
+  {
+    id: "bld-wet", sector: "buildings", asset: "Bathroom & wet area",
+    label: "Wet Area Waterproofing",
+    blurb: "Below-tile waterproofing for bathrooms, balconies and utility areas.",
+    prep: "MASONRY", life: "Life of the tiling",
+    coats: [
+      { role: "Waterproofing", product: "AREST2K", coats: 2, dftMin: 600, dftMax: 900, method: "Brush / trowel" },
+    ],
+    standards: ["ASTM C836", "IS 2645 — integral waterproofing"],
+    tests: ["48 h ponding test before tiling", "Adhesion to substrate"],
+    notes: [
+      "Take the membrane 300 mm up all walls, and full height in shower areas.",
+      "Form coves at all wall-to-floor junctions. Do not leave sharp internal angles.",
+      "Pond test and sign off before tiles are laid — after tiling, a failure is a demolition job.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-rcc", sector: "buildings", asset: "RCC structure (anti-carbonation)",
+    label: "Anti-Carbonation Protection for RCC",
+    blurb: "Protects reinforcement by resisting CO₂ and chloride ingress into concrete.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "UNIPRIM", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / roller" },
+      { role: "Finish", product: "ANTICARB", coats: 2, dftMin: 100, dftMax: 150, method: "Brush / roller / spray" },
+    ],
+    standards: ["EN 1062-6 — CO₂ diffusion resistance", "EN 1504-2 — surface protection of concrete"],
+    tests: ["EN 1062-6 — carbon dioxide diffusion", "EN 1062-3 — water permeability", "Pull-off adhesion ≥ 1.5 MPa"],
+    notes: [
+      "Repair spalled concrete and treat exposed reinforcement before coating.",
+      "Equivalent air layer thickness for CO₂ (SD) should exceed 50 m; confirm on the data sheet.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-wood", sector: "buildings", asset: "Wooden doors & joinery",
+    label: "Interior Wood Finishing System",
+    blurb: "Clear or pigmented PU finish for doors, frames and furniture.",
+    prep: "WOOD", life: "6–8 years interior",
+    coats: [
+      { role: "Sealer", product: "WOODSEAL", coats: 1, dftMin: 20, dftMax: 30, method: "Spray / brush" },
+      { role: "Finish", product: "WOODPU", coats: 2, dftMin: 25, dftMax: 35, method: "Spray" },
+    ],
+    standards: ["ASTM D3363 — pencil hardness", "ASTM D2794 — impact"],
+    tests: ["ASTM D3359 — adhesion", "ASTM D3363 — hardness", "Chemical spot resistance"],
+    notes: [
+      "Moisture content of timber must be 8–12%. Coating over damp timber causes blistering and grain raise.",
+      "Sand lightly between coats and remove all dust.",
+      "For exterior joinery specify a UV-stable exterior grade instead of this interior system.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-ms", sector: "buildings", asset: "MS gates, grills & railings",
+    label: "Decorative Mild Steel System",
+    blurb: "Everyday protective and decorative finish for architectural metalwork.",
+    prep: "ST3", life: "3–5 years exterior",
+    coats: [
+      { role: "Primer", product: "REDOX", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / spray" },
+      { role: "Finish", product: "ALKENAM", coats: 2, dftMin: 25, dftMax: 35, method: "Brush / spray" },
+    ],
+    standards: ["IS 2932 — synthetic enamel", "IS 2074 — red oxide primer"],
+    tests: ["ASTM D3359 — adhesion", "ASTM B117 — salt spray 250 h"],
+    notes: [
+      "Remove all rust and loose scale. Enamel over rust will fail within a season.",
+      "For coastal locations use an epoxy primer and PU finish instead of alkyd — alkyd chalks quickly in marine UV.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-steel", sector: "buildings", asset: "Building structural steel",
+    label: "Architectural Structural Steel — C3",
+    blurb: "Exposed steelwork in urban and inland environments.",
+    prep: "SA25", life: "15–20 years",
+    envs: ["C2", "C3"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 system A5.05", "ISO 12944-6"],
+    tests: ["ASTM B117 — salt spray", "ISO 4624 — pull-off adhesion, min. 5 MPa", "SSPC-PA2 — DFT verification"],
+    notes: ["Stripe coat all edges, welds and bolt heads by brush before each full coat."],
+    flags: [],
+  },
+  {
+    id: "bld-floor", sector: "buildings", asset: "Basement & parking floor",
+    label: "Car Park Deck System",
+    blurb: "Elastomeric deck coating for vehicle traffic over concrete.",
+    prep: "CSP3", life: "8–12 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Membrane", product: "PUDECK", coats: 2, dftMin: 600, dftMax: 900, method: "Squeegee + roller" },
+      { role: "Wearing / anti-slip", product: "PUDECK", coats: 1, dftMin: 300, dftMax: 400, method: "Broadcast aggregate" },
+    ],
+    standards: ["EN 1504-2", "ASTM D4060 — abrasion"],
+    tests: ["Concrete moisture ≤ 4% (ASTM D4263)", "Pull-off adhesion ≥ 1.5 MPa", "Slip resistance"],
+    notes: [
+      "Elastomeric deck systems accommodate substrate movement that rigid epoxy cannot.",
+      "Ramps and turning areas need the anti-slip broadcast; flat bays may not.",
+    ],
+    flags: [],
+  },
+
+  /* ============================ RAILWAYS ================================= */
+  {
+    id: "rly-coach", sector: "railways", asset: "Coach exterior",
+    label: "Coach Exterior — FEVE System",
+    blurb: "RDSO/ICF pattern system with fluoropolymer gloss retention beyond ten years.",
+    prep: "SA25", life: "10–12 years between repaints",
+    envs: ["C3", "C4"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 35, dftMax: 50, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "FEVE", coats: 1, dftMin: 30, dftMax: 40, method: "Airless spray" },
+    ],
+    standards: ["RDSO specification", "ICF specification", "EN 45545-2 HL3", "IS 15927"],
+    tests: ["EN 45545-2 — fire, smoke and toxicity", "ASTM G154 — gloss and colour retention", "ASTM D3359 — adhesion"],
+    notes: [
+      "Apply primer within 4 hours of blasting; coaches blast-cleaned and left overnight will flash rust.",
+      "FEVE is specified where gloss retention beyond ten years is required. Aliphatic PU is the lower-cost alternative at 5–7 years.",
+    ],
+    flags: [],
+  },
+  {
+    id: "rly-int", sector: "railways", asset: "Coach interior",
+    label: "Coach Interior — Fire Safe",
+    blurb: "Low smoke, low toxicity interior system for enclosed passenger space.",
+    prep: "SP1", life: "Overhaul cycle",
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 30, dftMax: 40, method: "Spray" },
+      { role: "Finish", product: "PUTOP", coats: 2, dftMin: 30, dftMax: 40, method: "Spray" },
+    ],
+    standards: ["EN 45545-2 HL3", "RDSO specification"],
+    tests: ["EN 45545-2 — heat release, smoke density, toxicity", "ASTM D2486 — cleanability"],
+    notes: [
+      "Fire, smoke and toxicity performance is mandatory in enclosed passenger vehicles and is tested on the complete system, not the topcoat alone.",
+      "Confirm the certificate covers the exact build being applied.",
+    ],
+    flags: ["fire", "hygiene"],
+  },
+  {
+    id: "rly-bogie", sector: "railways", asset: "Bogie & underframe",
+    label: "Bogie & Underframe — Heavy Duty",
+    blurb: "Impact and ballast-strike resistant anti-corrosive build.",
+    prep: "SA25", life: "8–10 years",
+    envs: ["C4", "C5I", "C5M"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 80, method: "Airless spray" },
+      { role: "Build", product: "EPOXYHB", coats: 1, dftMin: 125, dftMax: 200, method: "Airless spray" },
+    ],
+    standards: ["RDSO specification", "ISO 12944-5"],
+    tests: ["ASTM G14 — impact resistance", "ASTM B117 — salt spray 1000 h", "ISO 4624 — adhesion"],
+    notes: ["No decorative topcoat is required; the build coat is the protection. Priority is film thickness and impact resistance."],
+    flags: [],
+  },
+  {
+    id: "rly-wagon", sector: "railways", asset: "Wagon exterior",
+    label: "Wagon Exterior System",
+    blurb: "Freight wagon protection for abrasive loading and outdoor storage.",
+    prep: "SA25", life: "6–8 years",
+    envs: ["C3", "C4"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["RDSO specification", "ISO 12944-5"],
+    tests: ["ASTM B117 — salt spray", "ASTM D4060 — abrasion"],
+    notes: ["Interior of open wagons carrying abrasive cargo may need a coal tar epoxy or high-build epoxy instead."],
+    flags: [],
+  },
+  {
+    id: "rly-loco", sector: "railways", asset: "Locomotive shell",
+    label: "Locomotive Shell System",
+    blurb: "Durable, high-gloss livery system for locomotive bodies.",
+    prep: "SA25", life: "8–10 years",
+    envs: ["C3", "C4"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 40, dftMax: 50, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 2, dftMin: 40, dftMax: 50, method: "Airless spray" },
+    ],
+    standards: ["RDSO / CLW specification", "EN 45545 where applicable"],
+    tests: ["ASTM G154 — weathering", "ASTM D523 — gloss", "ASTM D3359 — adhesion"],
+    notes: ["Livery colours must be matched to the railway's approved shade references, not to a commercial shade card."],
+    flags: [],
+  },
+  {
+    id: "rly-station", sector: "railways", asset: "Station & viaduct steel",
+    label: "Station & Viaduct Steel — C4/C5",
+    blurb: "Long-durability system where maintenance access is restricted.",
+    prep: "SA25", life: "20–25 years",
+    envs: ["C4", "C5I", "C5M"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 2, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 / -6", "ISO 20340 for coastal metro"],
+    tests: ["ISO 20340 — cyclic ageing", "SSPC-PA2 — DFT", "ISO 4624 — adhesion"],
+    notes: [
+      "Durability is driven by access cost, not atmosphere. Repainting a live viaduct means traffic management, containment and night working.",
+      "Specify the site touch-up procedure explicitly — shop-applied C5 with casual site repair is no longer a C5 system.",
+    ],
+    flags: [],
+  },
+  {
+    id: "rly-glow", sector: "railways", asset: "Platform safety marking",
+    label: "Photoluminescent Safety Marking",
+    blurb: "Glow-in-the-dark edge and escape marking, no power required.",
+    prep: "CSP3", life: "8–10 years interior",
+    coats: [
+      { role: "Base", product: "GLOWBASE", coats: 1, dftMin: 50, dftMax: 70, method: "Brush / spray" },
+      { role: "Photoluminescent", product: "GLOW", coats: 2, dftMin: 100, dftMax: 150, method: "Brush / spray" },
+      { role: "Clear seal", product: "PUTOP", coats: 1, dftMin: 30, dftMax: 40, method: "Spray" },
+    ],
+    standards: ["DIN 67510 — photoluminescent materials", "ISO 16069 — safety way guidance systems"],
+    tests: ["DIN 67510-1 — luminance decay after 10 and 60 minutes", "Abrasion resistance under foot traffic"],
+    notes: [
+      "Glow performance depends entirely on the white base beneath. Applied over a dark substrate the luminance falls sharply.",
+      "Requires charging light. In permanently dark locations photoluminescent marking is the wrong solution — specify powered signage.",
+      "A clear seal protects against foot traffic but must be non-yellowing, or luminance drops over time.",
+    ],
+    flags: ["glow"],
+  },
+
+  /* =========================== AUTOMOTIVE ================================ */
+  {
+    id: "auto-comp", sector: "automotive", asset: "Component primer & enamel",
+    label: "OEM Component — Stoving System",
+    blurb: "Oven-cured finish for volume component manufacture.",
+    prep: "SP1", life: "Component design life",
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 20, dftMax: 30, method: "Dip / spray" },
+      { role: "Finish", product: "STOVE", coats: 1, dftMin: 30, dftMax: 40, method: "Spray, cured 120–150 °C" },
+    ],
+    standards: ["ASTM B117", "ASTM D3359", "IS 13213"],
+    tests: ["ASTM B117 — salt spray 500 h", "ASTM D3359 — cross cut", "ASTM D2794 — impact", "ASTM D522 — mandrel bend"],
+    notes: [
+      "Phosphating before priming substantially raises salt spray performance and is standard OEM practice.",
+      "Confirm the oven schedule: under-cured stoving enamel stays soft and fails on handling.",
+    ],
+    flags: ["fast"],
+  },
+  {
+    id: "auto-chassis", sector: "automotive", asset: "Chassis & axle",
+    label: "Chassis & Axle — Direct to Metal",
+    blurb: "Fast air-dry DTM system for high throughput assembly.",
+    prep: "SP1", life: "Vehicle life",
+    coats: [
+      { role: "DTM finish", product: "QDENAM", coats: 2, dftMin: 30, dftMax: 40, method: "Airless / conventional spray" },
+    ],
+    standards: ["ASTM B117", "IS 2932"],
+    tests: ["ASTM B117 — salt spray 250 h", "Drying time to handle and stack"],
+    notes: [
+      "Where corrosion warranty is demanded, replace with an epoxy primer plus PU finish. DTM alkyd trades durability for line speed.",
+      "Stacking before through-dry is the most common cause of print marking on assembly lines.",
+    ],
+    flags: ["fast"],
+  },
+  {
+    id: "auto-cv", sector: "automotive", asset: "Commercial vehicle body",
+    label: "Commercial Vehicle Body System",
+    blurb: "Durable exterior finish for truck and bus bodywork.",
+    prep: "SP16", life: "6–8 years",
+    coats: [
+      { role: "Etch primer", product: "ETCH", coats: 1, dftMin: 8, dftMax: 12, method: "Spray" },
+      { role: "Primer surfacer", product: "EPZP", coats: 1, dftMin: 40, dftMax: 50, method: "Spray" },
+      { role: "Finish", product: "PUTOP", coats: 2, dftMin: 40, dftMax: 50, method: "Spray" },
+    ],
+    standards: ["ASTM D523 — gloss", "ASTM G154 — weathering"],
+    tests: ["ASTM G154 — gloss retention", "ASTM D3359 — adhesion", "ASTM B117 — salt spray"],
+    notes: ["Aluminium and GRP panels on the same vehicle need different primers — do not apply zinc-bearing primer to aluminium."],
+    flags: [],
+  },
+  {
+    id: "auto-coil", sector: "automotive", asset: "Engineering component (coil / sheet)",
+    label: "Coil Coating System",
+    blurb: "Continuous coil-applied finish for sheet metal before forming.",
+    prep: "SP1", life: "15–25 years exterior grade",
+    coats: [
+      { role: "Primer", product: "COIL", coats: 1, dftMin: 5, dftMax: 8, method: "Roller coater, oven cured" },
+      { role: "Finish", product: "COIL", coats: 1, dftMin: 18, dftMax: 25, method: "Roller coater, oven cured" },
+    ],
+    standards: ["ECCA test methods", "ASTM D522 — T-bend", "ASTM D2247 — humidity"],
+    tests: ["ASTM D522 — T-bend flexibility after forming", "ASTM D2247 — humidity 1000 h", "ASTM G154 — weathering"],
+    notes: [
+      "Coil coating is applied before forming, so flexibility on the T-bend matters more than film hardness.",
+      "Cut edges are unprotected after slitting; specify edge treatment for exterior use.",
+    ],
+    flags: [],
+  },
+
+  /* ============================ AVIATION ================================= */
+  {
+    id: "avi-steel", sector: "aviation", asset: "Hangar & terminal steel",
+    label: "Airport Structural Steel — C4/C5",
+    blurb: "Long-durability system for terminal and hangar structures.",
+    prep: "SA25", life: "20–25 years",
+    envs: ["C3", "C4", "C5M"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 125, dftMax: 150, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 / -6", "AAI specification"],
+    tests: ["ISO 20340 — cyclic ageing for coastal airports", "SSPC-PA2 — DFT", "ISO 4624 — adhesion"],
+    notes: [
+      "Coastal airports are C5-M whatever the inland assumption. Salinity, not distance, sets the class.",
+      "Work in operational terminals is usually night-shift with hard handback times — plan recoat windows accordingly.",
+    ],
+    flags: [],
+  },
+  {
+    id: "avi-floor", sector: "aviation", asset: "Hangar floor",
+    label: "Hangar Floor — Chemical & Fuel Resistant",
+    blurb: "Heavy-duty floor resisting hydraulic fluid, fuel and point loads.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Build", product: "EPSL", coats: 1, dftMin: 2000, dftMax: 3000, method: "Self levelling, spiked roller" },
+      { role: "Seal", product: "PASP", coats: 1, dftMin: 75, dftMax: 100, method: "Roller" },
+    ],
+    standards: ["ASTM D4060 — abrasion", "ASTM D543 — chemical resistance"],
+    tests: ["ASTM D4541 — pull-off adhesion", "ASTM D4263 — concrete moisture", "Skydrol / hydraulic fluid immersion"],
+    notes: [
+      "Aircraft hydraulic fluid is aggressive to many coatings. Confirm resistance to the specific fluid in use, not chemical resistance in general.",
+      "Polyaspartic seal allows return to service in hours rather than days.",
+    ],
+    flags: ["chemical", "fast"],
+  },
+  {
+    id: "avi-gse", sector: "aviation", asset: "Ground support equipment",
+    label: "Ground Support Equipment System",
+    blurb: "High-visibility durable finish for apron vehicles and equipment.",
+    prep: "SA25", life: "6–8 years",
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 60, method: "Spray" },
+      { role: "Finish", product: "PUTOP", coats: 2, dftMin: 40, dftMax: 50, method: "Spray" },
+    ],
+    standards: ["ASTM B117", "ASTM G154"],
+    tests: ["ASTM B117 — salt spray", "ASTM G154 — colour retention on safety shades"],
+    notes: [
+      "Safety yellows and oranges fade fastest. Specify high-durability pigments or accept a shorter repaint cycle.",
+      "Aircraft airframe coatings are a separate, tightly regulated field requiring OEM and airworthiness qualification. This system is for ground equipment and infrastructure, not airframes.",
+    ],
+    flags: [],
+  },
+  {
+    id: "avi-marking", sector: "aviation", asset: "Apron & runway marking",
+    label: "Airfield Pavement Marking",
+    blurb: "High-visibility marking for aprons, taxiways and stands.",
+    prep: "CSP3", life: "2–4 years depending on traffic",
+    coats: [
+      { role: "Marking", product: "ROADCOLD", coats: 2, dftMin: 150, dftMax: 250, method: "Airless spray with bead dispenser" },
+    ],
+    standards: ["ICAO Annex 14", "ASTM D713 — evaluation of traffic paint", "ASTM E1710 — retroreflectivity"],
+    tests: ["ASTM E1710 — retroreflectivity", "ASTM D913 — abrasion resistance", "No-pick-up drying time"],
+    notes: [
+      "Glass beads must be applied while the film is wet. Beads dropped onto a skinned film will detach within weeks.",
+      "Airfield marking must not generate loose debris. FOD risk makes adhesion and cure more critical than on a road.",
+    ],
+    flags: [],
+  },
+
+  /* ============================= OIL & GAS =============================== */
+  {
+    id: "og-steel", sector: "oilgas", asset: "Structural steel",
+    label: "Offshore & Refinery Steel — CX",
+    blurb: "Maximum durability system for extreme corrosive service.",
+    prep: "SA3", life: "20–25 years",
+    envs: ["C5I", "C5M", "CX"],
+    coats: [
+      { role: "Primer", product: "IZS", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMAS", coats: 1, dftMin: 125, dftMax: 150, method: "Airless spray" },
+      { role: "Build", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PASP", coats: 1, dftMin: 75, dftMax: 100, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-9 (offshore)", "NORSOK M-501 System 1", "NACE SP0108"],
+    tests: ["ISO 20340 Annex A — cyclic ageing", "ISO 12944-9 — offshore qualification", "ISO 4624 — adhesion", "Soluble salt ≤ 10 mg/m²"],
+    notes: [
+      "Cyclic ageing data is the meaningful evidence at this class. Salt spray hours alone are a weak predictor of field life.",
+      "Stripe coating of edges, welds and bolting is mandatory and is where most premature offshore failures begin.",
+    ],
+    flags: [],
+  },
+  {
+    id: "og-tankext", sector: "oilgas", asset: "Storage tank exterior",
+    label: "Tank Exterior with Heat Reflection",
+    blurb: "External tank shell system reducing solar gain and vapour loss.",
+    prep: "SA25", life: "15–20 years",
+    envs: ["C4", "C5I", "C5M"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PSX", coats: 1, dftMin: 75, dftMax: 100, method: "Airless spray" },
+    ],
+    standards: ["API 650 Appendix", "ISO 12944-5", "ASTM C1549 — solar reflectance"],
+    tests: ["ASTM C1549 — solar reflectance", "ISO 20340 — cyclic ageing", "SSPC-PA2 — DFT"],
+    notes: [
+      "High-reflectance white or light shades reduce vapour space temperature and breathing losses on volatile product tanks.",
+      "Polysiloxane gives long gloss and colour retention with fewer coats than a conventional PU build.",
+    ],
+    flags: ["reflective"],
+  },
+  {
+    id: "og-tankint", sector: "oilgas", asset: "Tank internal lining",
+    label: "Tank Internal Lining — Hydrocarbon",
+    blurb: "Solvent-free lining for crude, product and chemical storage.",
+    prep: "SA3", life: "15–20 years",
+    coats: [
+      { role: "Lining", product: "NOVO", coats: 2, dftMin: 200, dftMax: 250, method: "Airless spray, plural component" },
+    ],
+    standards: ["API RP 652", "NACE SP0178 weld finish", "ASTM D6943 — immersion"],
+    tests: ["100% holiday detection (NACE SP0188)", "ASTM D6943 — immersion", "ASTM D4541 — adhesion", "Weld profile to NACE SP0178 designation D"],
+    notes: [
+      "Welds must be ground to a smooth profile before lining. Sharp weld spatter is the commonest lining failure point.",
+      "Holiday test 100% of the lined surface before returning the tank to service.",
+      "Confirm the stored product against the chemical resistance list — 'hydrocarbon resistant' is not a specification.",
+    ],
+    flags: ["chemical"],
+  },
+  {
+    id: "og-pipe", sector: "oilgas", asset: "Buried pipeline",
+    label: "Buried Pipeline External Coating",
+    blurb: "Barrier system for soil burial with cathodic protection compatibility.",
+    prep: "SA3", life: "25+ years",
+    envs: ["Im3"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
+      { role: "Barrier", product: "CTE", coats: 2, dftMin: 175, dftMax: 200, method: "Airless spray" },
+    ],
+    standards: ["ASTM G8 — cathodic disbonding", "NACE SP0169", "ASTM G62 — holiday detection"],
+    tests: ["ASTM G8 — cathodic disbonding", "ASTM G62 — 100% holiday detection before backfill", "ASTM G14 — impact"],
+    notes: [
+      "Holiday test 100% of the coating before backfill. Once buried, a defect is found by the CP system, expensively.",
+      "Coating must be compatible with the cathodic protection system; test to ASTM G8.",
+      "Field joints are the weak point. Specify the joint coating and the qualification of the crew applying it.",
+    ],
+    flags: [],
+  },
+  {
+    id: "og-hotpipe", sector: "oilgas", asset: "Above-ground hot pipework",
+    label: "Hot Pipework & Insulated Line",
+    blurb: "High-temperature system, including corrosion under insulation service.",
+    prep: "SA25", life: "10–15 years", tempMax: 540,
+    coats: [
+      { role: "Primer", product: "MODSIL", coats: 1, dftMin: 20, dftMax: 25, method: "Spray" },
+      { role: "Finish", product: "SILAL", coats: 2, dftMin: 20, dftMax: 25, method: "Spray" },
+    ],
+    standards: ["ASTM D2485 — high temperature service", "NACE SP0198 — corrosion under insulation"],
+    tests: ["ASTM D2485 — high temperature evaluation", "Thermal cycling ambient to service temperature", "ASTM D3359 — adhesion after cycling"],
+    notes: [
+      "Keep total DFT low. Excess film on high-temperature silicone cracks and disbonds on thermal cycling.",
+      "Corrosion under insulation is driven by wet-dry cycling in the 60–175 °C band. Lines cycling through that range need CUI-qualified coating regardless of peak temperature.",
+      "Cure is heat-initiated — the coating develops properties on first firing. Do not expose to condensate before that.",
+    ],
+    flags: ["heat"],
+  },
+  {
+    id: "og-fire", sector: "oilgas", asset: "Passive fire protection",
+    label: "Hydrocarbon Fire Protection",
+    blurb: "Intumescent protection for structural steel in hydrocarbon fire risk areas.",
+    prep: "SA25", life: "Structure life with maintenance",
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
+      { role: "Intumescent", product: "INTUM", coats: 1, dftMin: 1000, dftMax: 6000, method: "Airless spray, DFT per loading schedule" },
+      { role: "Seal", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["UL 1709 — hydrocarbon fire", "ISO 22899 — jet fire", "EN 13381-8"],
+    tests: ["UL 1709 — rapid rise hydrocarbon curve", "ISO 22899 — jet fire resistance where applicable", "Adhesion and DFT per member"],
+    notes: [
+      "Hydrocarbon fires rise far faster than the cellulosic curve used for buildings. A product tested only to BS 476 is not qualified for a process plant.",
+      "DFT is derived from section factor, required rating and critical steel temperature — it is a structural calculation, not a product choice.",
+      "A member-by-member loading schedule must be issued before application begins.",
+    ],
+    flags: ["fire"],
+  },
+  {
+    id: "og-flare", sector: "oilgas", asset: "Flare stack & high temperature",
+    label: "Flare Stack & Stack Steel",
+    blurb: "Very high temperature system for flare tips, stacks and exhausts.",
+    prep: "SA25", life: "8–12 years", tempMax: 600,
+    coats: [
+      { role: "Primer + finish", product: "SILAL", coats: 2, dftMin: 20, dftMax: 25, method: "Spray" },
+    ],
+    standards: ["ASTM D2485", "ISO 4628 — degradation after cycling"],
+    tests: ["ASTM D2485 — 600 °C service", "Thermal shock cycling", "Adhesion after heat cycling"],
+    notes: [
+      "Total DFT above about 50 µm will craze on cycling. Thin is correct here, counterintuitive as it seems.",
+      "Do not apply a conventional primer beneath — organic primers carbonise and cause the silicone film to lift.",
+    ],
+    flags: ["heat"],
+  },
+  {
+    id: "og-bund", sector: "oilgas", asset: "Secondary containment / bund",
+    label: "Chemical Bund Lining",
+    blurb: "Chemical-resistant lining for bunds and spill containment.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Lining", product: "NOVO", coats: 2, dftMin: 400, dftMax: 600, method: "Trowel / roller" },
+    ],
+    standards: ["ASTM D543 — chemical resistance", "EN 1504-2"],
+    tests: ["ASTM D543 — immersion in the specific chemicals stored", "Pull-off adhesion", "Holiday detection on the lined area"],
+    notes: [
+      "Specify the actual chemicals and concentrations. A bund that will only ever see diesel needs a different lining from one that may see acid.",
+      "Detail the wall-to-floor cove and all penetrations; a bund fails at its details.",
+    ],
+    flags: ["chemical"],
+  },
+
+  /* ============================== MARINE ================================= */
+  {
+    id: "mar-hull", sector: "marine", asset: "Underwater hull & antifouling",
+    label: "Underwater Hull System",
+    blurb: "Anti-corrosive and antifouling build for the immersed hull.",
+    prep: "SA25", life: "5 year docking interval",
+    envs: ["Im2"],
+    coats: [
+      { role: "Anti-corrosive", product: "EPOXYHB", coats: 2, dftMin: 125, dftMax: 150, method: "Airless spray" },
+      { role: "Tie coat", product: "EPZP", coats: 1, dftMin: 40, dftMax: 50, method: "Airless spray" },
+      { role: "Antifouling", product: "AFOUL", coats: 2, dftMin: 100, dftMax: 150, method: "Airless spray" },
+    ],
+    standards: ["IMO AFS Convention", "ISO 15711 — cathodic disbonding", "DQAN specification"],
+    tests: ["ISO 15711 — cathodic disbondment", "Raft immersion fouling trial", "ASTM D4541 — adhesion"],
+    notes: [
+      "Antifouling must be compatible with the anti-corrosive beneath; use the specified tie coat.",
+      "Leaching rate is designed around a service speed and idle time. State the operating profile — a vessel that sits idle fouls differently.",
+    ],
+    flags: [],
+  },
+  {
+    id: "mar-topside", sector: "marine", asset: "Boot top & topside",
+    label: "Boot Top & Topside System",
+    blurb: "Splash zone and topside protection with colour retention.",
+    prep: "SA25", life: "5–7 years",
+    envs: ["C5M", "CX"],
+    coats: [
+      { role: "Primer", product: "EPOXYHB", coats: 2, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 2, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-9", "IMO PSPC where applicable"],
+    tests: ["ISO 20340 — cyclic ageing", "ASTM G154 — colour retention", "Adhesion"],
+    notes: ["The boot top sees alternate immersion, UV and mechanical damage from berthing — the most aggressive zone on the vessel."],
+    flags: [],
+  },
+  {
+    id: "mar-super", sector: "marine", asset: "Superstructure",
+    label: "Superstructure System",
+    blurb: "Naval grey or commercial livery for above-deck structures.",
+    prep: "SA25", life: "5–7 years",
+    envs: ["C5M"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 75, dftMax: 100, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 75, dftMax: 100, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["DQAN specification", "ISO 12944-5"],
+    tests: ["ASTM B117 — salt spray", "ASTM G154 — weathering", "Adhesion"],
+    notes: ["Naval shades must match the authority's reference panels, not a commercial colour standard."],
+    flags: [],
+  },
+  {
+    id: "mar-deck", sector: "marine", asset: "Deck & non-skid",
+    label: "Deck & Non-Skid System",
+    blurb: "Anti-slip deck coating for working and flight decks.",
+    prep: "SA25", life: "5–8 years",
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 75, dftMax: 100, method: "Airless spray" },
+      { role: "Non-skid", product: "NONSKID", coats: 1, dftMin: 800, dftMax: 1500, method: "Trowel / roller with aggregate" },
+    ],
+    standards: ["ASTM D2047 — slip resistance", "DQAN specification"],
+    tests: ["ASTM D2047 — static coefficient of friction", "ASTM D4060 — abrasion", "Adhesion"],
+    notes: ["Aggregate grade sets the slip rating and the cleanability. Coarse grades grip better and are harder to keep clean."],
+    flags: [],
+  },
+  {
+    id: "mar-ballast", sector: "marine", asset: "Ballast tank",
+    label: "Ballast Tank Coating — PSPC",
+    blurb: "Light-coloured epoxy to IMO Performance Standard for Protective Coatings.",
+    prep: "SA25", life: "15 years target useful life",
+    envs: ["Im2"],
+    coats: [
+      { role: "Coating", product: "EPOXYHB", coats: 2, dftMin: 160, dftMax: 200, method: "Airless spray" },
+    ],
+    standards: ["IMO PSPC MSC.215(82)", "ISO 8501-1", "ISO 15711"],
+    tests: ["PSPC prequalification test", "ISO 15711 — cathodic disbondment", "DFT to the 90/10 rule"],
+    notes: [
+      "PSPC requires a light shade for inspection, two stripe coats, and 320 µm nominal DFT to the 90/10 rule.",
+      "Edge treatment and full stripe coating are explicit PSPC requirements, not good practice — they are audited.",
+    ],
+    flags: [],
+  },
+  {
+    id: "mar-glow", sector: "marine", asset: "Escape route marking",
+    label: "Low Location Lighting — Photoluminescent",
+    blurb: "Glow-in-the-dark escape marking for vessels and enclosed spaces.",
+    prep: "SP1", life: "8–10 years",
+    coats: [
+      { role: "Base", product: "GLOWBASE", coats: 1, dftMin: 50, dftMax: 70, method: "Spray" },
+      { role: "Photoluminescent", product: "GLOW", coats: 2, dftMin: 100, dftMax: 150, method: "Spray" },
+      { role: "Clear seal", product: "PUTOP", coats: 1, dftMin: 30, dftMax: 40, method: "Spray" },
+    ],
+    standards: ["IMO Resolution A.752(18)", "ISO 15370 — low location lighting", "DIN 67510"],
+    tests: ["ISO 15370 — luminance requirements", "DIN 67510-1 — decay curve", "Salt spray on the sealed system"],
+    notes: [
+      "Luminance depends on the white base beneath and on charging light. Verify to ISO 15370 in the installed condition, not on a test panel.",
+      "Photoluminescent marking supplements powered emergency lighting; it does not replace it.",
+    ],
+    flags: ["glow"],
+  },
+
+  /* =========================== POWER & CEMENT ============================ */
+  {
+    id: "pow-stack", sector: "power", asset: "Chimney & stack",
+    label: "Chimney & Stack System",
+    blurb: "High-temperature exterior protection for stacks and ducting.",
+    prep: "SA25", life: "8–12 years", tempMax: 600,
+    coats: [
+      { role: "Primer + finish", product: "SILAL", coats: 2, dftMin: 20, dftMax: 25, method: "Spray" },
+    ],
+    standards: ["ASTM D2485", "IS 13183 where applicable"],
+    tests: ["ASTM D2485 — high temperature", "Thermal cycling", "Adhesion after firing"],
+    notes: ["Aviation obstruction marking on stacks needs a durable red/white scheme; high-temperature silicone shades are limited — confirm availability early."],
+    flags: ["heat"],
+  },
+  {
+    id: "pow-cooling", sector: "power", asset: "Cooling tower",
+    label: "Cooling Tower System",
+    blurb: "Constant wet service with chemical treatment exposure.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller / spray" },
+      { role: "Lining", product: "EPOXYHB", coats: 2, dftMin: 150, dftMax: 200, method: "Airless spray" },
+    ],
+    standards: ["ASTM D543", "EN 1504-2"],
+    tests: ["Immersion in treated cooling water", "Pull-off adhesion", "Chemical resistance to the biocide regime"],
+    notes: ["Cooling water chemistry, not plain water, governs coating selection. State the treatment regime."],
+    flags: ["chemical"],
+  },
+  {
+    id: "pow-coal", sector: "power", asset: "Coal handling structure",
+    label: "Coal Handling — Abrasion Resistant",
+    blurb: "Abrasive dust and impact resistant protection.",
+    prep: "SA25", life: "10–12 years",
+    envs: ["C4", "C5I"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Build", product: "EPMAS", coats: 2, dftMin: 125, dftMax: 150, method: "Airless spray" },
+    ],
+    standards: ["ASTM D4060 — abrasion", "ISO 12944-5"],
+    tests: ["ASTM D4060 — Taber abrasion", "ASTM G14 — impact", "Salt spray"],
+    notes: ["Coal dust is abrasive and mildly acidic when wet. Film build matters more than gloss here."],
+    flags: [],
+  },
+  {
+    id: "pow-turbine", sector: "power", asset: "Turbine hall steel",
+    label: "Turbine Hall & Plant Steel",
+    blurb: "Interior plant steelwork with elevated temperature and humidity.",
+    prep: "SA25", life: "15–20 years",
+    envs: ["C3", "C4"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5", "BHEL specification where applicable"],
+    tests: ["Salt spray", "Adhesion", "DFT to SSPC-PA2"],
+    notes: ["Colour coding of services to the plant standard is usually part of the specification — confirm the code before ordering."],
+    flags: [],
+  },
+  {
+    id: "pow-plant", sector: "power", asset: "Plant structural steel",
+    label: "Process Plant Steel — C4",
+    blurb: "General plant steelwork in industrial atmosphere.",
+    prep: "SA25", life: "15–20 years",
+    envs: ["C3", "C4", "C5I"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 / -6"],
+    tests: ["ASTM B117", "ISO 4624 — adhesion", "SSPC-PA2 — DFT"],
+    notes: ["Stripe coat all edges, welds and fasteners before each full coat."],
+    flags: [],
+  },
+
+  /* ========================== STEEL FABRICATION ========================== */
+  {
+    id: "fab-peb", sector: "fabrication", asset: "Pre-engineered building",
+    label: "PEB Coating System",
+    blurb: "Cost-effective shop-applied system for pre-engineered structures.",
+    prep: "SA25", life: "10–15 years",
+    envs: ["C2", "C3"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 100, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 40, dftMax: 50, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 system A3.09", "MBMA guidance"],
+    tests: ["Salt spray", "Adhesion", "DFT verification"],
+    notes: [
+      "Shop application under controlled conditions gives better results than site work — protect the coating during transport and erection.",
+      "Specify the site touch-up procedure for erection damage; it is always needed and rarely specified.",
+    ],
+    flags: [],
+  },
+  {
+    id: "fab-bridge", sector: "fabrication", asset: "Bridge & flyover",
+    label: "Bridge Steel — 25 Year Durability",
+    blurb: "Very high durability where access for maintenance is costly.",
+    prep: "SA25", life: "25+ years",
+    envs: ["C4", "C5I", "C5M"],
+    coats: [
+      { role: "Primer", product: "IZS", coats: 1, dftMin: 65, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 2, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 / -6", "IRC guidance", "ISO 20340 for coastal"],
+    tests: ["ISO 20340 — cyclic ageing", "Adhesion ≥ 5 MPa", "SSPC-PA2 — DFT"],
+    notes: [
+      "Bearings, expansion joints and drainage outlets accumulate water and chloride — treat as local CX regardless of the general class.",
+      "Access cost dominates the whole-life economics. Specifying one class higher usually pays for itself once.",
+    ],
+    flags: [],
+  },
+  {
+    id: "fab-crane", sector: "fabrication", asset: "Crane & EOT structure",
+    label: "Crane & Handling Equipment",
+    blurb: "Structures with movement, vibration and mechanical contact.",
+    prep: "SA25", life: "12–15 years",
+    envs: ["C3", "C4"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
+      { role: "Build", product: "EPMAS", coats: 1, dftMin: 125, dftMax: 150, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5", "IS 807 where applicable"],
+    tests: ["Impact resistance", "Adhesion", "Salt spray"],
+    notes: ["Safety yellow on cranes fades faster than any other shade. Specify a high-durability pigment or plan a shorter repaint cycle."],
+    flags: [],
+  },
+  {
+    id: "fab-shop", sector: "fabrication", asset: "Shop / holding primer",
+    label: "Shop Primer — Weldable",
+    blurb: "Temporary protection through fabrication, weldable and cuttable.",
+    prep: "SA2", life: "3–6 months protection",
+    coats: [
+      { role: "Shop primer", product: "SHOPP", coats: 1, dftMin: 15, dftMax: 25, method: "Automatic line spray" },
+    ],
+    standards: ["ISO 12944-4", "Weldability per shop procedure"],
+    tests: ["Weld quality trial on primed plate", "Salt spray of the primer alone"],
+    notes: [
+      "Shop primer is temporary protection, not part of the durability system. State whether it is to be removed or overcoated before the full system.",
+      "Excess DFT causes weld porosity. Keep within the stated range and verify.",
+    ],
+    flags: [],
+  },
+
+  /* ============================ WATER & FOOD ============================= */
+  {
+    id: "wat-potable", sector: "water", asset: "Potable water tank",
+    label: "Potable Water Tank Lining — WRAS",
+    blurb: "Solvent-free lining approved for drinking water contact.",
+    prep: "SA3", life: "15–20 years",
+    envs: ["Im1"],
+    coats: [
+      { role: "Lining", product: "EPPOT", coats: 2, dftMin: 200, dftMax: 250, method: "Airless spray, plural component" },
+    ],
+    standards: ["WRAS approval", "AWWA D102", "ASTM D6943"],
+    tests: ["100% holiday detection", "ASTM D4541 — adhesion", "Potable water immersion and flushing regime"],
+    notes: [
+      "Only WRAS-approved grades may be used. Confirm the approval certificate number and its scope covers the exact product and shade.",
+      "Full cure and a flushing regime are required before the tank is commissioned. Rushing this is what causes taste and odour complaints.",
+      "Zero VOC solvent-free grades only — solvent retention in immersion causes blistering.",
+    ],
+    flags: ["potable"],
+  },
+  {
+    id: "wat-etp", sector: "water", asset: "ETP / STP concrete",
+    label: "Effluent Treatment Concrete Lining",
+    blurb: "Chemical and biogenic acid resistant lining for treatment structures.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Lining", product: "NOVO", coats: 2, dftMin: 400, dftMax: 600, method: "Trowel / spray" },
+    ],
+    standards: ["ASTM D543", "EN 1504-2", "ASTM G210 where sewage gas is present"],
+    tests: ["ASTM D543 — resistance to the actual effluent", "Pull-off adhesion", "Holiday detection"],
+    notes: [
+      "Sewage generates biogenic sulphuric acid in the headspace. The crown of the structure is often attacked harder than the invert.",
+      "State the effluent composition and pH range. 'Chemical resistant' without a chemical named is not a specification.",
+    ],
+    flags: ["chemical"],
+  },
+  {
+    id: "wat-pool", sector: "water", asset: "Swimming pool",
+    label: "Swimming Pool Coating",
+    blurb: "Chlorinated water immersion with UV exposure.",
+    prep: "CSP3", life: "5–8 years",
+    envs: ["Im1"],
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 80, dftMax: 120, method: "Roller" },
+      { role: "Finish", product: "EPOXYHB", coats: 2, dftMin: 125, dftMax: 150, method: "Roller / spray" },
+    ],
+    standards: ["ASTM D6943 — immersion", "ISO 2812-2"],
+    tests: ["Chlorinated water immersion", "ASTM D4541 — adhesion", "Colour stability under UV"],
+    notes: [
+      "The waterline is the hardest zone — UV, chemicals and abrasion together.",
+      "Allow full cure before filling. Filling early is the commonest cause of early blistering.",
+    ],
+    flags: ["chemical"],
+  },
+  {
+    id: "wat-food", sector: "water", asset: "Food processing floor & wall",
+    label: "Hygienic Food Plant System",
+    blurb: "Cleanable, seamless floor and wall system for food manufacture.",
+    prep: "CSP3", life: "10–12 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Floor build", product: "EPSL", coats: 1, dftMin: 3000, dftMax: 6000, method: "Trowel applied mortar / screed" },
+      { role: "Seal", product: "NOVO", coats: 1, dftMin: 150, dftMax: 200, method: "Roller" },
+    ],
+    standards: ["HACCP requirements", "ASTM D543", "EN 13529 — thermal shock"],
+    tests: ["Thermal shock / steam cleaning resistance", "Resistance to fats, lactic and citric acid", "Slip resistance wet"],
+    notes: [
+      "Hot wash-down and steam cleaning cause thermal shock. A standard epoxy floor will delaminate under it; specify a thermal-shock resistant screed.",
+      "Coved skirtings at every wall junction. Square junctions cannot be cleaned and will fail an audit.",
+      "Food-zone contact requires the appropriate approval — confirm the certificate covers the actual food contact condition.",
+    ],
+    flags: ["hygiene", "chemical", "potable"],
+  },
+
+  /* ============================== FLOORING =============================== */
+  {
+    id: "flr-epoxy", sector: "flooring", asset: "Epoxy industrial floor",
+    label: "Epoxy Self-Levelling Floor",
+    blurb: "Seamless, hard-wearing floor for manufacturing and warehousing.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Self levelling", product: "EPSL", coats: 1, dftMin: 2000, dftMax: 3000, method: "Spiked roller" },
+    ],
+    standards: ["ASTM D4060 — abrasion", "EN 13813"],
+    tests: ["ASTM D4263 — concrete moisture ≤ 4%", "ASTM D4541 — pull-off ≥ 1.5 MPa", "Abrasion"],
+    notes: [
+      "Moisture in the slab is the commonest cause of floor coating failure. Test before you start, not after it lifts.",
+      "Grind or shot blast. Acid etching does not produce a reliable profile and leaves residues.",
+      "Provide anchor grooves at all terminations and doorways.",
+    ],
+    flags: [],
+  },
+  {
+    id: "flr-fast", sector: "flooring", asset: "Fast return-to-service floor",
+    label: "Polyaspartic Fast-Cure Floor",
+    blurb: "Return to service in hours for facilities that cannot shut down.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Build", product: "EPSL", coats: 1, dftMin: 1500, dftMax: 2500, method: "Spiked roller" },
+      { role: "Finish", product: "PASP", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+    ],
+    standards: ["ASTM D4060", "ASTM D2047 — slip"],
+    tests: ["Return-to-service time trial on site", "Adhesion", "Abrasion"],
+    notes: [
+      "Polyaspartic has a short pot life. Mixing discipline matters more than with epoxy — plan the working sequence before starting.",
+      "UV stable, so it does not yellow in daylight areas such as loading bays and skylit warehouses.",
+      "Value the downtime saved against the material premium; on an operating plant it is usually the larger number.",
+    ],
+    flags: ["fast"],
+  },
+  {
+    id: "flr-esd", sector: "flooring", asset: "Anti-static floor",
+    label: "Anti-Static / ESD Floor",
+    blurb: "Controlled resistance floor for electronics and explosive atmospheres.",
+    prep: "CSP3", life: "10–12 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Conductive layer", product: "ESD", coats: 1, dftMin: 50, dftMax: 80, method: "Roller with copper grounding tape" },
+      { role: "ESD topping", product: "ESD", coats: 1, dftMin: 1500, dftMax: 2500, method: "Spiked roller" },
+    ],
+    standards: ["IEC 61340-4-1", "ANSI/ESD S20.20", "ASTM F150 — resistance"],
+    tests: ["ASTM F150 — point to ground resistance", "Body voltage generation test", "Adhesion"],
+    notes: [
+      "Copper earthing tape and a verified connection to building earth are part of the system. Without it the floor is decorative.",
+      "Resistance must be tested after installation and recorded; specification values are meaningless untested.",
+    ],
+    flags: ["esd"],
+  },
+  {
+    id: "flr-deck", sector: "flooring", asset: "Car park deck",
+    label: "Car Park Deck Waterproofing",
+    blurb: "Crack-bridging elastomeric deck system for parking structures.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
+      { role: "Membrane", product: "PUDECK", coats: 2, dftMin: 600, dftMax: 900, method: "Squeegee" },
+      { role: "Wearing", product: "PUDECK", coats: 1, dftMin: 300, dftMax: 400, method: "Aggregate broadcast" },
+    ],
+    standards: ["EN 1504-2", "ASTM C957 — elastomeric deck"],
+    tests: ["Crack bridging at low temperature", "Abrasion", "Adhesion"],
+    notes: ["Intermediate decks need waterproofing to protect the structure below; ground-bearing slabs may only need a wearing coat."],
+    flags: [],
+  },
+  {
+    id: "flr-mark", sector: "flooring", asset: "Line marking",
+    label: "Warehouse Line Marking",
+    blurb: "Durable aisle, hazard and safety marking on coated or bare floors.",
+    prep: "CSP3", life: "3–6 years",
+    coats: [
+      { role: "Marking", product: "FLRMARK", coats: 2, dftMin: 100, dftMax: 150, method: "Roller / spray with masking" },
+    ],
+    standards: ["ISO 3864 — safety colours", "ASTM D2047 — slip"],
+    tests: ["Abrasion under forklift traffic", "Adhesion to the existing floor"],
+    notes: [
+      "Marking on an existing floor needs the gloss abraded first, or it will peel under turning forklift wheels.",
+      "Photoluminescent marking can be specified for escape routes where power failure is a risk.",
+    ],
+    flags: ["glow"],
+  },
+
+  /* ================================ ROADS ================================ */
+  {
+    id: "rd-mark", sector: "roads", asset: "Road marking",
+    label: "Thermoplastic Road Marking",
+    blurb: "Hot-applied retroreflective marking for highways.",
+    prep: "NONE", life: "3–5 years on asphalt",
+    coats: [
+      { role: "Marking", product: "ROADTP", coats: 1, dftMin: 2500, dftMax: 3000, method: "Screed / spray applicator" },
+    ],
+    standards: ["IRC 35", "BS EN 1436", "ASTM E1710 — retroreflectivity"],
+    tests: ["ASTM E1710 — retroreflectivity", "Skid resistance", "Bead embedment check"],
+    notes: [
+      "Surface must be dry and clean. Applying to a damp road is the commonest cause of early debonding.",
+      "Drop-on beads give initial retroreflectivity; intermix beads maintain it as the line wears.",
+    ],
+    flags: [],
+  },
+  {
+    id: "rd-tunnel", sector: "roads", asset: "Tunnel lining",
+    label: "Tunnel Lining Coating",
+    blurb: "Washable, light-reflective coating for tunnel interiors.",
+    prep: "CSP3", life: "10–15 years",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 80, dftMax: 120, method: "Spray" },
+      { role: "Finish", product: "EPOXYHB", coats: 2, dftMin: 125, dftMax: 150, method: "Airless spray" },
+    ],
+    standards: ["EN 1504-2", "ASTM D2486 — scrub", "Fire performance to project specification"],
+    tests: ["Washability and cleanability after diesel soot exposure", "Adhesion", "Light reflectance value"],
+    notes: [
+      "High light reflectance reduces lighting load — a real operating saving over a tunnel's life.",
+      "Cleanability matters more than gloss. Tunnel walls are washed regularly and soot bonds to a rough film.",
+    ],
+    flags: ["hygiene"],
+  },
+  {
+    id: "rd-viaduct", sector: "roads", asset: "Metro viaduct steel",
+    label: "Metro Viaduct Steel — Long Durability",
+    blurb: "High durability where access requires traffic closure.",
+    prep: "SA25", life: "20–25 years",
+    envs: ["C4", "C5I", "C5M"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 2, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 / -6", "DMRC / CMRL specification"],
+    tests: ["ISO 20340 — cyclic ageing", "Adhesion", "DFT to SSPC-PA2"],
+    notes: [
+      "Bearings and drainage points collect chloride and stay wet — treat these locally as a higher class.",
+      "Anti-graffiti clear can be specified on accessible piers; state whether sacrificial or permanent.",
+    ],
+    flags: ["graffiti"],
+  },
+  {
+    id: "rd-furniture", sector: "roads", asset: "Crash barrier & street furniture",
+    label: "Crash Barrier & Street Furniture",
+    blurb: "Galvanized and steel roadside equipment in traffic exposure.",
+    prep: "SP16", life: "8–12 years",
+    envs: ["C3", "C4"],
+    coats: [
+      { role: "Adhesion promoter", product: "ETCH", coats: 1, dftMin: 8, dftMax: 12, method: "Spray" },
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 60, method: "Spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Spray" },
+    ],
+    standards: ["ISO 12944-5", "IRC guidance", "ISO 1461 for the galvanized substrate"],
+    tests: ["Adhesion to galvanizing", "Salt spray on the duplex system", "Colour retention"],
+    notes: [
+      "Duplex systems (galvanizing plus paint) outlast either alone, but new galvanizing must be sweep blasted or treated or the coating will saponify and peel.",
+      "Do not apply zinc-rich primer over galvanizing; it serves no purpose and costs money.",
+    ],
+    flags: [],
+  },
+];
+
+/* ============================================================================
+   COMMERCIAL DATA — you must fill this in
+   ----------------------------------------------------------------------------
+   pricePerLitre drives the whole-life cost comparison. While every figure is
+   0, the tool shows the maintenance TIMELINE but no rupee figures at all —
+   it will not print a number it cannot stand behind.
+   ========================================================================== */
+export const PRICING: Record<string, number> = {
+  /* keys match PRODUCTS above. Set your ex-works rate per litre. */
+};
+
+/* Cost of getting to the surface, per m², excluding the coating itself.
+   This is what makes a durable system cheaper over 25 years, and it is the
+   argument most specifiers never see quantified. Set from your own project
+   experience. 0 disables the access element of the comparison. */
+export const ACCESS_COST: Record<string, number> = {
+  ground:     0,   // ground level, open access
+  scaffold:   0,   // scaffolded structure
+  rope:       0,   // rope access / high structure
+  shutdown:   0,   // requires production shutdown
+  live:       0,   // live road, rail or airside — traffic management, night work
+};
+
+export const ACCESS_LABEL: Record<string, string> = {
+  ground:   "Ground level, open access",
+  scaffold: "Scaffold required",
+  rope:     "Rope access or high structure",
+  shutdown: "Production shutdown required",
+  live:     "Live road, rail or airside",
+};
+
+/* ============================================================================
+   COMPETITOR CROSS-REFERENCE
+   ----------------------------------------------------------------------------
+   Maps a competitor product to its GENERIC TYPE, then to the Anupam product of
+   the same generic type. This is a generic-type match, not a claim of
+   equivalent performance — the tool says so on screen, and every result tells
+   the user to confirm against the TDS.
+   ========================================================================== */
+export interface CrossRef { brand: string; product: string; generic: string; anupam: keyof typeof PRODUCTS }
+
+export const CROSSREF: CrossRef[] = [
+  { brand: "Jotun",        product: "Jotamastic 90",        generic: "Surface tolerant high-build epoxy mastic", anupam: "EPMAS" },
+  { brand: "Jotun",        product: "Hardtop AS",           generic: "Aliphatic acrylic polyurethane",          anupam: "PUTOP" },
+  { brand: "Jotun",        product: "Barrier 77",           generic: "Zinc rich epoxy primer",                  anupam: "ZNEP" },
+  { brand: "Jotun",        product: "Resist 78",            generic: "Inorganic zinc silicate",                 anupam: "IZS" },
+  { brand: "Jotun",        product: "Penguard Express",     generic: "Epoxy primer",                            anupam: "EPZP" },
+  { brand: "Jotun",        product: "Jotachar",             generic: "Intumescent fire protection",             anupam: "INTUM" },
+  { brand: "Hempel",       product: "Hempadur Mastic 45880", generic: "High-build epoxy mastic",                anupam: "EPMAS" },
+  { brand: "Hempel",       product: "Hempathane HS 55610",  generic: "Aliphatic polyurethane",                  anupam: "PUTOP" },
+  { brand: "Hempel",       product: "Hempadur Zinc 17360",  generic: "Zinc rich epoxy",                         anupam: "ZNEP" },
+  { brand: "Hempel",       product: "Hempadur 85671",       generic: "Solvent-free tank lining epoxy",          anupam: "NOVO" },
+  { brand: "International", product: "Interzinc 22",        generic: "Inorganic zinc silicate",                 anupam: "IZS" },
+  { brand: "International", product: "Intergard 475HS",     generic: "Epoxy MIO intermediate",                  anupam: "EPMIO" },
+  { brand: "International", product: "Interthane 990",      generic: "Aliphatic polyurethane finish",           anupam: "PUTOP" },
+  { brand: "International", product: "Interzone 954",       generic: "Glass flake epoxy",                       anupam: "GFEP" },
+  { brand: "International", product: "Chartek",             generic: "Hydrocarbon fire protection",             anupam: "INTUM" },
+  { brand: "Sigma / PPG",  product: "SigmaCover 456",       generic: "High-build epoxy",                        anupam: "EPOXYHB" },
+  { brand: "Sigma / PPG",  product: "SigmaDur 550",         generic: "Aliphatic polyurethane",                  anupam: "PUTOP" },
+  { brand: "Akzo Nobel",   product: "Interseal 670HS",      generic: "Surface tolerant epoxy",                  anupam: "EPMAS" },
+  { brand: "Asian Paints", product: "Apcodur Epoxy",        generic: "Epoxy primer / finish",                   anupam: "EPZP" },
+  { brand: "Asian Paints", product: "Apcothane PU",         generic: "Aliphatic polyurethane",                  anupam: "PUTOP" },
+  { brand: "Asian Paints", product: "Apcoflor",             generic: "Epoxy floor coating",                     anupam: "EPSL" },
+  { brand: "Asian Paints", product: "Apex Ultima",          generic: "Premium exterior emulsion",               anupam: "EXTEM" },
+  { brand: "Asian Paints", product: "Royale",               generic: "Luxury interior emulsion",                anupam: "INTEM" },
+  { brand: "Asian Paints", product: "SmartCare Damp Proof", generic: "Elastomeric waterproof coating",          anupam: "AREST" },
+  { brand: "Berger",       product: "Epilux 4",             generic: "Epoxy primer / finish",                   anupam: "EPZP" },
+  { brand: "Berger",       product: "Epilux 610",           generic: "Zinc rich epoxy primer",                  anupam: "ZNEP" },
+  { brand: "Berger",       product: "Luxathane",            generic: "Aliphatic polyurethane",                  anupam: "PUTOP" },
+  { brand: "Berger",       product: "Weathercoat",          generic: "Exterior emulsion",                       anupam: "EXTEM" },
+  { brand: "Berger",       product: "Silk",                 generic: "Luxury interior emulsion",                anupam: "INTEM" },
+  { brand: "Nerolac",      product: "Nerocoat Epoxy",       generic: "Epoxy primer / finish",                   anupam: "EPZP" },
+  { brand: "Nerolac",      product: "Excel Total",          generic: "Exterior emulsion",                       anupam: "EXTEM" },
+  { brand: "Nerolac",      product: "Impressions",          generic: "Luxury interior emulsion",                anupam: "INTEM" },
+  { brand: "Kansai",       product: "Kansai Zinc Rich",     generic: "Zinc rich primer",                        anupam: "ZNEP" },
+  { brand: "Sherwin-Williams", product: "Macropoxy 646",    generic: "High-build epoxy",                        anupam: "EPOXYHB" },
+  { brand: "Sherwin-Williams", product: "Acrolon 218",      generic: "Aliphatic polyurethane",                  anupam: "PUTOP" },
+  { brand: "Carboline",    product: "Carboguard 890",       generic: "High-build epoxy",                        anupam: "EPOXYHB" },
+  { brand: "Carboline",    product: "Carbothane 134",       generic: "Aliphatic polyurethane",                  anupam: "PUTOP" },
+];
