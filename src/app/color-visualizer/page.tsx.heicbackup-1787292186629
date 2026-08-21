@@ -143,65 +143,23 @@ export default function ColourVisualiser() {
   }, [family, search, surface]);
 
   /* ---------------------------------------------------------------- upload */
-  /* iPhones save photos as HEIC. Safari cannot always decode HEIC through
-     createImageBitmap, and older Safari rejects the options object outright.
-     So we try three routes in order and only give up if all three fail —
-     the <img> route handles HEIC because Safari decodes it natively there,
-     and modern browsers honour EXIF orientation on <img> by default. */
-  const decode = async (file: File): Promise<{ src: CanvasImageSource; w: number; h: number; close?: () => void }> => {
-    if (typeof createImageBitmap === 'function') {
-      try {
-        const b = await createImageBitmap(file, { imageOrientation: 'from-image' });
-        return { src: b, w: b.width, h: b.height, close: () => b.close?.() };
-      } catch { /* older Safari rejects the options object */ }
-      try {
-        const b = await createImageBitmap(file);
-        return { src: b, w: b.width, h: b.height, close: () => b.close?.() };
-      } catch { /* cannot decode this format here */ }
-    }
-    /* <img> fallback — this is the one that handles HEIC on iPhone */
-    return await new Promise((resolve, reject) => {
-      const url = URL.createObjectURL(file);
-      const im = new Image();
-      im.onload = () => resolve({
-        src: im, w: im.naturalWidth, h: im.naturalHeight,
-        close: () => URL.revokeObjectURL(url),
-      });
-      im.onerror = () => { URL.revokeObjectURL(url); reject(new Error('decode failed')); };
-      im.src = url;
-    });
-  };
-
   const loadFile = async (file: File) => {
     setBusy(true);
     try {
-      if (!file.type.startsWith('image/') && !/\.(hei[cf]|jpe?g|png|webp)$/i.test(file.name)) {
-        alert('That does not look like a photo. Choose an image from your gallery or take one now.');
-        return;
-      }
-      const img = await decode(file);
-      if (!img.w || !img.h) throw new Error('zero size');
-
-      const scale = Math.min(1, MAX_W / img.w);
-      const w = Math.max(1, Math.round(img.w * scale));
-      const h = Math.max(1, Math.round(img.h * scale));
+      const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      const scale = Math.min(1, MAX_W / bmp.width);
+      const w = Math.round(bmp.width * scale), h = Math.round(bmp.height * scale);
       const cv = canvasRef.current!;
       cv.width = w; cv.height = h;
       const ctx = cv.getContext('2d', { willReadFrequently: true })!;
-      ctx.drawImage(img.src, 0, 0, w, h);
+      ctx.drawImage(bmp, 0, 0, w, h);
       origRef.current = ctx.getImageData(0, 0, w, h);
       dimRef.current = { w, h };
-      img.close?.();
-
       undoRef.current = [];
       setRegions([]); setActiveId(null); setReady(true); setCompare(100);
-    } catch (e) {
-      alert(
-        "That photo could not be opened in this browser.\n\n" +
-        "If you are on an iPhone, open Settings > Camera > Formats and choose " +
-        "\"Most Compatible\", then take the photo again. Or send the picture to " +
-        "yourself on WhatsApp and use that copy, which is always a JPG."
-      );
+      bmp.close?.();
+    } catch {
+      alert('Could not read that image. Try a JPG or PNG photo.');
     } finally { setBusy(false); }
   };
 
