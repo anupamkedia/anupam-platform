@@ -12,3 +12,6 @@ node_modules/
 *.visbackup-*
 *.herofixbackup-*
 *.blogbackup-*
+
+*backup*
+*.heicbackup-*
