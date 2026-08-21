@@ -98,8 +98,6 @@ export default function SpecificationGenerator() {
 
   const [tab, setTab] = useState<"spec" | "why" | "life" | "check" | "match">("spec");
   const [gate, setGate] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
-  const [gateAfter, setGateAfter] = useState<'spec' | 'check' | 'save'>('spec');
   const [gName, setGName] = useState(""); const [gFirm, setGFirm] = useState(""); const [gPhone, setGPhone] = useState("");
   const [saved, setSaved] = useState<{ id: string; label: string; url: string; when: string }[]>([]);
   const [qr, setQr] = useState<string>("");
@@ -134,18 +132,9 @@ export default function SpecificationGenerator() {
     const a = p.get("a"); if (a) setArea(a);
     const c = p.get("c"); if (c && SYSTEMS.some((x) => x.id === c)) setCompareId(c);
     try { setSaved(JSON.parse(localStorage.getItem("anupam.specs") || "[]")); } catch { /* first visit */ }
-    try {
-      const who = JSON.parse(localStorage.getItem("anupam.who") || "null");
-      if (who && who.name && who.phone) { setUnlocked(true); setGName(who.name); setGFirm(who.firm || ""); setGPhone(who.phone); }
-    } catch { /* private browsing */ }
   }, []);
 
   /* ---------- QR ---------- */
-  useEffect(() => {
-    document.body.classList.toggle('locked', !unlocked);
-    return () => document.body.classList.remove('locked');
-  }, [unlocked]);
-
   useEffect(() => {
     if (!shareUrl) return;
     let live = true;
@@ -158,30 +147,13 @@ export default function SpecificationGenerator() {
 
   const saveSpec = () => {
     if (!system) return;
-    if (!unlocked) { setGateAfter('save'); setGate(true); return; }
     const entry = { id: system.id, label: `${system.label}${project ? " — " + project : ""}`, url: shareUrl, when: new Date().toLocaleDateString("en-IN") };
     const next = [entry, ...saved.filter((x) => x.url !== entry.url)].slice(0, 20);
     setSaved(next);
     try { localStorage.setItem("anupam.specs", JSON.stringify(next)); } catch { /* private browsing */ }
   };
 
-  const doPrint = (mode: "spec" | "check") => {
-    if (!unlocked) { setGateAfter(mode); setGate(true); return; }
-    printMode.current = mode; setTab(mode === "check" ? "check" : "spec");
-    setTimeout(() => window.print(), 60);
-  };
-
-  /* completing the form is what unlocks download, print and save */
-  const unlock = () => {
-    if (!gName.trim() || !gPhone.trim()) return;
-    try { localStorage.setItem("anupam.who", JSON.stringify({ name: gName, firm: gFirm, phone: gPhone })); } catch { /* ignore */ }
-    setUnlocked(true); setGate(false);
-    const next = gateAfter;
-    setTimeout(() => {
-      if (next === 'save') { const el = document.getElementById('save-btn'); el?.click(); }
-      else { printMode.current = next; setTab(next === 'check' ? 'check' : 'spec'); setTimeout(() => window.print(), 60); }
-    }, 250);
-  };
+  const doPrint = (mode: "spec" | "check") => { printMode.current = mode; setTab(mode === "check" ? "check" : "spec"); setTimeout(() => window.print(), 60); };
 
   const totalMin = system ? system.coats.reduce((n, c) => n + c.coats * c.dftMin, 0) : 0;
   const totalMax = system ? system.coats.reduce((n, c) => n + c.coats * c.dftMax, 0) : 0;
@@ -294,31 +266,18 @@ export default function SpecificationGenerator() {
           </Panel>
 
           <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-2">
-            <button onClick={() => doPrint('spec')}
+            <button onClick={() => setGate(true)}
               className="w-full bg-[#1E5AA8] hover:bg-[#164683] text-white text-sm font-medium py-3 rounded-lg">
-              {unlocked ? "Download specification" : "Download specification →"}
+              Download specification
             </button>
             <button onClick={() => doPrint("check")}
               className="w-full border border-slate-300 hover:border-[#1E5AA8] text-slate-800 text-[13px] py-2.5 rounded-lg">
               Print inspection checklist
             </button>
-            <button id="save-btn" onClick={() => {
-                if (!unlocked) { setGateAfter('save'); setGate(true); return; }
-                if (!system) return;
-                const entry = { id: system.id, label: `${system.label}${project ? " — " + project : ""}`, url: shareUrl, when: new Date().toLocaleDateString("en-IN") };
-                const next = [entry, ...saved.filter((x) => x.url !== entry.url)].slice(0, 20);
-                setSaved(next);
-                try { localStorage.setItem("anupam.specs", JSON.stringify(next)); } catch { /* ignore */ }
-              }}
+            <button onClick={saveSpec}
               className="w-full border border-slate-300 hover:border-[#1E5AA8] text-slate-800 text-[13px] py-2.5 rounded-lg">
               Save this spec to my device
             </button>
-            {!unlocked && (
-              <p className="text-[11px] text-slate-500 leading-snug pt-1">
-                Download, print and save are released once you tell us who the
-                specification is for. One form, once — we remember you after that.
-              </p>
-            )}
           </div>
 
           {saved.length > 0 && (
@@ -535,38 +494,29 @@ export default function SpecificationGenerator() {
       {gate && (
         <div className="print:hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setGate(false)}>
           <div className="bg-white rounded-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-[17px] font-semibold text-[#0B2A5B] mb-1">
-              {gateAfter === 'save' ? 'Save this specification' : gateAfter === 'check' ? 'Print the inspection checklist' : 'Download the specification'}
-            </h3>
+            <h3 className="text-[17px] font-semibold text-[#0B2A5B] mb-1">Download the specification</h3>
             <p className="text-[12.5px] text-slate-600 mb-5">
-              Specifications are issued to a named person so our technical team can
-              support the project. Complete this once and downloading, printing and
-              saving stay open on this device.
+              Tell us who it is for and our technical team can review it with you — or skip and download anyway.
             </p>
             <div className="space-y-3">
               <Inp v={gName} set={setGName} p="Your name" />
               <Inp v={gFirm} set={setGFirm} p="Firm / company" />
               <Inp v={gPhone} set={setGPhone} p="Mobile number" />
             </div>
-            <div className="flex flex-col gap-2 mt-5">
-              <a href={gName.trim() && gPhone.trim() ? `https://wa.me/${WHATSAPP}?text=${gateText}` : undefined}
+            <div className="flex flex-col sm:flex-row gap-2 mt-5">
+              <a href={gName && gPhone ? `https://wa.me/${WHATSAPP}?text=${gateText}` : undefined}
                 target="_blank" rel="noopener noreferrer"
-                onClick={() => { if (gName.trim() && gPhone.trim()) unlock(); }}
-                className={`text-center text-[13px] font-medium py-3 rounded-lg ${
-                  gName.trim() && gPhone.trim() ? "bg-[#1E5AA8] text-white hover:bg-[#164683]" : "bg-slate-200 text-slate-400 pointer-events-none"}`}>
-                Send to Anupam and continue
+                onClick={() => { if (gName && gPhone) { setGate(false); setTimeout(() => doPrint("spec"), 300); } }}
+                className={`flex-1 text-center text-[13px] font-medium py-2.5 rounded-lg ${gName && gPhone ? "bg-[#1E5AA8] text-white hover:bg-[#164683]" : "bg-slate-200 text-slate-400 pointer-events-none"}`}>
+                Send &amp; download
               </a>
-              <button onClick={unlock} disabled={!gName.trim() || !gPhone.trim()}
-                className="text-center text-[13px] py-2.5 rounded-lg border border-slate-300 text-slate-700 hover:border-slate-400 disabled:opacity-40 disabled:hover:border-slate-300">
-                Continue without sending
+              <button onClick={() => { setGate(false); setTimeout(() => doPrint("spec"), 200); }}
+                className="flex-1 border border-slate-300 text-slate-700 text-[13px] py-2.5 rounded-lg hover:border-slate-400">
+                Just download
               </button>
-              <button onClick={() => setGate(false)}
-                className="text-[12px] text-slate-500 hover:text-slate-800 py-1">Cancel</button>
             </div>
             <p className="text-[11px] text-slate-400 mt-3">
-              {(!gName.trim() || !gPhone.trim())
-                ? "Name and mobile number are required."
-                : "Your details stay on this device unless you choose to send them."}
+              We ask, we do not insist. The specification downloads either way.
             </p>
           </div>
         </div>
@@ -577,14 +527,6 @@ export default function SpecificationGenerator() {
           body { background:#fff !important; }
           header, footer, nav, .print\\:hidden { display:none !important; }
           #spec-doc { box-shadow:none !important; border:0 !important; }
-          /* Ctrl+P cannot be intercepted, so the document itself is withheld
-             until the visitor has identified themselves. */
-          body.locked #spec-doc { display:none !important; }
-          body.locked::after {
-            content:"This specification has not been released. Open it at anupampaints.com/specification-generator and complete the short form to download.";
-            display:block; padding:40mm 20mm; font-family:system-ui,sans-serif;
-            font-size:12pt; line-height:1.6; color:#0B2A5B;
-          }
           @page { margin:12mm; size:A4; }
           section { break-inside:avoid; } tr { break-inside:avoid; }
         }
