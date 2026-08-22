@@ -133,6 +133,7 @@ const navItems = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>(null);
   const [activeMega, setActiveMega] = useState<string | null>(null);
   const [megaTimeout, setMegaTimeout] = useState<any>(null);
 
@@ -218,7 +219,7 @@ export default function Header() {
           <div className="flex items-center gap-2">
             <Link href="/portals" className="hidden md:inline-flex text-[13px] font-medium text-[var(--color-steel)] hover:text-[var(--color-navy)] transition px-3 py-2">Login</Link>
             <Link href="/contact" className="hidden md:inline-flex bg-[var(--color-red)] text-white text-[13px] font-semibold px-5 py-2.5 hover:bg-[var(--color-red-hover)] transition" style={{borderRadius:'var(--radius-md)'}}>Request a Quote</Link>
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="xl:hidden p-2 text-[var(--color-graphite)]" aria-label="Menu">
+            <button onClick={() => { setMobileOpen(!mobileOpen); if (mobileOpen) setOpenSection(null); }} className="xl:hidden p-2 text-[var(--color-graphite)]" aria-label="Menu">
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
@@ -227,10 +228,64 @@ export default function Header() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="xl:hidden bg-white pb-safe border-t border-[var(--color-border)] max-h-[80vh] overflow-y-auto">
-            {navItems.map((item) => (
-              <Link key={item.label} href={item.href} onClick={() => setMobileOpen(false)}
-                className="block px-6 py-3 text-[var(--color-graphite)] font-medium border-b border-[var(--color-border)] text-sm">{item.label}</Link>
-            ))}
+            {navItems.map((item) => {
+              const mm = item.mega ? megaMenu[item.mega] : null;
+              if (!mm) {
+                return (
+                  <Link key={item.label} href={item.href} onClick={() => setMobileOpen(false)}
+                    className="block px-6 py-3 text-[var(--color-graphite)] font-medium border-b border-[var(--color-border)] text-sm">{item.label}</Link>
+                );
+              }
+              const isOpen = openSection === item.label;
+              return (
+                <div key={item.label} className="border-b border-[var(--color-border)]">
+                  <button
+                    onClick={() => setOpenSection(isOpen ? null : item.label)}
+                    aria-expanded={isOpen}
+                    className="w-full flex items-center justify-between px-6 py-3 text-left text-sm font-medium text-[var(--color-graphite)]">
+                    <span>{item.label}</span>
+                    <ChevronDown size={16} className={`shrink-0 text-[var(--color-steel)] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {isOpen && (
+                    <div className="bg-[var(--color-warm-white)] pb-3">
+                      {mm.cols.map((col, ci) => (
+                        <div key={ci} className="px-6 pt-3">
+                          <div className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-steel)] mb-1">{col.title}</div>
+                          <div className="border-l border-[var(--color-border)] pl-3">
+                            {col.items.map((sub) => (
+                              <Link key={sub.label} href={sub.href}
+                                onClick={() => { setMobileOpen(false); setOpenSection(null); }}
+                                className="block py-2 text-[13px] text-[var(--color-steel)]">{sub.label}</Link>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+
+                      {mm.featured && (
+                        <div className="px-6 pt-3">
+                          <Link href={mm.featured.href}
+                            onClick={() => { setMobileOpen(false); setOpenSection(null); }}
+                            className="block bg-white border border-[var(--color-border)] px-3 py-2.5"
+                            style={{borderRadius:'var(--radius-md)'}}>
+                            <span className="block text-[13px] font-semibold text-[var(--color-navy)]">{mm.featured.label}</span>
+                            <span className="block text-[11.5px] text-[var(--color-steel)] leading-snug">{mm.featured.desc}</span>
+                          </Link>
+                        </div>
+                      )}
+
+                      <div className="px-6 pt-3">
+                        <Link href={item.href}
+                          onClick={() => { setMobileOpen(false); setOpenSection(null); }}
+                          className="text-[13px] font-semibold text-[var(--color-navy)]">
+                          View all {item.label} &rarr;
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
             <Link href="/industries" onClick={() => setMobileOpen(false)} className="block px-6 py-3 text-[var(--color-graphite)] font-medium border-b border-[var(--color-border)] text-sm">Industries</Link>
             <Link href="/find-equivalent" onClick={() => setMobileOpen(false)} className="block px-6 py-3 text-[var(--color-graphite)] font-medium border-b border-[var(--color-border)] text-sm">Find Anupam Equivalent</Link>
             <div className="p-4">
