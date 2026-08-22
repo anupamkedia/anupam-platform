@@ -2,9 +2,21 @@
 
 import { useState, useMemo, useEffect, useRef, type ReactNode } from "react";
 import {
-  PRODUCTS, PREP, SECTORS, SYSTEMS, FLAGS, PRICING, ACCESS_COST, ACCESS_LABEL, CROSSREF,
+  PRODUCTS, PREP, SECTORS, SYSTEMS, FLAGS, ACCESS_LABEL, CROSSREF,
   type System,
 } from "@/data/coating-systems";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+const DUR_LABEL: Record<string, string> = {
+  M:  "Medium — 7 to 15 years",
+  H:  "High — 15 to 25 years",
+  VH: "Very high — 25 years and beyond",
+};
 
 const TDS_URL = "https://tds-msds-manager.vercel.app/catalog";
 const WHATSAPP = "919831728605";
@@ -27,14 +39,13 @@ function lifeYears(s: System) {
 }
 
 /* material cost per m², or null when prices are not set */
-function materialCost(s: System) {
+function materialCost(s: System, price: Record<string, number>, vs: (k: string) => number) {
   let sum = 0;
   for (const c of s.coats) {
-    const p = PRODUCTS[c.product];
-    const price = PRICING[c.product];
-    if (!price) return null;
+    const rate = price[c.product];
+    if (!rate) return null;                    // no price = no figure, ever
     const dft = ((c.dftMin + c.dftMax) / 2) * c.coats;
-    sum += (dft / (p.vs * 10)) * price;
+    sum += (dft / (vs(c.product) * 10)) * rate;
   }
   return sum;
 }
@@ -88,6 +99,10 @@ export default function SpecificationGenerator() {
   const [systemId, setSystemId] = useState<string | null>(null);
   const [compareId, setCompareId] = useState<string | null>(null);
   const [access, setAccess] = useState("ground");
+  const [durWanted, setDurWanted] = useState<string>("");     // "" = let the tool choose
+  const [price, setPrice] = useState<Record<string, number>>({});
+  const [vsOverride, setVsOverride] = useState<Record<string, number>>({});
+  const [accessCost, setAccessCost] = useState<Record<string, number>>({});
   const [horizon, setHorizon] = useState(25);
 
   const [project, setProject] = useState("");
@@ -110,7 +125,39 @@ export default function SpecificationGenerator() {
   const filtered = useMemo(
     () => (flags.length ? matches.filter((s) => flags.every((f) => (s.flags || []).includes(f))) : matches),
     [matches, flags]);
-  const system: System | undefined = filtered.find((s) => s.id === systemId) ?? filtered[0] ?? matches[0];
+  /* Recommended system: honour an explicit pick, then the requested design
+     life, then the tool's own default — which is the longest-life system that
+     is not the extreme one, i.e. exactly what it showed before this control
+     existed. */
+  const recommended = useMemo(() => {
+    if (systemId) { const p = filtered.find((s) => s.id === systemId); if (p) return p; }
+    if (durWanted) { const d = filtered.find((s) => s.dur === durWanted); if (d) return d; }
+    return filtered[0] ?? matches[0];
+  }, [filtered, matches, systemId, durWanted]);
+
+  const system: System | undefined = recommended;
+
+  /* other systems for the same asset, with the reason each might be chosen */
+  const alternatives = useMemo(() => {
+    if (!system) return [];
+    return matches
+      .filter((s) => s.id !== system.id)
+      .map((s) => {
+        const mine = lifeYears(system), theirs = lifeYears(s);
+        let why = s.bestWhen ?? "";
+        if (!why) {
+          why = theirs < mine
+            ? "Lower initial cost, shorter life. Worth it only where access for repainting is easy."
+            : "Longer life for a higher initial cost. Pays back wherever access is difficult or disruptive.";
+        }
+        return { s, why, longer: theirs > mine };
+      })
+      .sort((a, b) => lifeYears(a.s) - lifeYears(b.s));
+  }, [matches, system]);
+
+  const durOptions = useMemo(
+    () => Array.from(new Set(matches.map((s) => s.dur).filter(Boolean))) as string[],
+    [matches]);
   const rival = compareId ? SYSTEMS.find((s) => s.id === compareId) : undefined;
 
   const unmet = flags.filter((f) => !matches.some((s) => (s.flags || []).includes(f)));
@@ -139,6 +186,31 @@ export default function SpecificationGenerator() {
       if (who && who.name && who.phone) { setUnlocked(true); setGName(who.name); setGFirm(who.firm || ""); setGPhone(who.phone); }
     } catch { /* private browsing */ }
   }, []);
+
+  /* ---------- live pricing, maintained in the admin panel ---------- */
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await supabase.from("coating_pricing").select("*");
+        if (data) {
+          const p: Record<string, number> = {}, v: Record<string, number> = {};
+          data.forEach((d: any) => {
+            if (d.price_per_litre > 0) p[d.product_key] = Number(d.price_per_litre);
+            if (d.volume_solids) v[d.product_key] = Number(d.volume_solids);
+          });
+          setPrice(p); setVsOverride(v);
+        }
+        const { data: ac } = await supabase.from("coating_access_cost").select("*");
+        if (ac) {
+          const a: Record<string, number> = {};
+          ac.forEach((d: any) => { if (d.cost_per_m2 > 0) a[d.access_key] = Number(d.cost_per_m2); });
+          setAccessCost(a);
+        }
+      } catch { /* tables not created yet — costs stay hidden, which is correct */ }
+    })();
+  }, []);
+
+  const vsOf = (key: string) => vsOverride[key] ?? PRODUCTS[key].vs;
 
   /* ---------- QR ---------- */
   useEffect(() => {
@@ -259,8 +331,31 @@ export default function SpecificationGenerator() {
             )}
           </Panel>
 
+          {durOptions.length > 1 && (
+            <Panel n="4" title="Design life">
+              <p className="text-[11.5px] text-slate-500 mt-1 mb-3">
+                How long before first major maintenance. Leave as recommended unless
+                the project sets a figure.
+              </p>
+              <div className="grid gap-1">
+                <button onClick={() => { setDurWanted(""); setSystemId(null); }}
+                  className={`text-left px-3 py-2 rounded-lg text-[13px] ${
+                    durWanted === "" ? "bg-[#0B2A5B] text-white" : "text-slate-700 hover:bg-slate-100"}`}>
+                  Recommended
+                </button>
+                {(["M", "H", "VH"] as const).filter((d) => durOptions.includes(d)).map((d) => (
+                  <button key={d} onClick={() => { setDurWanted(d); setSystemId(null); }}
+                    className={`text-left px-3 py-2 rounded-lg text-[13px] ${
+                      durWanted === d ? "bg-[#0B2A5B] text-white" : "text-slate-700 hover:bg-slate-100"}`}>
+                    {DUR_LABEL[d]}
+                  </button>
+                ))}
+              </div>
+            </Panel>
+          )}
+
           {filtered.length > 1 && (
-            <Panel n="4" title="System">
+            <Panel n="5" title="System">
               <div className="grid gap-2 mt-3">
                 {filtered.map((s) => (
                   <button key={s.id} onClick={() => setSystemId(s.id)}
@@ -273,7 +368,7 @@ export default function SpecificationGenerator() {
             </Panel>
           )}
 
-          <Panel n="5" title="Project details">
+          <Panel n="6" title="Project details">
             <div className="space-y-3 mt-3">
               <Inp v={project} set={setProject} p="Project name" />
               <Inp v={client} set={setClient} p="Client / consultant" />
@@ -379,11 +474,19 @@ export default function SpecificationGenerator() {
                   <>
                     <Sec n="1" title="System selected">
                       <p className="text-[15px] font-semibold text-[#0B2A5B] mb-1">{system.label}</p>
-                      <p className="text-[13px] text-slate-700 mb-4">{system.blurb}</p>
+                      <p className="text-[13px] text-slate-700 mb-3">{system.blurb}</p>
+                      {alternatives.length > 0 && (
+                        <p className="print:hidden text-[12.5px] text-slate-600 mb-4">
+                          {alternatives.length === 1 ? "One alternative exists" : `${alternatives.length} alternatives exist`} for this asset —{" "}
+                          <button onClick={() => setTab("why")} className="text-[#1E5AA8] hover:underline">
+                            see when each is the better choice
+                          </button>
+                        </p>
+                      )}
                       <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
                         <Row k="Sector" v={SECTORS[system.sector].label} />
                         <Row k="Asset" v={system.asset} />
-                        <Row k="Expected service life" v={system.life} />
+                        <Row k="Expected service life" v={`${system.life}${system.dur ? "  (" + DUR_LABEL[system.dur].split(" —")[0] + " durability, ISO 12944-1)" : ""}`} />
                         {system.envs && <Row k="Suits corrosivity" v={system.envs.map((e) => ENV_LABEL[e] ?? e).join(", ")} />}
                         {system.tempMax && <Row k="Max service temperature" v={`${system.tempMax} °C`} />}
                         {system.flags?.length ? <Row k="Satisfies" v={system.flags.map((f) => FLAGS[f]).join(", ")} /> : null}
@@ -399,8 +502,8 @@ export default function SpecificationGenerator() {
                     </Sec>
 
                     <Sec n="3" title="Coating schedule">
-                      <ScheduleTable s={system} totalMin={totalMin} totalMax={totalMax} />
-                      {showQty && <Quantities s={system} area={areaNum} loss={loss} />}
+                      <ScheduleTable s={system} totalMin={totalMin} totalMax={totalMax} vsOf={vsOf} />
+                      {showQty && <Quantities s={system} area={areaNum} loss={loss} vsOf={vsOf} />}
                       <p className="text-[11px] text-slate-500 mt-4">
                         Technical data sheets for every product above: {TDS_URL}
                       </p>
@@ -444,6 +547,40 @@ export default function SpecificationGenerator() {
                         </li>
                       ))}
                     </ul>
+
+                    {alternatives.length > 0 && (
+                      <div className="mt-8 pt-6 border-t border-slate-200">
+                        <h3 className="text-[14px] font-semibold text-[#0B2A5B] mb-1">
+                          When a different system would be the better choice
+                        </h3>
+                        <p className="text-[12.5px] text-slate-600 mb-4">
+                          The recommendation above suits most cases for this asset. These are the
+                          alternatives and the conditions that justify them.
+                        </p>
+                        <div className="space-y-3">
+                          {alternatives.map(({ s: alt, why, longer }) => (
+                            <div key={alt.id} className="border border-slate-200 rounded-lg p-4">
+                              <div className="flex items-start justify-between gap-4 flex-wrap">
+                                <div className="min-w-0">
+                                  <p className="text-[13.5px] font-medium text-slate-900">{alt.label}</p>
+                                  <p className="text-[12px] text-slate-500 mt-0.5">
+                                    {alt.life} · {Math.round(totalDFT(alt))} µm ·{" "}
+                                    <span className={longer ? "text-emerald-700" : "text-amber-700"}>
+                                      {longer ? "longer life" : "shorter life"}
+                                    </span>
+                                  </p>
+                                </div>
+                                <button onClick={() => { setSystemId(alt.id); setDurWanted(""); setTab("spec"); }}
+                                  className="print:hidden text-[12.5px] text-[#1E5AA8] hover:underline shrink-0">
+                                  Use this instead
+                                </button>
+                              </div>
+                              <p className="text-[12.5px] text-slate-700 leading-relaxed mt-2">{why}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </Sec>
                 )}
 
@@ -466,7 +603,7 @@ export default function SpecificationGenerator() {
                         <input type="range" min={10} max={40} step={5} value={horizon} onChange={(e) => setHorizon(+e.target.value)} className="w-full accent-[#1E5AA8]" />
                       </div>
                     </div>
-                    <LifeCompare a={system} b={rival} horizon={horizon} area={areaNum} access={access} />
+                    <LifeCompare a={system} b={rival} horizon={horizon} area={areaNum} access={access} price={price} accessCost={accessCost} vsOf={vsOf} />
                   </Sec>
                 )}
 
@@ -595,7 +732,7 @@ export default function SpecificationGenerator() {
 
 /* ============================ sub-components ============================= */
 
-function ScheduleTable({ s, totalMin, totalMax }: { s: System; totalMin: number; totalMax: number }) {
+function ScheduleTable({ s, totalMin, totalMax, vsOf }: { s: System; totalMin: number; totalMax: number; vsOf: (k: string) => number }) {
   return (
     <div className="overflow-x-auto -mx-1">
       <table className="w-full text-[12.5px] border-collapse">
@@ -614,7 +751,7 @@ function ScheduleTable({ s, totalMin, totalMax }: { s: System; totalMin: number;
                 <Td className="text-slate-500 whitespace-nowrap">{c.role}</Td>
                 <Td className="font-medium text-slate-900">{p.name}</Td>
                 <Td className="text-slate-600">{p.generic}</Td>
-                <Td className="text-center">{p.vs}%</Td>
+                <Td className="text-center">{vsOf(c.product)}%</Td>
                 <Td className="text-center">{c.coats}</Td>
                 <Td className="text-center whitespace-nowrap">{c.dftMin}–{c.dftMax} µm</Td>
                 <Td className="text-center text-slate-600">{c.method}</Td>
@@ -631,7 +768,7 @@ function ScheduleTable({ s, totalMin, totalMax }: { s: System; totalMin: number;
   );
 }
 
-function Quantities({ s, area, loss }: { s: System; area: number; loss: number }) {
+function Quantities({ s, area, loss, vsOf }: { s: System; area: number; loss: number; vsOf: (k: string) => number }) {
   return (
     <div className="mt-6">
       <p className="text-[11px] tracking-[0.16em] uppercase text-slate-500 mb-2">
@@ -648,11 +785,11 @@ function Quantities({ s, area, loss }: { s: System; area: number; loss: number }
           {s.coats.map((c, i) => {
             const p = PRODUCTS[c.product];
             const dft = ((c.dftMin + c.dftMax) / 2) * c.coats;
-            const theo = (area * dft) / (p.vs * 10);
+            const theo = (area * dft) / (vsOf(c.product) * 10);
             return (
               <tr key={i} className={i % 2 ? "bg-slate-50/70" : ""}>
                 <Td>{p.name}</Td>
-                <Td className="text-center text-slate-600">{rate(p.vs, (c.dftMin + c.dftMax) / 2)} m²/L</Td>
+                <Td className="text-center text-slate-600">{rate(vsOf(c.product), (c.dftMin + c.dftMax) / 2)} m²/L</Td>
                 <Td className="text-center">{theo.toFixed(0)} L</Td>
                 <Td className="text-center font-medium">{(theo * (1 + loss / 100)).toFixed(0)} L</Td>
               </tr>
@@ -664,21 +801,22 @@ function Quantities({ s, area, loss }: { s: System; area: number; loss: number }
   );
 }
 
-function LifeCompare({ a, b, horizon, area, access }:
-  { a: System; b?: System; horizon: number; area: number; access: string }) {
+function LifeCompare({ a, b, horizon, area, access, price, accessCost, vsOf }:
+  { a: System; b?: System; horizon: number; area: number; access: string;
+    price: Record<string, number>; accessCost: Record<string, number>; vsOf: (k: string) => number }) {
   const rows = [a, b].filter(Boolean) as System[];
-  const accessRate = ACCESS_COST[access] ?? 0;
+  const accessRate = accessCost[access] ?? 0;
   const hasArea = !isNaN(area) && area > 0;
 
   const calc = (s: System) => {
     const years = lifeYears(s);
     const repaints = Math.max(0, Math.ceil(horizon / years) - 1);
-    const mat = materialCost(s);
+    const mat = materialCost(s, price, vsOf);
     const perM2 = mat === null ? null : mat + accessRate;
     return { years, repaints, mat, perM2 };
   };
 
-  const anyPrice = rows.some((s) => materialCost(s) !== null);
+  const anyPrice = rows.some((s) => materialCost(s, price, vsOf) !== null);
 
   return (
     <>

@@ -124,11 +124,17 @@ export interface System {
   envs?: string[];        // ISO 12944 categories this suits
   flags?: string[];       // special requirements it satisfies
   tempMax?: number;       // max service temperature, °C
+  /* durability tier to ISO 12944-1. M = 7-15 yrs, H = 15-25, VH = 25+.
+     Assets usually carry more than one, so the tool can offer a genuine
+     alternative rather than a single take-it-or-leave-it answer. */
+  dur?: "M" | "H" | "VH";
+  /* when this system is the better choice than its siblings */
+  bestWhen?: string;
 }
 
 export const SECTORS: Record<string, { label: string; blurb: string; assets: string[] }> = {
   buildings: { label: "Buildings & Architecture", blurb: "Residential, commercial and institutional construction.",
-    assets: ["Exterior masonry wall", "Interior masonry wall", "Terrace & roof", "Bathroom & wet area", "RCC structure (anti-carbonation)", "Wooden doors & joinery", "MS gates, grills & railings", "Building structural steel", "Basement & parking floor"] },
+    assets: ["Exterior masonry wall", "Interior masonry wall", "Wall putty & levelling", "Textured & designer finish", "Economy interior finish", "Damp & seepage treatment", "Terrace & roof", "Bathroom & wet area", "RCC structure (anti-carbonation)", "Wooden doors & joinery", "Exterior joinery & metalwork", "MS gates, grills & railings", "Building structural steel", "Basement & parking floor"] },
   railways: { label: "Railways & Metro", blurb: "Rolling stock, depots and station infrastructure.",
     assets: ["Coach exterior", "Coach interior", "Bogie & underframe", "Wagon exterior", "Locomotive shell", "Station & viaduct steel", "Platform safety marking"] },
   automotive: { label: "Automotive & OEM", blurb: "Vehicle assembly, components and engineering fabrication.",
@@ -172,7 +178,7 @@ export const SYSTEMS: System[] = [
     id: "bld-ext", sector: "buildings", asset: "Exterior masonry wall",
     label: "Exterior Wall System — Premium",
     blurb: "Damp-resistant, alkali-blocking build for Indian monsoon and UV exposure.",
-    prep: "MASONRY", life: "7–10 years to first repaint",
+    prep: "MASONRY", life: "7–10 years to first repaint", dur: "H",
     coats: [
       { role: "Primer", product: "DAMPP", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / roller" },
       { role: "Finish", product: "EXTEM", coats: 2, dftMin: 30, dftMax: 40, method: "Brush / roller / spray" },
@@ -190,7 +196,7 @@ export const SYSTEMS: System[] = [
     id: "bld-int", sector: "buildings", asset: "Interior masonry wall",
     label: "Interior Wall System — Luxury",
     blurb: "Washable low-VOC interior finish for occupied spaces.",
-    prep: "MASONRY", life: "5–7 years",
+    prep: "MASONRY", life: "5–7 years", dur: "H",
     coats: [
       { role: "Primer", product: "UNIPRIM", coats: 1, dftMin: 25, dftMax: 35, method: "Brush / roller" },
       { role: "Finish", product: "INTEM", coats: 2, dftMin: 25, dftMax: 35, method: "Brush / roller" },
@@ -207,7 +213,7 @@ export const SYSTEMS: System[] = [
     id: "bld-roof", sector: "buildings", asset: "Terrace & roof",
     label: "Terrace Waterproofing with Heat Reflection",
     blurb: "Elastomeric membrane that waterproofs and lowers roof surface temperature.",
-    prep: "MASONRY", life: "8–10 years",
+    prep: "MASONRY", life: "8–10 years", dur: "M",
     coats: [
       { role: "Crack treatment", product: "AREST2K", coats: 1, dftMin: 500, dftMax: 800, method: "Trowel to cracks and junctions" },
       { role: "Base", product: "AREST", coats: 1, dftMin: 150, dftMax: 200, method: "Brush / roller" },
@@ -226,7 +232,7 @@ export const SYSTEMS: System[] = [
     id: "bld-wet", sector: "buildings", asset: "Bathroom & wet area",
     label: "Wet Area Waterproofing",
     blurb: "Below-tile waterproofing for bathrooms, balconies and utility areas.",
-    prep: "MASONRY", life: "Life of the tiling",
+    prep: "MASONRY", life: "Life of the tiling", dur: "H",
     coats: [
       { role: "Waterproofing", product: "AREST2K", coats: 2, dftMin: 600, dftMax: 900, method: "Brush / trowel" },
     ],
@@ -243,7 +249,7 @@ export const SYSTEMS: System[] = [
     id: "bld-rcc", sector: "buildings", asset: "RCC structure (anti-carbonation)",
     label: "Anti-Carbonation Protection for RCC",
     blurb: "Protects reinforcement by resisting CO₂ and chloride ingress into concrete.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "UNIPRIM", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / roller" },
       { role: "Finish", product: "ANTICARB", coats: 2, dftMin: 100, dftMax: 150, method: "Brush / roller / spray" },
@@ -260,7 +266,7 @@ export const SYSTEMS: System[] = [
     id: "bld-wood", sector: "buildings", asset: "Wooden doors & joinery",
     label: "Interior Wood Finishing System",
     blurb: "Clear or pigmented PU finish for doors, frames and furniture.",
-    prep: "WOOD", life: "6–8 years interior",
+    prep: "WOOD", life: "6–8 years interior", dur: "M",
     coats: [
       { role: "Sealer", product: "WOODSEAL", coats: 1, dftMin: 20, dftMax: 30, method: "Spray / brush" },
       { role: "Finish", product: "WOODPU", coats: 2, dftMin: 25, dftMax: 35, method: "Spray" },
@@ -278,7 +284,7 @@ export const SYSTEMS: System[] = [
     id: "bld-ms", sector: "buildings", asset: "MS gates, grills & railings",
     label: "Decorative Mild Steel System",
     blurb: "Everyday protective and decorative finish for architectural metalwork.",
-    prep: "ST3", life: "3–5 years exterior",
+    prep: "ST3", life: "3–5 years exterior", dur: "M",
     coats: [
       { role: "Primer", product: "REDOX", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / spray" },
       { role: "Finish", product: "ALKENAM", coats: 2, dftMin: 25, dftMax: 35, method: "Brush / spray" },
@@ -295,7 +301,7 @@ export const SYSTEMS: System[] = [
     id: "bld-steel", sector: "buildings", asset: "Building structural steel",
     label: "Architectural Structural Steel — C3",
     blurb: "Exposed steelwork in urban and inland environments.",
-    prep: "SA25", life: "15–20 years",
+    prep: "SA25", life: "15–20 years", dur: "H",
     envs: ["C2", "C3"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
@@ -311,7 +317,7 @@ export const SYSTEMS: System[] = [
     id: "bld-floor", sector: "buildings", asset: "Basement & parking floor",
     label: "Car Park Deck System",
     blurb: "Elastomeric deck coating for vehicle traffic over concrete.",
-    prep: "CSP3", life: "8–12 years",
+    prep: "CSP3", life: "8–12 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Membrane", product: "PUDECK", coats: 2, dftMin: 600, dftMax: 900, method: "Squeegee + roller" },
@@ -331,7 +337,7 @@ export const SYSTEMS: System[] = [
     id: "rly-coach", sector: "railways", asset: "Coach exterior",
     label: "Coach Exterior — FEVE System",
     blurb: "RDSO/ICF pattern system with fluoropolymer gloss retention beyond ten years.",
-    prep: "SA25", life: "10–12 years between repaints",
+    prep: "SA25", life: "10–12 years between repaints", dur: "H",
     envs: ["C3", "C4"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 35, dftMax: 50, method: "Airless spray" },
@@ -350,7 +356,7 @@ export const SYSTEMS: System[] = [
     id: "rly-int", sector: "railways", asset: "Coach interior",
     label: "Coach Interior — Fire Safe",
     blurb: "Low smoke, low toxicity interior system for enclosed passenger space.",
-    prep: "SP1", life: "Overhaul cycle",
+    prep: "SP1", life: "Overhaul cycle", dur: "H",
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 30, dftMax: 40, method: "Spray" },
       { role: "Finish", product: "PUTOP", coats: 2, dftMin: 30, dftMax: 40, method: "Spray" },
@@ -367,7 +373,7 @@ export const SYSTEMS: System[] = [
     id: "rly-bogie", sector: "railways", asset: "Bogie & underframe",
     label: "Bogie & Underframe — Heavy Duty",
     blurb: "Impact and ballast-strike resistant anti-corrosive build.",
-    prep: "SA25", life: "8–10 years",
+    prep: "SA25", life: "8–10 years", dur: "M",
     envs: ["C4", "C5I", "C5M"],
     coats: [
       { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 80, method: "Airless spray" },
@@ -382,7 +388,7 @@ export const SYSTEMS: System[] = [
     id: "rly-wagon", sector: "railways", asset: "Wagon exterior",
     label: "Wagon Exterior System",
     blurb: "Freight wagon protection for abrasive loading and outdoor storage.",
-    prep: "SA25", life: "6–8 years",
+    prep: "SA25", life: "6–8 years", dur: "M",
     envs: ["C3", "C4"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
@@ -397,7 +403,7 @@ export const SYSTEMS: System[] = [
     id: "rly-loco", sector: "railways", asset: "Locomotive shell",
     label: "Locomotive Shell System",
     blurb: "Durable, high-gloss livery system for locomotive bodies.",
-    prep: "SA25", life: "8–10 years",
+    prep: "SA25", life: "8–10 years", dur: "M",
     envs: ["C3", "C4"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 40, dftMax: 50, method: "Airless spray" },
@@ -413,7 +419,7 @@ export const SYSTEMS: System[] = [
     id: "rly-station", sector: "railways", asset: "Station & viaduct steel",
     label: "Station & Viaduct Steel — C4/C5",
     blurb: "Long-durability system where maintenance access is restricted.",
-    prep: "SA25", life: "20–25 years",
+    prep: "SA25", life: "20–25 years", dur: "VH",
     envs: ["C4", "C5I", "C5M"],
     coats: [
       { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
@@ -432,7 +438,7 @@ export const SYSTEMS: System[] = [
     id: "rly-glow", sector: "railways", asset: "Platform safety marking",
     label: "Photoluminescent Safety Marking",
     blurb: "Glow-in-the-dark edge and escape marking, no power required.",
-    prep: "CSP3", life: "8–10 years interior",
+    prep: "CSP3", life: "8–10 years interior", dur: "M",
     coats: [
       { role: "Base", product: "GLOWBASE", coats: 1, dftMin: 50, dftMax: 70, method: "Brush / spray" },
       { role: "Photoluminescent", product: "GLOW", coats: 2, dftMin: 100, dftMax: 150, method: "Brush / spray" },
@@ -453,7 +459,7 @@ export const SYSTEMS: System[] = [
     id: "auto-comp", sector: "automotive", asset: "Component primer & enamel",
     label: "OEM Component — Stoving System",
     blurb: "Oven-cured finish for volume component manufacture.",
-    prep: "SP1", life: "Component design life",
+    prep: "SP1", life: "Component design life", dur: "H",
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 20, dftMax: 30, method: "Dip / spray" },
       { role: "Finish", product: "STOVE", coats: 1, dftMin: 30, dftMax: 40, method: "Spray, cured 120–150 °C" },
@@ -470,7 +476,7 @@ export const SYSTEMS: System[] = [
     id: "auto-chassis", sector: "automotive", asset: "Chassis & axle",
     label: "Chassis & Axle — Direct to Metal",
     blurb: "Fast air-dry DTM system for high throughput assembly.",
-    prep: "SP1", life: "Vehicle life",
+    prep: "SP1", life: "Vehicle life", dur: "H",
     coats: [
       { role: "DTM finish", product: "QDENAM", coats: 2, dftMin: 30, dftMax: 40, method: "Airless / conventional spray" },
     ],
@@ -486,7 +492,7 @@ export const SYSTEMS: System[] = [
     id: "auto-cv", sector: "automotive", asset: "Commercial vehicle body",
     label: "Commercial Vehicle Body System",
     blurb: "Durable exterior finish for truck and bus bodywork.",
-    prep: "SP16", life: "6–8 years",
+    prep: "SP16", life: "6–8 years", dur: "M",
     coats: [
       { role: "Etch primer", product: "ETCH", coats: 1, dftMin: 8, dftMax: 12, method: "Spray" },
       { role: "Primer surfacer", product: "EPZP", coats: 1, dftMin: 40, dftMax: 50, method: "Spray" },
@@ -501,7 +507,7 @@ export const SYSTEMS: System[] = [
     id: "auto-coil", sector: "automotive", asset: "Engineering component (coil / sheet)",
     label: "Coil Coating System",
     blurb: "Continuous coil-applied finish for sheet metal before forming.",
-    prep: "SP1", life: "15–25 years exterior grade",
+    prep: "SP1", life: "15–25 years exterior grade", dur: "VH",
     coats: [
       { role: "Primer", product: "COIL", coats: 1, dftMin: 5, dftMax: 8, method: "Roller coater, oven cured" },
       { role: "Finish", product: "COIL", coats: 1, dftMin: 18, dftMax: 25, method: "Roller coater, oven cured" },
@@ -520,7 +526,7 @@ export const SYSTEMS: System[] = [
     id: "avi-steel", sector: "aviation", asset: "Hangar & terminal steel",
     label: "Airport Structural Steel — C4/C5",
     blurb: "Long-durability system for terminal and hangar structures.",
-    prep: "SA25", life: "20–25 years",
+    prep: "SA25", life: "20–25 years", dur: "VH",
     envs: ["C3", "C4", "C5M"],
     coats: [
       { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
@@ -539,7 +545,7 @@ export const SYSTEMS: System[] = [
     id: "avi-floor", sector: "aviation", asset: "Hangar floor",
     label: "Hangar Floor — Chemical & Fuel Resistant",
     blurb: "Heavy-duty floor resisting hydraulic fluid, fuel and point loads.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Build", product: "EPSL", coats: 1, dftMin: 2000, dftMax: 3000, method: "Self levelling, spiked roller" },
@@ -557,7 +563,7 @@ export const SYSTEMS: System[] = [
     id: "avi-gse", sector: "aviation", asset: "Ground support equipment",
     label: "Ground Support Equipment System",
     blurb: "High-visibility durable finish for apron vehicles and equipment.",
-    prep: "SA25", life: "6–8 years",
+    prep: "SA25", life: "6–8 years", dur: "M",
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 60, method: "Spray" },
       { role: "Finish", product: "PUTOP", coats: 2, dftMin: 40, dftMax: 50, method: "Spray" },
@@ -574,7 +580,7 @@ export const SYSTEMS: System[] = [
     id: "avi-marking", sector: "aviation", asset: "Apron & runway marking",
     label: "Airfield Pavement Marking",
     blurb: "High-visibility marking for aprons, taxiways and stands.",
-    prep: "CSP3", life: "2–4 years depending on traffic",
+    prep: "CSP3", life: "2–4 years depending on traffic", dur: "M",
     coats: [
       { role: "Marking", product: "ROADCOLD", coats: 2, dftMin: 150, dftMax: 250, method: "Airless spray with bead dispenser" },
     ],
@@ -592,7 +598,7 @@ export const SYSTEMS: System[] = [
     id: "og-steel", sector: "oilgas", asset: "Structural steel",
     label: "Offshore & Refinery Steel — CX",
     blurb: "Maximum durability system for extreme corrosive service.",
-    prep: "SA3", life: "20–25 years",
+    prep: "SA3", life: "20–25 years", dur: "VH",
     envs: ["C5I", "C5M", "CX"],
     coats: [
       { role: "Primer", product: "IZS", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
@@ -612,7 +618,7 @@ export const SYSTEMS: System[] = [
     id: "og-tankext", sector: "oilgas", asset: "Storage tank exterior",
     label: "Tank Exterior with Heat Reflection",
     blurb: "External tank shell system reducing solar gain and vapour loss.",
-    prep: "SA25", life: "15–20 years",
+    prep: "SA25", life: "15–20 years", dur: "H",
     envs: ["C4", "C5I", "C5M"],
     coats: [
       { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
@@ -631,7 +637,7 @@ export const SYSTEMS: System[] = [
     id: "og-tankint", sector: "oilgas", asset: "Tank internal lining",
     label: "Tank Internal Lining — Hydrocarbon",
     blurb: "Solvent-free lining for crude, product and chemical storage.",
-    prep: "SA3", life: "15–20 years",
+    prep: "SA3", life: "15–20 years", dur: "H",
     coats: [
       { role: "Lining", product: "NOVO", coats: 2, dftMin: 200, dftMax: 250, method: "Airless spray, plural component" },
     ],
@@ -648,7 +654,7 @@ export const SYSTEMS: System[] = [
     id: "og-pipe", sector: "oilgas", asset: "Buried pipeline",
     label: "Buried Pipeline External Coating",
     blurb: "Barrier system for soil burial with cathodic protection compatibility.",
-    prep: "SA3", life: "25+ years",
+    prep: "SA3", life: "25+ years", dur: "VH",
     envs: ["Im3"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
@@ -667,7 +673,7 @@ export const SYSTEMS: System[] = [
     id: "og-hotpipe", sector: "oilgas", asset: "Above-ground hot pipework",
     label: "Hot Pipework & Insulated Line",
     blurb: "High-temperature system, including corrosion under insulation service.",
-    prep: "SA25", life: "10–15 years", tempMax: 540,
+    prep: "SA25", life: "10–15 years", dur: "H", tempMax: 540,
     coats: [
       { role: "Primer", product: "MODSIL", coats: 1, dftMin: 20, dftMax: 25, method: "Spray" },
       { role: "Finish", product: "SILAL", coats: 2, dftMin: 20, dftMax: 25, method: "Spray" },
@@ -685,7 +691,7 @@ export const SYSTEMS: System[] = [
     id: "og-fire", sector: "oilgas", asset: "Passive fire protection",
     label: "Hydrocarbon Fire Protection",
     blurb: "Intumescent protection for structural steel in hydrocarbon fire risk areas.",
-    prep: "SA25", life: "Structure life with maintenance",
+    prep: "SA25", life: "Structure life with maintenance", dur: "H",
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
       { role: "Intumescent", product: "INTUM", coats: 1, dftMin: 1000, dftMax: 6000, method: "Airless spray, DFT per loading schedule" },
@@ -704,7 +710,7 @@ export const SYSTEMS: System[] = [
     id: "og-flare", sector: "oilgas", asset: "Flare stack & high temperature",
     label: "Flare Stack & Stack Steel",
     blurb: "Very high temperature system for flare tips, stacks and exhausts.",
-    prep: "SA25", life: "8–12 years", tempMax: 600,
+    prep: "SA25", life: "8–12 years", dur: "H", tempMax: 600,
     coats: [
       { role: "Primer + finish", product: "SILAL", coats: 2, dftMin: 20, dftMax: 25, method: "Spray" },
     ],
@@ -720,7 +726,7 @@ export const SYSTEMS: System[] = [
     id: "og-bund", sector: "oilgas", asset: "Secondary containment / bund",
     label: "Chemical Bund Lining",
     blurb: "Chemical-resistant lining for bunds and spill containment.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Lining", product: "NOVO", coats: 2, dftMin: 400, dftMax: 600, method: "Trowel / roller" },
@@ -739,7 +745,7 @@ export const SYSTEMS: System[] = [
     id: "mar-hull", sector: "marine", asset: "Underwater hull & antifouling",
     label: "Underwater Hull System",
     blurb: "Anti-corrosive and antifouling build for the immersed hull.",
-    prep: "SA25", life: "5 year docking interval",
+    prep: "SA25", life: "5 year docking interval", dur: "M",
     envs: ["Im2"],
     coats: [
       { role: "Anti-corrosive", product: "EPOXYHB", coats: 2, dftMin: 125, dftMax: 150, method: "Airless spray" },
@@ -758,7 +764,7 @@ export const SYSTEMS: System[] = [
     id: "mar-topside", sector: "marine", asset: "Boot top & topside",
     label: "Boot Top & Topside System",
     blurb: "Splash zone and topside protection with colour retention.",
-    prep: "SA25", life: "5–7 years",
+    prep: "SA25", life: "5–7 years", dur: "M",
     envs: ["C5M", "CX"],
     coats: [
       { role: "Primer", product: "EPOXYHB", coats: 2, dftMin: 100, dftMax: 125, method: "Airless spray" },
@@ -773,7 +779,7 @@ export const SYSTEMS: System[] = [
     id: "mar-super", sector: "marine", asset: "Superstructure",
     label: "Superstructure System",
     blurb: "Naval grey or commercial livery for above-deck structures.",
-    prep: "SA25", life: "5–7 years",
+    prep: "SA25", life: "5–7 years", dur: "M",
     envs: ["C5M"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 75, dftMax: 100, method: "Airless spray" },
@@ -789,7 +795,7 @@ export const SYSTEMS: System[] = [
     id: "mar-deck", sector: "marine", asset: "Deck & non-skid",
     label: "Deck & Non-Skid System",
     blurb: "Anti-slip deck coating for working and flight decks.",
-    prep: "SA25", life: "5–8 years",
+    prep: "SA25", life: "5–8 years", dur: "M",
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 75, dftMax: 100, method: "Airless spray" },
       { role: "Non-skid", product: "NONSKID", coats: 1, dftMin: 800, dftMax: 1500, method: "Trowel / roller with aggregate" },
@@ -803,7 +809,7 @@ export const SYSTEMS: System[] = [
     id: "mar-ballast", sector: "marine", asset: "Ballast tank",
     label: "Ballast Tank Coating — PSPC",
     blurb: "Light-coloured epoxy to IMO Performance Standard for Protective Coatings.",
-    prep: "SA25", life: "15 years target useful life",
+    prep: "SA25", life: "15 years target useful life", dur: "H",
     envs: ["Im2"],
     coats: [
       { role: "Coating", product: "EPOXYHB", coats: 2, dftMin: 160, dftMax: 200, method: "Airless spray" },
@@ -820,7 +826,7 @@ export const SYSTEMS: System[] = [
     id: "mar-glow", sector: "marine", asset: "Escape route marking",
     label: "Low Location Lighting — Photoluminescent",
     blurb: "Glow-in-the-dark escape marking for vessels and enclosed spaces.",
-    prep: "SP1", life: "8–10 years",
+    prep: "SP1", life: "8–10 years", dur: "M",
     coats: [
       { role: "Base", product: "GLOWBASE", coats: 1, dftMin: 50, dftMax: 70, method: "Spray" },
       { role: "Photoluminescent", product: "GLOW", coats: 2, dftMin: 100, dftMax: 150, method: "Spray" },
@@ -840,7 +846,7 @@ export const SYSTEMS: System[] = [
     id: "pow-stack", sector: "power", asset: "Chimney & stack",
     label: "Chimney & Stack System",
     blurb: "High-temperature exterior protection for stacks and ducting.",
-    prep: "SA25", life: "8–12 years", tempMax: 600,
+    prep: "SA25", life: "8–12 years", dur: "H", tempMax: 600,
     coats: [
       { role: "Primer + finish", product: "SILAL", coats: 2, dftMin: 20, dftMax: 25, method: "Spray" },
     ],
@@ -853,7 +859,7 @@ export const SYSTEMS: System[] = [
     id: "pow-cooling", sector: "power", asset: "Cooling tower",
     label: "Cooling Tower System",
     blurb: "Constant wet service with chemical treatment exposure.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller / spray" },
       { role: "Lining", product: "EPOXYHB", coats: 2, dftMin: 150, dftMax: 200, method: "Airless spray" },
@@ -867,7 +873,7 @@ export const SYSTEMS: System[] = [
     id: "pow-coal", sector: "power", asset: "Coal handling structure",
     label: "Coal Handling — Abrasion Resistant",
     blurb: "Abrasive dust and impact resistant protection.",
-    prep: "SA25", life: "10–12 years",
+    prep: "SA25", life: "10–12 years", dur: "H",
     envs: ["C4", "C5I"],
     coats: [
       { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
@@ -882,7 +888,7 @@ export const SYSTEMS: System[] = [
     id: "pow-turbine", sector: "power", asset: "Turbine hall steel",
     label: "Turbine Hall & Plant Steel",
     blurb: "Interior plant steelwork with elevated temperature and humidity.",
-    prep: "SA25", life: "15–20 years",
+    prep: "SA25", life: "15–20 years", dur: "H",
     envs: ["C3", "C4"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
@@ -898,7 +904,7 @@ export const SYSTEMS: System[] = [
     id: "pow-plant", sector: "power", asset: "Plant structural steel",
     label: "Process Plant Steel — C4",
     blurb: "General plant steelwork in industrial atmosphere.",
-    prep: "SA25", life: "15–20 years",
+    prep: "SA25", life: "15–20 years", dur: "H",
     envs: ["C3", "C4", "C5I"],
     coats: [
       { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
@@ -916,7 +922,7 @@ export const SYSTEMS: System[] = [
     id: "fab-peb", sector: "fabrication", asset: "Pre-engineered building",
     label: "PEB Coating System",
     blurb: "Cost-effective shop-applied system for pre-engineered structures.",
-    prep: "SA25", life: "10–15 years",
+    prep: "SA25", life: "10–15 years", dur: "H",
     envs: ["C2", "C3"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
@@ -935,7 +941,7 @@ export const SYSTEMS: System[] = [
     id: "fab-bridge", sector: "fabrication", asset: "Bridge & flyover",
     label: "Bridge Steel — 25 Year Durability",
     blurb: "Very high durability where access for maintenance is costly.",
-    prep: "SA25", life: "25+ years",
+    prep: "SA25", life: "25+ years", dur: "VH",
     envs: ["C4", "C5I", "C5M"],
     coats: [
       { role: "Primer", product: "IZS", coats: 1, dftMin: 65, dftMax: 75, method: "Airless spray" },
@@ -954,7 +960,7 @@ export const SYSTEMS: System[] = [
     id: "fab-crane", sector: "fabrication", asset: "Crane & EOT structure",
     label: "Crane & Handling Equipment",
     blurb: "Structures with movement, vibration and mechanical contact.",
-    prep: "SA25", life: "12–15 years",
+    prep: "SA25", life: "12–15 years", dur: "H",
     envs: ["C3", "C4"],
     coats: [
       { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 75, method: "Airless spray" },
@@ -970,7 +976,7 @@ export const SYSTEMS: System[] = [
     id: "fab-shop", sector: "fabrication", asset: "Shop / holding primer",
     label: "Shop Primer — Weldable",
     blurb: "Temporary protection through fabrication, weldable and cuttable.",
-    prep: "SA2", life: "3–6 months protection",
+    prep: "SA2", life: "3–6 months protection", dur: "M",
     coats: [
       { role: "Shop primer", product: "SHOPP", coats: 1, dftMin: 15, dftMax: 25, method: "Automatic line spray" },
     ],
@@ -988,7 +994,7 @@ export const SYSTEMS: System[] = [
     id: "wat-potable", sector: "water", asset: "Potable water tank",
     label: "Potable Water Tank Lining — WRAS",
     blurb: "Solvent-free lining approved for drinking water contact.",
-    prep: "SA3", life: "15–20 years",
+    prep: "SA3", life: "15–20 years", dur: "H",
     envs: ["Im1"],
     coats: [
       { role: "Lining", product: "EPPOT", coats: 2, dftMin: 200, dftMax: 250, method: "Airless spray, plural component" },
@@ -1006,7 +1012,7 @@ export const SYSTEMS: System[] = [
     id: "wat-etp", sector: "water", asset: "ETP / STP concrete",
     label: "Effluent Treatment Concrete Lining",
     blurb: "Chemical and biogenic acid resistant lining for treatment structures.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Lining", product: "NOVO", coats: 2, dftMin: 400, dftMax: 600, method: "Trowel / spray" },
@@ -1023,7 +1029,7 @@ export const SYSTEMS: System[] = [
     id: "wat-pool", sector: "water", asset: "Swimming pool",
     label: "Swimming Pool Coating",
     blurb: "Chlorinated water immersion with UV exposure.",
-    prep: "CSP3", life: "5–8 years",
+    prep: "CSP3", life: "5–8 years", dur: "M",
     envs: ["Im1"],
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 80, dftMax: 120, method: "Roller" },
@@ -1041,7 +1047,7 @@ export const SYSTEMS: System[] = [
     id: "wat-food", sector: "water", asset: "Food processing floor & wall",
     label: "Hygienic Food Plant System",
     blurb: "Cleanable, seamless floor and wall system for food manufacture.",
-    prep: "CSP3", life: "10–12 years",
+    prep: "CSP3", life: "10–12 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Floor build", product: "EPSL", coats: 1, dftMin: 3000, dftMax: 6000, method: "Trowel applied mortar / screed" },
@@ -1062,7 +1068,7 @@ export const SYSTEMS: System[] = [
     id: "flr-epoxy", sector: "flooring", asset: "Epoxy industrial floor",
     label: "Epoxy Self-Levelling Floor",
     blurb: "Seamless, hard-wearing floor for manufacturing and warehousing.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Self levelling", product: "EPSL", coats: 1, dftMin: 2000, dftMax: 3000, method: "Spiked roller" },
@@ -1080,7 +1086,7 @@ export const SYSTEMS: System[] = [
     id: "flr-fast", sector: "flooring", asset: "Fast return-to-service floor",
     label: "Polyaspartic Fast-Cure Floor",
     blurb: "Return to service in hours for facilities that cannot shut down.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Build", product: "EPSL", coats: 1, dftMin: 1500, dftMax: 2500, method: "Spiked roller" },
@@ -1099,7 +1105,7 @@ export const SYSTEMS: System[] = [
     id: "flr-esd", sector: "flooring", asset: "Anti-static floor",
     label: "Anti-Static / ESD Floor",
     blurb: "Controlled resistance floor for electronics and explosive atmospheres.",
-    prep: "CSP3", life: "10–12 years",
+    prep: "CSP3", life: "10–12 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Conductive layer", product: "ESD", coats: 1, dftMin: 50, dftMax: 80, method: "Roller with copper grounding tape" },
@@ -1117,7 +1123,7 @@ export const SYSTEMS: System[] = [
     id: "flr-deck", sector: "flooring", asset: "Car park deck",
     label: "Car Park Deck Waterproofing",
     blurb: "Crack-bridging elastomeric deck system for parking structures.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 100, dftMax: 150, method: "Roller" },
       { role: "Membrane", product: "PUDECK", coats: 2, dftMin: 600, dftMax: 900, method: "Squeegee" },
@@ -1132,7 +1138,7 @@ export const SYSTEMS: System[] = [
     id: "flr-mark", sector: "flooring", asset: "Line marking",
     label: "Warehouse Line Marking",
     blurb: "Durable aisle, hazard and safety marking on coated or bare floors.",
-    prep: "CSP3", life: "3–6 years",
+    prep: "CSP3", life: "3–6 years", dur: "M",
     coats: [
       { role: "Marking", product: "FLRMARK", coats: 2, dftMin: 100, dftMax: 150, method: "Roller / spray with masking" },
     ],
@@ -1150,7 +1156,7 @@ export const SYSTEMS: System[] = [
     id: "rd-mark", sector: "roads", asset: "Road marking",
     label: "Thermoplastic Road Marking",
     blurb: "Hot-applied retroreflective marking for highways.",
-    prep: "NONE", life: "3–5 years on asphalt",
+    prep: "NONE", life: "3–5 years on asphalt", dur: "M",
     coats: [
       { role: "Marking", product: "ROADTP", coats: 1, dftMin: 2500, dftMax: 3000, method: "Screed / spray applicator" },
     ],
@@ -1166,7 +1172,7 @@ export const SYSTEMS: System[] = [
     id: "rd-tunnel", sector: "roads", asset: "Tunnel lining",
     label: "Tunnel Lining Coating",
     blurb: "Washable, light-reflective coating for tunnel interiors.",
-    prep: "CSP3", life: "10–15 years",
+    prep: "CSP3", life: "10–15 years", dur: "H",
     coats: [
       { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 80, dftMax: 120, method: "Spray" },
       { role: "Finish", product: "EPOXYHB", coats: 2, dftMin: 125, dftMax: 150, method: "Airless spray" },
@@ -1183,7 +1189,7 @@ export const SYSTEMS: System[] = [
     id: "rd-viaduct", sector: "roads", asset: "Metro viaduct steel",
     label: "Metro Viaduct Steel — Long Durability",
     blurb: "High durability where access requires traffic closure.",
-    prep: "SA25", life: "20–25 years",
+    prep: "SA25", life: "20–25 years", dur: "VH",
     envs: ["C4", "C5I", "C5M"],
     coats: [
       { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
@@ -1202,7 +1208,7 @@ export const SYSTEMS: System[] = [
     id: "rd-furniture", sector: "roads", asset: "Crash barrier & street furniture",
     label: "Crash Barrier & Street Furniture",
     blurb: "Galvanized and steel roadside equipment in traffic exposure.",
-    prep: "SP16", life: "8–12 years",
+    prep: "SP16", life: "8–12 years", dur: "H",
     envs: ["C3", "C4"],
     coats: [
       { role: "Adhesion promoter", product: "ETCH", coats: 1, dftMin: 8, dftMax: 12, method: "Spray" },
@@ -1215,6 +1221,254 @@ export const SYSTEMS: System[] = [
       "Duplex systems (galvanizing plus paint) outlast either alone, but new galvanizing must be sweep blasted or treated or the coating will saponify and peel.",
       "Do not apply zinc-rich primer over galvanizing; it serves no purpose and costs money.",
     ],
+    flags: [],
+  },
+  /* ==================== ARCHITECTURAL — THE FULL LADDER ==================== */
+  {
+    id: "bld-ext-econ", sector: "buildings", asset: "Exterior masonry wall",
+    label: "Exterior Wall — Economy",
+    blurb: "Cost-led exterior finish for boundary walls, outbuildings and rental property.",
+    prep: "MASONRY", life: "3–4 years to first repaint", dur: "M",
+    bestWhen: "Budget is the binding constraint, or the building will be repainted on a short cycle anyway.",
+    coats: [
+      { role: "Primer", product: "ACRYLPR", coats: 1, dftMin: 25, dftMax: 30, method: "Brush / roller" },
+      { role: "Finish", product: "EXTEM", coats: 2, dftMin: 25, dftMax: 30, method: "Brush / roller" },
+    ],
+    standards: ["IS 15489"],
+    tests: ["ASTM D2486 — scrub resistance", "Adhesion"],
+    notes: [
+      "An economy exterior will chalk and fade noticeably by year three in Indian UV. That is the trade being made, not a defect.",
+      "On a wall that is difficult to access, the labour of repainting twice will exceed the paint saved. Check the access before choosing this.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-ext-lux", sector: "buildings", asset: "Exterior masonry wall",
+    label: "Exterior Wall — Luxury, Silicone Modified",
+    blurb: "Longest-life exterior system: silicone modified, dirt shedding, high UV stability.",
+    prep: "MASONRY", life: "12–15 years to first repaint", dur: "VH",
+    bestWhen: "High-rise or difficult access, prestige elevations, or anywhere repainting means scaffolding.",
+    coats: [
+      { role: "Primer", product: "DAMPP", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / roller" },
+      { role: "Finish", product: "SILACR", coats: 2, dftMin: 35, dftMax: 45, method: "Brush / roller / spray" },
+    ],
+    standards: ["IS 15489", "ASTM G154 — accelerated weathering", "EN 1062-3 — water permeability"],
+    tests: ["ASTM G154 — 2000 h weathering", "EN 1062-3 — liquid water permeability", "ASTM D3273 — mould resistance", "Dirt pickup after 12 months exposure"],
+    notes: [
+      "Silicone modification lets the film shed water and dirt while remaining vapour permeable, so the wall can still dry outward.",
+      "The cost difference against a premium emulsion is recovered the first time scaffolding is not erected.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-int-prem", sector: "buildings", asset: "Interior masonry wall",
+    label: "Interior Wall — Premium Washable",
+    blurb: "Mid-tier interior emulsion with good scrub resistance for family homes.",
+    prep: "MASONRY", life: "4–5 years", dur: "M",
+    bestWhen: "Bedrooms and general areas where the luxury tier is not warranted.",
+    coats: [
+      { role: "Primer", product: "UNIPRIM", coats: 1, dftMin: 25, dftMax: 35, method: "Brush / roller" },
+      { role: "Finish", product: "INTEM", coats: 2, dftMin: 25, dftMax: 30, method: "Brush / roller" },
+    ],
+    standards: ["IS 15489", "ASTM D2486"],
+    tests: ["ASTM D2486 — scrub resistance", "Stain removal"],
+    notes: ["Two coats over a properly primed and puttied wall. A third coat is wasted on a good primer and needed on a bad one."],
+    flags: ["hygiene"],
+  },
+  {
+    id: "bld-putty", sector: "buildings", asset: "Wall putty & levelling",
+    label: "Wall Levelling and Putty System",
+    blurb: "Surface levelling before painting, which decides how the finish coat looks.",
+    prep: "MASONRY", life: "Life of the plaster", dur: "H",
+    coats: [
+      { role: "Primer", product: "ACRYLPR", coats: 1, dftMin: 25, dftMax: 30, method: "Brush / roller" },
+      { role: "Levelling", product: "ACRYLPR", coats: 2, dftMin: 300, dftMax: 800, method: "Putty knife, sanded between coats" },
+    ],
+    standards: ["IS 15489", "ASTM D3359 — adhesion"],
+    tests: ["Adhesion to plaster", "Surface smoothness before topcoat"],
+    notes: [
+      "Anupam does not manufacture putty. Any good general-purpose market putty may be applied — cement based for exterior and damp-prone walls, acrylic based for interior smoothness.",
+      "Prime BEFORE puttying on a porous or chalky wall. Putty applied directly to a dusty surface takes the dust with it when it fails.",
+      "Sand between coats and remove all dust. Most 'bad paint' complaints on new walls trace back to putty finishing, not the paint.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-texture", sector: "buildings", asset: "Textured & designer finish",
+    label: "Texture and Designer Finish System",
+    blurb: "Applied texture for feature walls, elevations and facades.",
+    prep: "MASONRY", life: "7–10 years exterior", dur: "H",
+    coats: [
+      { role: "Primer", product: "DAMPP", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / roller" },
+      { role: "Texture", product: "EXTEM", coats: 1, dftMin: 800, dftMax: 2500, method: "Trowel, roller or spray to the chosen pattern" },
+      { role: "Finish", product: "EXTEM", coats: 2, dftMin: 30, dftMax: 40, method: "Brush / roller" },
+    ],
+    standards: ["IS 15489", "ASTM D4541 — adhesion"],
+    tests: ["Adhesion to substrate", "Weathering of the finish coat", "Water permeability"],
+    notes: [
+      "Texture holds dirt in proportion to its depth. A deep pattern on a roadside elevation will look tired within two years.",
+      "Agree the pattern on a sample panel of at least one square metre before starting. Texture cannot be corrected once applied.",
+      "Texture adds surface area — allow 30 to 60 percent more finish coat than a smooth wall.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-distemper", sector: "buildings", asset: "Economy interior finish",
+    label: "Acrylic Distemper System",
+    blurb: "Lowest-cost interior finish for rentals, staff quarters and back-of-house.",
+    prep: "MASONRY", life: "2–3 years", dur: "M",
+    bestWhen: "Short tenancy cycles, or where the wall will be repainted at every handover regardless.",
+    coats: [
+      { role: "Primer", product: "ACRYLPR", coats: 1, dftMin: 20, dftMax: 30, method: "Brush / roller" },
+      { role: "Finish", product: "INTEM", coats: 2, dftMin: 20, dftMax: 25, method: "Brush / roller" },
+    ],
+    standards: ["IS 428"],
+    tests: ["Wet scrub resistance", "Opacity"],
+    notes: [
+      "Distemper is not washable in the way an emulsion is. Marks will not sponge off cleanly.",
+      "Over a two-repaint cycle a mainstream emulsion usually costs less in total once labour is counted.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-damp", sector: "buildings", asset: "Damp & seepage treatment",
+    label: "Damp and Seepage Treatment System",
+    blurb: "Interior treatment where damp is showing through and the source has been fixed.",
+    prep: "MASONRY", life: "7–10 years", dur: "H",
+    coats: [
+      { role: "Surface wash", product: "ACRYLPR", coats: 1, dftMin: 10, dftMax: 15, method: "Wash off algae and salts, allow to dry" },
+      { role: "Damp barrier", product: "AREST2K", coats: 2, dftMin: 500, dftMax: 800, method: "Brush / trowel" },
+      { role: "Primer", product: "DAMPP", coats: 1, dftMin: 30, dftMax: 40, method: "Brush / roller" },
+      { role: "Finish", product: "INTEM", coats: 2, dftMin: 25, dftMax: 35, method: "Brush / roller" },
+    ],
+    standards: ["ASTM D4263 — moisture", "IS 2645"],
+    tests: ["Moisture meter reading below 12% before priming", "Adhesion", "Salt efflorescence check after 30 days"],
+    notes: [
+      "Fix the water source first. Terrace, external crack, plumbing or rising damp — coating the inside face of a wall while water still enters the outside face will fail, whatever is used.",
+      "Let the wall dry. A saturated masonry wall can need several weeks. This is the step everyone skips and it is why the repair fails.",
+      "Efflorescence returning after treatment means water is still moving through the wall. Stop and re-trace the source.",
+    ],
+    flags: [],
+  },
+  {
+    id: "bld-extjoin", sector: "buildings", asset: "Exterior joinery & metalwork",
+    label: "Exterior Joinery and Metalwork",
+    blurb: "UV-stable system for external doors, windows, grills and railings.",
+    prep: "ST3", life: "6–8 years", dur: "H",
+    bestWhen: "Coastal or high-UV locations where an alkyd enamel would chalk within a season.",
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 40, dftMax: 50, method: "Brush / spray" },
+      { role: "Finish", product: "PUTOP", coats: 2, dftMin: 40, dftMax: 50, method: "Brush / spray" },
+    ],
+    standards: ["ASTM G154 — weathering", "ASTM B117 — salt spray"],
+    tests: ["ASTM G154 — gloss and colour retention", "ASTM B117 — 500 h salt spray", "Adhesion"],
+    notes: [
+      "Polyurethane costs more than alkyd enamel and lasts roughly three times as long outdoors. On railings that means one repaint instead of three.",
+      "For timber, use the wood system with an exterior-grade UV stable topcoat rather than this metal primer.",
+    ],
+    flags: [],
+  },
+
+  /* ============== PROTECTIVE — ECONOMY AND LONG-LIFE ALTERNATIVES ========== */
+  {
+    id: "og-steel-std", sector: "oilgas", asset: "Structural steel",
+    label: "Refinery Steel — Standard",
+    blurb: "Zinc rich three-coat system for general plant steel away from the worst exposure.",
+    prep: "SA25", life: "15–18 years", dur: "H",
+    bestWhen: "Inland refinery or terminal steel, not offshore and not in the splash zone.",
+    envs: ["C4", "C5I"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 125, dftMax: 150, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 system A5.13", "ISO 12944-6"],
+    tests: ["ASTM B117 — salt spray", "ISO 4624 — adhesion", "SSPC-PA2 — DFT"],
+    notes: ["Roughly 40 percent less material than the CX system, at about three quarters of the design life. That trade only works where the exposure genuinely is C4."],
+    flags: [],
+  },
+  {
+    id: "og-steel-econ", sector: "oilgas", asset: "Structural steel",
+    label: "Refinery Steel — Maintenance / Surface Tolerant",
+    blurb: "For overcoating existing sound coating where full blast cleaning is not possible.",
+    prep: "ST3", life: "8–10 years", dur: "M",
+    bestWhen: "A live plant that cannot be blast cleaned, or a shutdown too short for full preparation.",
+    envs: ["C3", "C4"],
+    coats: [
+      { role: "Primer / build", product: "EPMAS", coats: 2, dftMin: 125, dftMax: 150, method: "Airless spray or brush" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5", "SSPC-SP3"],
+    tests: ["Adhesion to the existing coating", "Compatibility patch test before full application"],
+    notes: [
+      "A surface tolerant mastic buys life on a structure that cannot be taken out of service. It does not equal a blast-cleaned system and should not be specified as if it does.",
+      "Always run a compatibility patch test on the existing coating before committing.",
+    ],
+    flags: [],
+  },
+  {
+    id: "fab-peb-econ", sector: "fabrication", asset: "Pre-engineered building",
+    label: "PEB — Economy Two Coat",
+    blurb: "Lowest-cost shop system for sheltered or short-life structures.",
+    prep: "SA2", life: "6–8 years", dur: "M",
+    bestWhen: "Internal structure, dry inland location, or a building with a planned short life.",
+    envs: ["C2", "C3"],
+    coats: [
+      { role: "Primer", product: "EPZP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 40, dftMax: 50, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 system A2.06"],
+    tests: ["Salt spray", "Adhesion", "DFT"],
+    notes: ["Dropping the intermediate coat halves the barrier. Acceptable at C2 and C3, a false economy at C4 and above."],
+    flags: [],
+  },
+  {
+    id: "fab-peb-long", sector: "fabrication", asset: "Pre-engineered building",
+    label: "PEB — Coastal Long Life",
+    blurb: "Zinc rich system for PEB structures within reach of coastal air.",
+    prep: "SA25", life: "18–22 years", dur: "VH",
+    bestWhen: "Within roughly 10 km of the coast, or downwind of it at greater distance.",
+    envs: ["C4", "C5M"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 1, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PUTOP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 system A5.13", "ISO 20340 for coastal"],
+    tests: ["ISO 20340 — cyclic ageing", "Salt spray", "Adhesion"],
+    notes: ["Salinity, not distance from the shore, sets the corrosivity class. Prevailing wind matters more than kilometres."],
+    flags: [],
+  },
+  {
+    id: "flr-epoxy-econ", sector: "flooring", asset: "Epoxy industrial floor",
+    label: "Epoxy Floor — Coating Grade",
+    blurb: "Thin-film epoxy coating for light duty areas and tight budgets.",
+    prep: "CSP3", life: "4–6 years", dur: "M",
+    bestWhen: "Light foot traffic, storage areas, or a floor that will be re-laid within a few years.",
+    coats: [
+      { role: "Primer", product: "EPFPRIM", coats: 1, dftMin: 80, dftMax: 120, method: "Roller" },
+      { role: "Finish", product: "EPOXYHB", coats: 2, dftMin: 150, dftMax: 200, method: "Roller" },
+    ],
+    standards: ["ASTM D4060 — abrasion"],
+    tests: ["Concrete moisture ≤ 4%", "Pull-off adhesion", "Abrasion"],
+    notes: ["A coating-grade floor at 400 microns will not survive forklift traffic. Where pallet trucks run, specify the self-levelling grade."],
+    flags: [],
+  },
+  {
+    id: "bld-steel-long", sector: "buildings", asset: "Building structural steel",
+    label: "Architectural Steel — 25 Year",
+    blurb: "Very high durability for exposed architectural steelwork.",
+    prep: "SA25", life: "22–25 years", dur: "VH",
+    bestWhen: "Feature steelwork, atrium structures, anything where repainting means closing the space.",
+    envs: ["C3", "C4", "C5I"],
+    coats: [
+      { role: "Primer", product: "ZNEP", coats: 1, dftMin: 60, dftMax: 75, method: "Airless spray" },
+      { role: "Intermediate", product: "EPMIO", coats: 2, dftMin: 100, dftMax: 125, method: "Airless spray" },
+      { role: "Finish", product: "PSX", coats: 1, dftMin: 75, dftMax: 100, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5 / -6"],
+    tests: ["ISO 20340 — cyclic ageing", "ASTM G154 — gloss retention", "Adhesion"],
+    notes: ["Polysiloxane holds gloss and colour far longer than polyurethane, which matters on steel that is meant to be looked at."],
     flags: [],
   },
 ];
