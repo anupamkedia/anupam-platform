@@ -113,6 +113,7 @@ export default function ColourVisualiser() {
 
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [stage, setStage] = useState('');
   const [regions, setRegions] = useState<Region[]>([]);
   const [activeId, setActiveId] = useState<number | null>(null);
 
@@ -148,40 +149,76 @@ export default function ColourVisualiser() {
      So we try three routes in order and only give up if all three fail —
      the <img> route handles HEIC because Safari decodes it natively there,
      and modern browsers honour EXIF orientation on <img> by default. */
-  const decode = async (file: File): Promise<{ src: CanvasImageSource; w: number; h: number; close?: () => void }> => {
+  /* Decoding a phone photo is the one place this tool can fail outright, so it
+     tries every route rather than giving up on the first refusal.
+
+     iPhones save as HEIC. Safari will not reliably decode HEIC through
+     createImageBitmap, and — contrary to what I first assumed — it does not
+     always decode it through an <img> element either. So when the file is
+     HEIC we convert it first with a real decoder, loaded on demand so it
+     costs nothing for the JPEG case. */
+  const toImage = async (blob: Blob): Promise<{ src: CanvasImageSource; w: number; h: number; close?: () => void } | null> => {
     if (typeof createImageBitmap === 'function') {
       try {
-        const b = await createImageBitmap(file, { imageOrientation: 'from-image' });
+        const b = await createImageBitmap(blob as File, { imageOrientation: 'from-image' });
         return { src: b, w: b.width, h: b.height, close: () => b.close?.() };
       } catch { /* older Safari rejects the options object */ }
       try {
-        const b = await createImageBitmap(file);
+        const b = await createImageBitmap(blob as File);
         return { src: b, w: b.width, h: b.height, close: () => b.close?.() };
-      } catch { /* cannot decode this format here */ }
+      } catch { /* format not supported here */ }
     }
-    /* <img> fallback — this is the one that handles HEIC on iPhone */
-    return await new Promise((resolve, reject) => {
-      const url = URL.createObjectURL(file);
+    return await new Promise((resolve) => {
+      const url = URL.createObjectURL(blob);
       const im = new Image();
-      im.onload = () => resolve({
-        src: im, w: im.naturalWidth, h: im.naturalHeight,
-        close: () => URL.revokeObjectURL(url),
-      });
-      im.onerror = () => { URL.revokeObjectURL(url); reject(new Error('decode failed')); };
+      im.onload = () => resolve({ src: im, w: im.naturalWidth, h: im.naturalHeight, close: () => URL.revokeObjectURL(url) });
+      im.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
       im.src = url;
     });
+  };
+
+  const heicToJpeg = async (blob: Blob): Promise<Blob | null> => {
+    try {
+      setStage('Converting photo from your iPhone…');
+      const mod = await import('heic2any');
+      const conv = await (mod.default as any)({ blob, toType: 'image/jpeg', quality: 0.92 });
+      return Array.isArray(conv) ? conv[0] : conv;
+    } catch { return null; }
+    finally { setStage(''); }
+  };
+
+  const decode = async (file: File) => {
+    const looksHeic = /hei[cf]/i.test(file.type) || /\.hei[cf]$/i.test(file.name);
+
+    if (looksHeic) {
+      const jpeg = await heicToJpeg(file);
+      if (jpeg) { const img = await toImage(jpeg); if (img) return img; }
+    }
+
+    const direct = await toImage(file);
+    if (direct) return direct;
+
+    /* last resort: the file may be HEIC with no type and no extension,
+       which is what some iOS pickers hand over */
+    if (!looksHeic) {
+      const jpeg = await heicToJpeg(file);
+      if (jpeg) { const img = await toImage(jpeg); if (img) return img; }
+    }
+    return null;
   };
 
   const loadFile = async (file: File) => {
     setBusy(true);
     try {
-      if (!file.type.startsWith('image/') && !/\.(hei[cf]|jpe?g|png|webp)$/i.test(file.name)) {
-        alert('That does not look like a photo. Choose an image from your gallery or take one now.');
+      const img = await decode(file);
+      if (!img || !img.w || !img.h) {
+        alert(
+          "That photo could not be opened.\n\n" +
+          "Try another photo, or send this one to yourself on WhatsApp and use " +
+          "that copy — WhatsApp always converts to JPG."
+        );
         return;
       }
-      const img = await decode(file);
-      if (!img.w || !img.h) throw new Error('zero size');
-
       const scale = Math.min(1, MAX_W / img.w);
       const w = Math.max(1, Math.round(img.w * scale));
       const h = Math.max(1, Math.round(img.h * scale));
@@ -192,17 +229,9 @@ export default function ColourVisualiser() {
       origRef.current = ctx.getImageData(0, 0, w, h);
       dimRef.current = { w, h };
       img.close?.();
-
       undoRef.current = [];
       setRegions([]); setActiveId(null); setReady(true); setCompare(100);
-    } catch (e) {
-      alert(
-        "That photo could not be opened in this browser.\n\n" +
-        "If you are on an iPhone, open Settings > Camera > Formats and choose " +
-        "\"Most Compatible\", then take the photo again. Or send the picture to " +
-        "yourself on WhatsApp and use that copy, which is always a JPG."
-      );
-    } finally { setBusy(false); }
+    } finally { setBusy(false); setStage(''); }
   };
 
   /* ---------------------------------------------------------------- render */
@@ -463,6 +492,7 @@ export default function ColourVisualiser() {
                 On a phone you can take the picture now. Straight-on shots in even
                 daylight work best — avoid strong glare and heavy shadow.
               </p>
+              {stage && <p className="text-[13px] text-[#1E5AA8] mb-3">{stage}</p>}
               <label className="inline-block bg-[#1E5AA8] hover:bg-[#164683] text-white text-sm font-medium px-6 py-3 rounded-lg cursor-pointer transition-colors">
                 Choose or take a photo
                 <input type="file" accept="image/*" className="hidden"
@@ -480,7 +510,7 @@ export default function ColourVisualiser() {
                   className="w-full h-auto block touch-none cursor-crosshair" />
                 {busy && (
                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <span className="text-white text-sm">Working…</span>
+                    <span className="text-white text-sm">{stage || "Working…"}</span>
                   </div>
                 )}
                 {regions.length === 0 && !busy && (
