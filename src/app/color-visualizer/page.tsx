@@ -179,46 +179,55 @@ export default function ColourVisualiser() {
 
   const heicToJpeg = async (blob: Blob): Promise<Blob | null> => {
     try {
-      setStage('Converting photo from your iPhone…');
       const mod = await import('heic2any');
-      const conv = await (mod.default as any)({ blob, toType: 'image/jpeg', quality: 0.92 });
+      const conv = await (mod.default as any)({ blob, toType: 'image/jpeg', quality: 0.9 });
       return Array.isArray(conv) ? conv[0] : conv;
-    } catch { return null; }
-    finally { setStage(''); }
+    } catch (e) {
+      console.error('[visualiser] HEIC conversion failed', e);
+      return null;
+    }
   };
 
   const decode = async (file: File) => {
-    const looksHeic = /hei[cf]/i.test(file.type) || /\.hei[cf]$/i.test(file.name);
-
-    if (looksHeic) {
-      const jpeg = await heicToJpeg(file);
-      if (jpeg) { const img = await toImage(jpeg); if (img) return img; }
-    }
-
+    /* Native decode FIRST. On iOS 17 and later Safari can often handle HEIC
+       directly, and that path is instant. Converting first — which is what I
+       did before — put every iPhone user through a 1.3 MB library download and
+       a slow conversion even when the browser could have done it immediately. */
+    setStage('Reading photo…');
     const direct = await toImage(file);
     if (direct) return direct;
 
-    /* last resort: the file may be HEIC with no type and no extension,
-       which is what some iOS pickers hand over */
-    if (!looksHeic) {
-      const jpeg = await heicToJpeg(file);
-      if (jpeg) { const img = await toImage(jpeg); if (img) return img; }
+    setStage('Converting photo from your iPhone…');
+    const jpeg = await withTimeout(heicToJpeg(file), 60000);
+    if (jpeg) {
+      const img = await toImage(jpeg);
+      if (img) return img;
     }
     return null;
   };
 
+  const withTimeout = <T,>(p: Promise<T>, ms: number): Promise<T | null> =>
+    Promise.race([p, new Promise<null>((r) => setTimeout(() => r(null), ms))]);
+
   const loadFile = async (file: File) => {
     setBusy(true);
+    setStage('Reading photo…');
     try {
+      if (file.size === 0) {
+        alert("That photo came through empty. If it is stored in iCloud, open it in Photos first so it downloads to the phone, then try again.");
+        return;
+      }
       const img = await decode(file);
       if (!img || !img.w || !img.h) {
         alert(
-          "That photo could not be opened.\n\n" +
-          "Try another photo, or send this one to yourself on WhatsApp and use " +
-          "that copy — WhatsApp always converts to JPG."
+          "That photo could not be opened on this phone.\n\n" +
+          "Two things that usually work:\n" +
+          "• Choose an existing photo from your library instead of taking a new one\n" +
+          "• Or send the photo to yourself on WhatsApp and use that copy — WhatsApp always converts to JPG"
         );
         return;
       }
+      setStage('Preparing…');
       const scale = Math.min(1, MAX_W / img.w);
       const w = Math.max(1, Math.round(img.w * scale));
       const h = Math.max(1, Math.round(img.h * scale));
@@ -231,7 +240,18 @@ export default function ColourVisualiser() {
       img.close?.();
       undoRef.current = [];
       setRegions([]); setActiveId(null); setReady(true); setCompare(100);
+    } catch (e) {
+      console.error('[visualiser] load failed', e);
+      alert("Something went wrong opening that photo. Please try another one.");
     } finally { setBusy(false); setStage(''); }
+  };
+
+  /* Resetting the input matters: without it, choosing the same photo twice
+     fires no change event and the page appears dead. */
+  const onPick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    e.target.value = '';
+    if (f) loadFile(f);
   };
 
   /* ---------------------------------------------------------------- render */
@@ -492,11 +512,17 @@ export default function ColourVisualiser() {
                 On a phone you can take the picture now. Straight-on shots in even
                 daylight work best — avoid strong glare and heavy shadow.
               </p>
-              {stage && <p className="text-[13px] text-[#1E5AA8] mb-3">{stage}</p>}
+              {busy && (
+                <div className="mb-5 flex flex-col items-center gap-2">
+                  <span className="w-7 h-7 border-2 border-[#1E5AA8] border-t-transparent rounded-full animate-spin" />
+                  <p className="text-[13px] text-[#1E5AA8]">{stage || 'Working…'}</p>
+                  <p className="text-[11.5px] text-slate-500">A large photo can take a few seconds</p>
+                </div>
+              )}
               <label className="inline-block bg-[#1E5AA8] hover:bg-[#164683] text-white text-sm font-medium px-6 py-3 rounded-lg cursor-pointer transition-colors">
                 Choose or take a photo
                 <input type="file" accept="image/*" className="hidden"
-                  onChange={(e) => { const f = e.target.files?.[0]; if (f) loadFile(f); }} />
+                  onChange={onPick} />
               </label>
               <p className="mt-4 text-[11.5px] text-slate-400">
                 Your photo stays on your device. Nothing is uploaded to us.
@@ -537,7 +563,7 @@ export default function ColourVisualiser() {
                   <label className="text-[12.5px] px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 cursor-pointer hover:border-slate-400 ml-auto">
                     New photo
                     <input type="file" accept="image/*" className="hidden"
-                      onChange={(e) => { const f = e.target.files?.[0]; if (f) loadFile(f); }} />
+                      onChange={onPick} />
                   </label>
                 </div>
 
