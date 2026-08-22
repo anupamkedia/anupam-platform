@@ -231,9 +231,14 @@ export default function ColourVisualiser() {
       const scale = Math.min(1, MAX_W / img.w);
       const w = Math.max(1, Math.round(img.w * scale));
       const h = Math.max(1, Math.round(img.h * scale));
-      const cv = canvasRef.current!;
-      cv.width = w; cv.height = h;
-      const ctx = cv.getContext('2d', { willReadFrequently: true })!;
+
+      /* Decode into a DETACHED canvas. The visible canvas is not mounted until
+         `ready` is true, so reading canvasRef here returned null and threw —
+         which is what actually broke the upload, on every device. */
+      const work = document.createElement('canvas');
+      work.width = w; work.height = h;
+      const ctx = work.getContext('2d', { willReadFrequently: true });
+      if (!ctx) throw new Error('no 2d context');
       ctx.drawImage(img.src, 0, 0, w, h);
       origRef.current = ctx.getImageData(0, 0, w, h);
       dimRef.current = { w, h };
@@ -293,7 +298,10 @@ export default function ColourVisualiser() {
         d[p + 2] = src[p + 2] * (1 - al) + nb * al;
       }
     }
-    canvasRef.current!.getContext('2d')!.putImageData(out, 0, 0);
+    const cv = canvasRef.current;
+    if (!cv) return;                       // not mounted yet — the effect below repaints
+    cv.width = w; cv.height = h;
+    cv.getContext('2d')!.putImageData(out, 0, 0);
   }, [shading, finish]);
 
   useEffect(() => { if (ready) paint(regions, compare); }, [regions, compare, ready, paint]);
@@ -310,7 +318,8 @@ export default function ColourVisualiser() {
   };
 
   const pos = (e: React.PointerEvent) => {
-    const cv = canvasRef.current!, rect = cv.getBoundingClientRect();
+    const cv = canvasRef.current; if (!cv) return { x: -1, y: -1 };
+    const rect = cv.getBoundingClientRect();
     return {
       x: Math.floor((e.clientX - rect.left) / rect.width * cv.width),
       y: Math.floor((e.clientY - rect.top) / rect.height * cv.height),
@@ -459,7 +468,8 @@ export default function ColourVisualiser() {
   };
 
   const download = () => {
-    const cv = canvasRef.current!;
+    const cv = canvasRef.current;
+    if (!cv) return;
     paint(regions, 100);
     const a = document.createElement('a');
     a.download = 'anupam-colour-preview.jpg';
