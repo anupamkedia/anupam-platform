@@ -172,7 +172,7 @@ const solutionsData: Record<string, SolutionData> = {
       { layer: 'Waterproofing', product: 'Arest Advance PU RoofCoat + Base Coat', type: 'Elastomeric waterproofing', dft: 'N/A', coats: '3-4', method: 'Brush/Roller', purpose: 'Waterproofing + heat reflection. Reduces temperature by 10C' },
     ],
     applications: ['Residential apartments', 'Villas and bungalows', 'Commercial offices', 'Shopping malls', 'Hotels and hospitality', 'Educational institutions', 'Hospitals'],
-    whyAnupam: ['Full decorative range under 6 brands (Azura to Atop)', 'Up to 15 years warranty', 'IGBC Green Building certified', '10-15% cost saving vs Asian Paints/Berger', 'Supplied to Shapoorji Pallonji, Lodha, IndoSpace'],
+    whyAnupam: ['Full decorative range under 6 brands (Azura to Atop)', 'Up to 15 years warranty', 'IGBC Green Building certified', '10-15% cost saving vs Asian Paints/Berger', 'Supplied to Reliance Industries Ltd., Tata Projects, Shapoorji Pallonji'],
   },
   'oil-gas': {
     title: 'Oil & Gas Coating Systems',
@@ -251,7 +251,7 @@ const solutionsData: Record<string, SolutionData> = {
       { layer: 'Topcoat/Seal', product: 'Polyaspartic Floor Coating', type: 'Polyaspartic', dft: '100-200 microns', coats: '1', method: 'Roller', purpose: 'Fast curing UV stable topcoat — return to service in 4 hours' },
     ],
     applications: ['Warehouses and logistics parks', 'Pharmaceutical plants', 'Food processing', 'Automobile showrooms', 'Parking areas', 'Hospitals and cleanrooms', 'Cold storage'],
-    whyAnupam: ['Self-priming Duraflo — single step application', 'Polyaspartic for fast return to service', 'Anti-static and anti-slip options', 'Supplied to IndoSpace, Welspun warehouses'],
+    whyAnupam: ['Self-priming Duraflo — single step application', 'Polyaspartic for fast return to service', 'Anti-static and anti-slip options', 'Supplied to Welspun, Tata Projects warehouse projects'],
   },
   'power-cement': {
     title: 'Power Plant & Cement Plant Coating Systems',
