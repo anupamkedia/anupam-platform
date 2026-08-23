@@ -4,6 +4,42 @@ import { ArrowRight, Calendar, Clock } from 'lucide-react';
 
 const posts = [
   {
+    slug: 'clear-protective-water-based-topcoat',
+    title: 'Clear Water-Based Topcoats: Protection Without Changing the Look',
+    excerpt: 'A clear coat has to do everything a pigmented one does, without the pigment that normally provides UV protection. How water-based clear topcoats work, where they belong, and where they fail.',
+    date: '20 August 2026',
+    readTime: '7 min read',
+    category: 'Technology',
+    image: '/img/heroes/hero-technical-library.jpg',
+  },
+  {
+    slug: 'super-hydrophobic-coatings-what-they-do',
+    title: 'Super-Hydrophobic Coatings: Separating the Physics from the Marketing',
+    excerpt: 'Water beading off a surface makes a compelling video. What matters on a building is whether the effect survives three monsoons. An honest look at contact angle, self-cleaning and where the technology genuinely earns its cost.',
+    date: '18 August 2026',
+    readTime: '8 min read',
+    category: 'Technology',
+    image: '/img/heroes/hero-product-range.jpg',
+  },
+  {
+    slug: 'pu-waterproofing-terrace-arest-system',
+    title: 'PU Waterproofing for Terraces: Why Elastomeric Beats Rigid Every Time',
+    excerpt: 'Most terrace waterproofing fails at a crack, a joint or a detail — not in the middle of the slab. Why polyurethane systems handle movement that cementitious ones cannot, and how to specify one properly.',
+    date: '16 August 2026',
+    readTime: '8 min read',
+    category: 'Waterproofing',
+    image: '/img/app/decorative/dec-roof-waterproof.jpg',
+  },
+  {
+    slug: 'heat-reflective-coatings-buildings-india',
+    title: 'Heat Reflective Coatings: What the Numbers Mean and What They Are Worth',
+    excerpt: 'Surface temperature drops of 15 to 25 degrees are real. Indoor drops of the same size are not. Understanding the difference, and calculating whether a reflective roof pays for itself on your building.',
+    date: '14 August 2026',
+    readTime: '7 min read',
+    category: 'Technology',
+    image: '/img/heroes/hero-home-painting.jpg',
+  },
+  {
     slug: 'india-paint-price-war-2026-what-project-buyers-should-know',
     title: 'India\'s Paint Price War: What Project Buyers Should Actually Watch',
     excerpt: 'Aggressive new capacity has reset decorative pricing, but industrial and protective coatings follow different economics. Here is what actually moves your project cost.',
