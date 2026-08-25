@@ -15,3 +15,5 @@ node_modules/
 
 *backup*
 *.heicbackup-*
+
+.DS_Store
