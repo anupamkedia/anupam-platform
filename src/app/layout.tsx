@@ -5,6 +5,23 @@ import Footer from '@/components/layout/Footer';
 import WhatsAppButton from '@/components/layout/WhatsAppButton';
 import ExitIntent from '@/components/layout/ExitIntent';
 
+import { Montserrat, DM_Sans } from 'next/font/google';
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-dmsans',
+  display: 'swap',
+});
+
+
 export const metadata: Metadata = {
   title: {
     default: 'Anupam Paints — Industrial, Decorative & Specialty Coatings Manufacturer Since 1972',
@@ -21,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <body className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1">{children}</main>

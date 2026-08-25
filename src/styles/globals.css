@@ -26,8 +26,8 @@
     --accent-fire: #DC2626;
     --accent-flooring: #4338CA;
     /* Typography */
-    --font-display: 'Inter', system-ui, sans-serif;
-    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-display: var(--font-montserrat), 'Montserrat', system-ui, sans-serif;
+    --font-body: var(--font-dmsans), 'DM Sans', system-ui, sans-serif;
     /* Spacing */
     --space-section: clamp(4rem, 8vw, 7rem);
     --space-content: clamp(1rem, 3vw, 2rem);
@@ -379,4 +379,29 @@ img, video, svg, canvas {
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .container-wide { padding-left: 2rem !important; padding-right: 2rem !important; }
+}
+
+
+/* ============================================
+   montserrat-tuning
+   Montserrat is wider and rounder than Inter, so headings set at the same
+   size run longer and read looser. These adjustments keep the existing
+   hierarchy while stopping headlines wrapping on a phone.
+   ============================================ */
+h1, h2, h3, .text-page-title, .text-data {
+  letter-spacing: -0.02em;      /* geometric faces need tightening at size */
+}
+h1, .text-page-title {
+  font-weight: 700;
+  line-height: 1.1;
+}
+h2 { font-weight: 700; line-height: 1.15; }
+h3 { font-weight: 600; }
+
+/* Montserrat's lowercase is large relative to its cap height, so body text
+   set in it looks bigger than the same size in DM Sans. Nudge it back. */
+/* body remains DM Sans — no size change needed */
+
+@media (max-width: 640px) {
+  h1, .text-page-title { letter-spacing: -0.025em; }
 }
