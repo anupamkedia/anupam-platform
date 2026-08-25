@@ -91,36 +91,54 @@ export async function POST(req: NextRequest) {
 
     const type = typeof enquiry_type === 'string' && enquiry_type.trim() ? enquiry_type.trim() : 'General';
 
-    const supabase = createServiceClient();
-
-    /* ---- duplicate guard: same number, same type, within five minutes ---- */
-    const since = new Date(Date.now() - DUPLICATE_WINDOW_MS).toISOString();
-    const { data: recent } = await supabase
-      .from('enquiries')
-      .select('id, created_at')
-      .eq('phone', phone)
-      .gte('created_at', since)
-      .limit(5);
-
-    if (recent && recent.length > 0) {
-      /* Treat as the same enquiry. Success is returned so the visitor sees a
-         normal confirmation rather than an error for double-clicking. */
-      return NextResponse.json({ success: true, id: recent[0].id, duplicate: true });
+    let supabase;
+    try {
+      supabase = createServiceClient();
+    } catch (e: any) {
+      console.error('[enquiry] could not create Supabase client:', e?.message || e);
+      return NextResponse.json(
+        { error: 'Our enquiry system is not reachable right now. Please call 033-22651204.' },
+        { status: 503 }
+      );
     }
 
-    /* ---- rate limit: an unusual number of submissions from one mobile ---- */
-    const hourAgo = new Date(Date.now() - 3600_000).toISOString();
-    const { count } = await supabase
-      .from('enquiries')
-      .select('id', { count: 'exact', head: true })
-      .eq('phone', phone)
-      .gte('created_at', hourAgo);
+    /* ---- duplicate and rate-limit checks ----
+       These are conveniences. If either query fails — a permissions change, a
+       schema change, a network blip — the enquiry must still be saved. Losing
+       a lead to a housekeeping query would be a worse fault than the one they
+       prevent, so every failure here is logged and ignored. */
+    try {
+      const since = new Date(Date.now() - DUPLICATE_WINDOW_MS).toISOString();
+      const { data: recent, error: dupErr } = await supabase
+        .from('enquiries')
+        .select('id, created_at')
+        .eq('phone', phone)
+        .gte('created_at', since)
+        .limit(5);
 
-    if ((count ?? 0) >= HOURLY_LIMIT) {
-      return NextResponse.json(
-        { error: 'We already have your enquiry and will be in touch shortly.' },
-        { status: 429 }
-      );
+      if (dupErr) {
+        console.error('[enquiry] duplicate check failed, continuing:', dupErr.message);
+      } else if (recent && recent.length > 0) {
+        return NextResponse.json({ success: true, id: recent[0].id, duplicate: true });
+      }
+
+      const hourAgo = new Date(Date.now() - 3600_000).toISOString();
+      const { count, error: rateErr } = await supabase
+        .from('enquiries')
+        .select('id', { count: 'exact', head: true })
+        .eq('phone', phone)
+        .gte('created_at', hourAgo);
+
+      if (rateErr) {
+        console.error('[enquiry] rate check failed, continuing:', rateErr.message);
+      } else if ((count ?? 0) >= HOURLY_LIMIT) {
+        return NextResponse.json(
+          { error: 'We already have your enquiry and will be in touch shortly.' },
+          { status: 429 }
+        );
+      }
+    } catch (e) {
+      console.error('[enquiry] pre-insert checks threw, continuing:', e);
     }
 
     /* ---- record WHICH page produced the lead ---- */
@@ -137,29 +155,44 @@ export async function POST(req: NextRequest) {
       status: 'new',
     }).select().single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('[enquiry] insert failed:', error.code, error.message, error.details);
+      return NextResponse.json(
+        { error: `Could not save your enquiry (${error.code || 'db'}). Please call 033-22651204.` },
+        { status: 500 }
+      );
+    }
 
-    sendNotification({
-      phone,
-      whatsappTemplate: 'enquiry_confirmation',
-      whatsappParams: [name, type],
-      smsTemplateId: process.env.MSG91_TEMPLATE_ID_ENQUIRY,
-      smsVariables: { name, enquiry_type: type },
-      email: process.env.EMAIL_SALES,
-      emailSubject: `New ${type} Enquiry from ${name} — ${company || 'Individual'}`,
-      emailHtml: `
-        <h2>New Website Enquiry</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Company:</strong> ${company || 'N/A'}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Email:</strong> ${email || 'N/A'}</p>
-        <p><strong>Type:</strong> ${type}</p>
-        <p><strong>From page:</strong> ${page}</p>
-        <p><strong>Message:</strong></p>
-        <blockquote>${msg}</blockquote>
-        <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/admin/enquiries">View in Admin Panel</a></p>
-      `,
-    })?.catch?.((err: unknown) => console.error('[enquiry] notification failed:', err));
+    /* Notifications are secondary. The lead is already saved; nothing below
+       this line may be allowed to turn a saved lead into an error. */
+    try {
+      const maybe = sendNotification({
+        phone,
+        whatsappTemplate: 'enquiry_confirmation',
+        whatsappParams: [name, type],
+        smsTemplateId: process.env.MSG91_TEMPLATE_ID_ENQUIRY,
+        smsVariables: { name, enquiry_type: type },
+        email: process.env.EMAIL_SALES,
+        emailSubject: `New ${type} Enquiry from ${name} — ${company || 'Individual'}`,
+        emailHtml: `
+          <h2>New Website Enquiry</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Company:</strong> ${company || 'N/A'}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <p><strong>Email:</strong> ${email || 'N/A'}</p>
+          <p><strong>Type:</strong> ${type}</p>
+          <p><strong>From page:</strong> ${page}</p>
+          <p><strong>Message:</strong></p>
+          <blockquote>${msg}</blockquote>
+          <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/admin/enquiries">View in Admin Panel</a></p>
+        `,
+      });
+      if (maybe && typeof (maybe as any).catch === 'function') {
+        (maybe as Promise<unknown>).catch((err) => console.error('[enquiry] notification failed:', err));
+      }
+    } catch (err) {
+      console.error('[enquiry] notification threw:', err);
+    }
 
     return NextResponse.json({ success: true, id: data.id });
   } catch (err: any) {

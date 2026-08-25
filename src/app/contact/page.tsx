@@ -6,14 +6,28 @@ import { MapPin, Phone, Mail, Globe, Clock, Send, CheckCircle, Factory } from 'l
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', enquiry_type: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [errMsg, setErrMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('sending');
+    if (status === 'sending') return;
+    setStatus('sending'); setErrMsg('');
     try {
-      const res = await fetch('/api/enquiry', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
-      setStatus(res.ok ? 'done' : 'error');
-    } catch { setStatus('error'); }
+      const res = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, source: 'contact' }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) { setStatus('done'); return; }
+      /* Show what the server actually said. A generic message tells the
+         visitor nothing and tells us nothing either. */
+      setErrMsg(data.error || `Could not send (${res.status}). Please call 033-22651204.`);
+      setStatus('error');
+    } catch (e) {
+      setErrMsg('No connection to our server. Please check your internet, or call 033-22651204.');
+      setStatus('error');
+    }
   };
 
   return (
@@ -88,7 +102,7 @@ export default function ContactPage() {
                     <button type="submit" disabled={status === 'sending'} className="btn-primary w-full !py-4 text-lg disabled:opacity-50">
                       <Send size={18} className="mr-2" /> {status === 'sending' ? 'Sending...' : 'Send Enquiry'}
                     </button>
-                    {status === 'error' && <p className="text-red-500 text-sm text-center">Something went wrong. Please try again or call us directly.</p>}
+                    {status === 'error' && <p className="text-red-500 text-sm text-center">{errMsg || 'Something went wrong. Please call 033-22651204.'}</p>}
                   </form>
                 )}
               </div>
