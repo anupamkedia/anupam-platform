@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { SITE, ENQUIRY_TYPES } from '@/lib/constants';
 import { MapPin, Phone, Mail, Globe, Clock, Send, CheckCircle, Factory } from 'lucide-react';
+import { getTurnstileToken } from '@/lib/turnstile';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', enquiry_type: '', message: '' });
@@ -13,10 +14,11 @@ export default function ContactPage() {
     if (status === 'sending') return;
     setStatus('sending'); setErrMsg('');
     try {
+      const turnstileToken = await getTurnstileToken();
       const res = await fetch('/api/enquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, source: 'contact' }),
+        body: JSON.stringify({ ...form, turnstileToken, source: 'contact' }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) { setStatus('done'); return; }

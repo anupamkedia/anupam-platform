@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase';
 import { sendNotification } from '@/lib/notifications';
+import { verifyTurnstile } from '@/lib/verifyTurnstile';
 
 /* ============================================================================
    Enquiry intake
@@ -63,6 +64,25 @@ export async function POST(req: NextRequest) {
     if (typeof website === 'string' && website.trim() !== '') {
       return NextResponse.json({ success: true });
     }
+
+    /* ---- Cloudflare Turnstile ----
+       Only the forms listed below are required to supply a token. The other
+       forms posting to this route keep working untouched — tightening a
+       shared route on behalf of one form is how the exit popup broke. */
+    const PROTECTED_SOURCES = ['contact', 'exit-popup'];
+    const page0 = typeof body.source === 'string' ? body.source.trim() : '';
+    const verdict = await verifyTurnstile(
+      body.turnstileToken,
+      req.headers.get('cf-connecting-ip') || req.headers.get('x-forwarded-for') || undefined
+    );
+    if (verdict === false && PROTECTED_SOURCES.includes(page0)) {
+      return NextResponse.json(
+        { error: 'We could not verify this submission. Please reload the page and try again.' },
+        { status: 400 }
+      );
+    }
+    /* verdict === null means Turnstile is not configured or was unreachable.
+       A protection layer must never be the reason a genuine lead is lost. */
 
     const name = validName(body.name);
     if (!name) {

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle } from 'lucide-react';
+import { getTurnstileToken } from '@/lib/turnstile';
 
 export default function ExitIntent() {
   const [show, setShow] = useState(false);
@@ -28,6 +29,7 @@ export default function ExitIntent() {
     if (sending) return;
     setSending(true);
     try {
+      const turnstileToken = await getTurnstileToken();
       const res = await fetch('/api/enquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -38,6 +40,7 @@ export default function ExitIntent() {
           enquiry_type: 'Exit Intent Lead',
           message: form.requirement || 'Lead from exit popup',
           source: 'exit-popup',
+          turnstileToken,
         }),
       });
       const data = await res.json().catch(() => ({}));
