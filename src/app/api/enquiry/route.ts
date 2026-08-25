@@ -76,10 +76,21 @@ export async function POST(req: NextRequest) {
       req.headers.get('cf-connecting-ip') || req.headers.get('x-forwarded-for') || undefined
     );
     if (verdict === false && PROTECTED_SOURCES.includes(page0)) {
-      return NextResponse.json(
-        { error: 'We could not verify this submission. Please reload the page and try again.' },
-        { status: 400 }
-      );
+      /* MONITOR MODE by default.
+         Cloudflare judged the first genuine submission "likely bot", so
+         enforcing straight away risks rejecting real prospects silently —
+         far worse than letting spam through. The failure is logged instead.
+         Set TURNSTILE_ENFORCE=true in Vercel once the analytics show real
+         visitors passing consistently. */
+      if (process.env.TURNSTILE_ENFORCE === 'true') {
+        return NextResponse.json(
+          { error: 'We could not verify this submission. Please reload the page and try again.' },
+          { status: 400 }
+        );
+      }
+      console.warn('[turnstile] would have blocked this submission (monitor mode):', {
+        source: page0, name: body?.name, phone: body?.phone,
+      });
     }
     /* verdict === null means Turnstile is not configured or was unreachable.
        A protection layer must never be the reason a genuine lead is lost. */
