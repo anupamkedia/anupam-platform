@@ -79,10 +79,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'That email address does not look right.' }, { status: 400 });
     }
 
+    /* Message is OPTIONAL. Ten forms post here, several of them short-form
+       captures — an exit popup, a download gate — where asking for a
+       paragraph is wrong. A valid name and a valid mobile is enough to act
+       on; the message adds context when there is any. Requiring it here
+       silently blocked the exit popup. */
     const msg = typeof message === 'string' ? message.trim() : '';
-    if (msg.length < 10) {
-      return NextResponse.json({ error: 'Please tell us a little more — at least a sentence.' }, { status: 400 });
-    }
     if (msg.length > 5000) {
       return NextResponse.json({ error: 'That message is too long.' }, { status: 400 });
     }
@@ -130,7 +132,7 @@ export async function POST(req: NextRequest) {
       phone,
       email,
       enquiry_type: type,
-      message: msg,
+      message: msg || 'No message provided',
       source: page,
       status: 'new',
     }).select().single();

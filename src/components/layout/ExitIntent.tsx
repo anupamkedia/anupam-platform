@@ -6,6 +6,7 @@ export default function ExitIntent() {
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({ name: '', phone: '', email: '', requirement: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
@@ -24,12 +25,35 @@ export default function ExitIntent() {
   }, [show, dismissed]);
 
   const handleSubmit = async () => {
+    if (sending) return;
+    setSending(true);
     try {
-      await fetch('/api/enquiry', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, enquiry_type: 'Exit Intent Lead', message: form.requirement || 'Lead from exit popup' }) });
-    } catch {}
-    setSubmitted(true);
-    setTimeout(() => { setShow(false); setDismissed(true); }, 3000);
+      const res = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          enquiry_type: 'Exit Intent Lead',
+          message: form.requirement || 'Lead from exit popup',
+          source: 'exit-popup',
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        /* Tell the visitor the truth. Showing "Thank You" on a rejected
+           submission loses the very people who tried to reach us. */
+        alert(data.error || 'Please check your name and mobile number, then try again.');
+        return;
+      }
+      setSubmitted(true);
+      setTimeout(() => { setShow(false); setDismissed(true); }, 3000);
+    } catch {
+      alert('We could not send that just now. Please call 033-22651204.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const close = () => { setShow(false); setDismissed(true); };
