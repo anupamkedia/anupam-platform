@@ -9,81 +9,143 @@
    engineer may hand to a client. Please check these against your TDS.
    ========================================================================== */
 
-export interface Product { name: string; generic: string; vs: number }
+/* base tells you what the product is thinned and cleaned with, and drives the
+   VOC conversation. wb = water-borne, sb = solvent-borne, hs = high solids,
+   sf = solvent free, ov = oven cured. */
+export type Base = 'wb' | 'sb' | 'hs' | 'sf' | 'ov';
+
+export const BASE_LABEL: Record<Base, string> = {
+  wb: 'Water-borne',
+  sb: 'Solvent-borne',
+  hs: 'High solids',
+  sf: 'Solvent free',
+  ov: 'Oven cured',
+};
+
+export interface Product { name: string; generic: string; vs: number; base?: Base }
 
 export const PRODUCTS: Record<string, Product> = {
   /* --- primers, ferrous --- */
-  EPZP:    { name: "Anupam Epoxy Zinc Phosphate Primer", generic: "Two-pack epoxy polyamide, zinc phosphate", vs: 55 },
-  ZNEP:    { name: "Anupam Zinc Rich Epoxy Primer",      generic: "Two-pack epoxy, min. 80% zinc in dry film", vs: 62 },
-  IZS:     { name: "Anupam Inorganic Zinc Silicate",     generic: "Ethyl silicate, self-curing zinc rich", vs: 60 },
-  REDOX:   { name: "Anupam Red Oxide Primer",            generic: "Alkyd red oxide zinc chromate free", vs: 48 },
-  SHOPP:   { name: "Anupam Shop Primer",                 generic: "Fast-dry weldable holding primer", vs: 30 },
-  ETCH:    { name: "Anupam Etch Primer",                 generic: "Two-pack polyvinyl butyral wash primer", vs: 12 },
-  EPOXYHB: { name: "Anupam Epoxy High Build",            generic: "Two-pack high-build epoxy", vs: 72 },
+  EPZP:    { name: "Anupam Epoxy Zinc Phosphate Primer", generic: "Two-pack epoxy polyamide, zinc phosphate", vs: 55, base: 'sb' },
+  ZNEP:    { name: "Anupam Zinc Rich Epoxy Primer",      generic: "Two-pack epoxy, min. 80% zinc in dry film", vs: 62, base: 'sb' },
+  IZS:     { name: "Anupam Inorganic Zinc Silicate",     generic: "Ethyl silicate, self-curing zinc rich", vs: 60, base: 'sb' },
+  REDOX:   { name: "Anupam Red Oxide Primer",            generic: "Alkyd red oxide zinc chromate free", vs: 48, base: 'sb' },
+  SHOPP:   { name: "Anupam Shop Primer",                 generic: "Fast-dry weldable holding primer", vs: 30, base: 'sb' },
+  ETCH:    { name: "Anupam Etch Primer",                 generic: "Two-pack polyvinyl butyral wash primer", vs: 12, base: 'sb' },
+  EPOXYHB: { name: "Anupam Epoxy High Build",            generic: "Two-pack high-build epoxy", vs: 72, base: 'hs' },
 
   /* --- intermediates and barriers --- */
-  EPMIO:   { name: "Anupam Epoxy MIO Intermediate",      generic: "Two-pack epoxy, micaceous iron oxide", vs: 65 },
-  EPMAS:   { name: "Anupam Epoxy Mastic HB",             generic: "Surface-tolerant high-build epoxy mastic", vs: 80 },
-  GFEP:    { name: "Anupam Glass Flake Epoxy",           generic: "Solvent-free glass flake reinforced epoxy", vs: 90 },
-  CTE:     { name: "Anupam Coal Tar Epoxy",              generic: "Coal tar modified epoxy", vs: 72 },
-  NOVO:    { name: "Anupam Novolac Epoxy Lining",        generic: "Solvent-free amine cured novolac epoxy", vs: 98 },
-  EPPOT:    { name: "Anupam Potable Water Epoxy",        generic: "Solvent-free epoxy, WRAS approved grade", vs: 100 },
+  EPMIO:   { name: "Anupam Epoxy MIO Intermediate",      generic: "Two-pack epoxy, micaceous iron oxide", vs: 65, base: 'sb' },
+  EPMAS:   { name: "Anupam Epoxy Mastic HB",             generic: "Surface-tolerant high-build epoxy mastic", vs: 80, base: 'hs' },
+  GFEP:    { name: "Anupam Glass Flake Epoxy",           generic: "Solvent-free glass flake reinforced epoxy", vs: 90, base: 'sf' },
+  CTE:     { name: "Anupam Coal Tar Epoxy",              generic: "Coal tar modified epoxy", vs: 72, base: 'sb' },
+  NOVO:    { name: "Anupam Novolac Epoxy Lining",        generic: "Solvent-free amine cured novolac epoxy", vs: 98, base: 'sf' },
+  EPPOT:    { name: "Anupam Potable Water Epoxy",        generic: "Solvent-free epoxy, WRAS approved grade", vs: 100, base: 'sf' },
 
   /* --- finishes --- */
-  PUTOP:   { name: "Anupam PU Topcoat",                  generic: "Two-pack aliphatic acrylic polyurethane", vs: 55 },
-  PASP:    { name: "Anupam Polyaspartic Topcoat",        generic: "Two-pack polyaspartic ester", vs: 85 },
-  PSX:     { name: "Anupam Polysiloxane Finish",         generic: "Epoxy-siloxane hybrid, isocyanate free", vs: 88 },
-  FEVE:    { name: "Anupam FEVE Fluoropolymer",          generic: "Fluoroethylene vinyl ether, super-durable", vs: 52 },
-  ALKENAM: { name: "Anupam Synthetic Enamel",            generic: "Single-pack alkyd enamel", vs: 52 },
-  QDENAM:  { name: "Anupam Quick Dry Enamel",            generic: "Short oil alkyd, fast air dry", vs: 45 },
-  STOVE:   { name: "Anupam Stoving Enamel",              generic: "Amino-alkyd, oven cured 120-150 C", vs: 50 },
-  CRUB:    { name: "Anupam Chlorinated Rubber Finish",   generic: "Single-pack chlorinated rubber", vs: 40 },
-  COIL:    { name: "Anupam Coil Coating",                generic: "Polyester / SMP coil coating, oven cured", vs: 55 },
+  PUTOP:   { name: "Anupam PU Topcoat",                  generic: "Two-pack aliphatic acrylic polyurethane", vs: 55, base: 'sb' },
+  PASP:    { name: "Anupam Polyaspartic Topcoat",        generic: "Two-pack polyaspartic ester", vs: 85, base: 'hs' },
+  PSX:     { name: "Anupam Polysiloxane Finish",         generic: "Epoxy-siloxane hybrid, isocyanate free", vs: 88, base: 'hs' },
+  FEVE:    { name: "Anupam FEVE Fluoropolymer",          generic: "Fluoroethylene vinyl ether, super-durable", vs: 52, base: 'sb' },
+  ALKENAM: { name: "Anupam Synthetic Enamel",            generic: "Single-pack alkyd enamel", vs: 52, base: 'sb' },
+  QDENAM:  { name: "Anupam Quick Dry Enamel",            generic: "Short oil alkyd, fast air dry", vs: 45, base: 'sb' },
+  STOVE:   { name: "Anupam Stoving Enamel",              generic: "Amino-alkyd, oven cured 120-150 C", vs: 50, base: 'ov' },
+  CRUB:    { name: "Anupam Chlorinated Rubber Finish",   generic: "Single-pack chlorinated rubber", vs: 40, base: 'sb' },
+  COIL:    { name: "Anupam Coil Coating",                generic: "Polyester / SMP coil coating, oven cured", vs: 55, base: 'ov' },
 
   /* --- elastomeric and fast-cure --- */
-  PUREA:   { name: "Anupam Polyurea Membrane",           generic: "Spray applied pure polyurea elastomer", vs: 100 },
-  PUDECK:  { name: "Anupam PU Deck Coating",             generic: "Elastomeric polyurethane traffic deck system", vs: 82 },
-  AREST:   { name: "Anupam Arest Elastomeric Waterproof", generic: "Acrylic elastomeric, crack bridging", vs: 55 },
-  AREST2K: { name: "Anupam Arest Damp Block 2K",         generic: "Two-pack cementitious polymer", vs: 100 },
+  PUREA:   { name: "Anupam Polyurea Membrane",           generic: "Spray applied pure polyurea elastomer", vs: 100, base: 'sf' },
+  PUDECK:  { name: "Anupam PU Deck Coating",             generic: "Elastomeric polyurethane traffic deck system", vs: 82, base: 'hs' },
+  AREST:   { name: "Anupam Arest Elastomeric Waterproof", generic: "Acrylic elastomeric, crack bridging", vs: 55, base: 'wb' },
+  AREST2K: { name: "Anupam Arest Damp Block 2K",         generic: "Two-pack cementitious polymer", vs: 100, base: 'wb' },
 
   /* --- architectural --- */
-  DAMPP:   { name: "Anupam Azura Damp Arrestor Primer",  generic: "Water-based alkali blocking damp primer, fibre reinforced", vs: 40 },
-  UNIPRIM: { name: "Anupam Amaje Universal Primer",      generic: "Water-based universal wall primer", vs: 38 },
-  EXTEM:   { name: "Anupam Azura Exterior Emulsion",     generic: "Premium acrylic exterior emulsion", vs: 42 },
-  INTEM:   { name: "Anupam Azura Interior Emulsion",     generic: "Luxury acrylic interior emulsion", vs: 40 },
-  ANTICARB:{ name: "Anupam Anti-Carbonation Coating",    generic: "Elastomeric acrylic, CO2 diffusion resistant", vs: 45 },
-  ROOFCOOL:{ name: "Anupam Arest Cool Roof Coating",     generic: "Heat reflective elastomeric roof coating", vs: 52 },
-  WOODPU:  { name: "Anupam PU Wood Finish",              generic: "Two-pack polyurethane wood coating", vs: 40 },
-  WOODSEAL:{ name: "Anupam Wood Sealer",                 generic: "Sanding sealer for interior joinery", vs: 30 },
+  DAMPP:   { name: "Anupam Azura Damp Arrestor Primer",  generic: "Water-based alkali blocking damp primer, fibre reinforced", vs: 40, base: 'wb' },
+  UNIPRIM: { name: "Anupam Amaje Universal Primer",      generic: "Water-based universal wall primer", vs: 38, base: 'wb' },
+  EXTEM:   { name: "Anupam Azura Exterior Emulsion",     generic: "Premium acrylic exterior emulsion", vs: 42, base: 'wb' },
+  INTEM:   { name: "Anupam Azura Interior Emulsion",     generic: "Luxury acrylic interior emulsion", vs: 40, base: 'wb' },
+  ANTICARB:{ name: "Anupam Anti-Carbonation Coating",    generic: "Elastomeric acrylic, CO2 diffusion resistant", vs: 45, base: 'wb' },
+  ROOFCOOL:{ name: "Anupam Arest Cool Roof Coating",     generic: "Heat reflective elastomeric roof coating", vs: 52, base: 'wb' },
+  WOODPU:  { name: "Anupam PU Wood Finish",              generic: "Two-pack polyurethane wood coating", vs: 40, base: 'sb' },
+  WOODSEAL:{ name: "Anupam Wood Sealer",                 generic: "Sanding sealer for interior joinery", vs: 30, base: 'sb' },
 
   /* --- flooring --- */
-  EPFPRIM: { name: "Anupam Epoxy Floor Primer",          generic: "Solvent-free epoxy penetrating primer", vs: 95 },
-  EPSL:    { name: "Anupam Epoxy Self Levelling",        generic: "Solvent-free epoxy screed", vs: 100 },
-  ESD:     { name: "Anupam Anti-Static Epoxy",           generic: "Conductive epoxy, ESD controlled", vs: 98 },
-  FLRMARK: { name: "Anupam Floor Line Marking",          generic: "Two-pack epoxy line marking", vs: 60 },
+  EPFPRIM: { name: "Anupam Epoxy Floor Primer",          generic: "Solvent-free epoxy penetrating primer", vs: 95, base: 'sf' },
+  EPSL:    { name: "Anupam Epoxy Self Levelling",        generic: "Solvent-free epoxy screed", vs: 100, base: 'sf' },
+  ESD:     { name: "Anupam Anti-Static Epoxy",           generic: "Conductive epoxy, ESD controlled", vs: 98, base: 'sf' },
+  FLRMARK: { name: "Anupam Floor Line Marking",          generic: "Two-pack epoxy line marking", vs: 60, base: 'sb' },
 
   /* --- specialty --- */
-  SILAL:   { name: "Anupam Heat Resistant Aluminium",    generic: "Silicone / leafing aluminium, to 600 C", vs: 32 },
-  MODSIL:  { name: "Anupam Modified Silicone Primer",    generic: "Heat resistant silicone modified primer", vs: 35 },
-  INTUM:   { name: "Anupam Fireseal Intumescent",        generic: "Thin film intumescent for structural steel", vs: 70 },
-  GLOW:    { name: "Anupam Photoluminescent Coating",    generic: "Strontium aluminate glow-in-the-dark finish", vs: 45 },
-  GLOWBASE:{ name: "Anupam Photoluminescent Base",       generic: "High opacity white base for glow coatings", vs: 50 },
-  AFOUL:   { name: "Anupam Antifouling",                 generic: "Self-polishing copolymer antifouling", vs: 58 },
-  NONSKID: { name: "Anupam Non-Skid Deck Coating",       generic: "Epoxy with aggregate, anti-slip deck", vs: 88 },
-  ROADTP:  { name: "Anupam Thermoplastic Road Marking",  generic: "Hot applied thermoplastic with glass beads", vs: 100 },
-  ROADCOLD:{ name: "Anupam Cold Applied Road Marking",   generic: "Chlorinated rubber road marking", vs: 55 },
-  GRAPH:   { name: "Anupam Graphite Coating",            generic: "Graphite filled release / lubricating coating", vs: 40 },
-  ANTIGRAF:{ name: "Anupam Anti-Graffiti Clear",         generic: "Two-pack sacrificial / permanent clear", vs: 35 },
-  EPPHEN:  { name: "Anupam Epoxy Phenolic Lining",       generic: "Amine cured epoxy phenolic, high chemical resistance", vs: 68 },
-  SILACR:  { name: "Anupam Silicone Acrylic Exterior",    generic: "Silicone modified acrylic exterior emulsion", vs: 44 },
-  ALUMPT:  { name: "Anupam Aluminium Paint",              generic: "Leafing aluminium, general purpose", vs: 38 },
-  BITUM:   { name: "Anupam Bituminous Coating",           generic: "Bitumen based protective / damp proof coating", vs: 60 },
-  VINYL:   { name: "Anupam Vinyl Coating",                generic: "Single-pack vinyl copolymer", vs: 35 },
-  PUSEAL:  { name: "Anupam PU Clear Sealer",              generic: "Two-pack aliphatic polyurethane clear", vs: 42 },
-  HYGWALL: { name: "Anupam Hygienic Wall Coating",        generic: "Cleanable epoxy / PU hybrid wall system", vs: 60 },
-  MMA:     { name: "Anupam MMA Fast Cure Floor",          generic: "Methyl methacrylate, cures at low temperature", vs: 95 },
-  EPGROUT: { name: "Anupam Epoxy Mortar",                 generic: "Three-component epoxy repair mortar", vs: 100 },
-  ACRYLPR: { name: "Anupam Acrylic Wall Primer",          generic: "Water-based acrylic sealer primer", vs: 36 },
+  SILAL:   { name: "Anupam Heat Resistant Aluminium",    generic: "Silicone / leafing aluminium, to 600 C", vs: 32, base: 'sb' },
+  MODSIL:  { name: "Anupam Modified Silicone Primer",    generic: "Heat resistant silicone modified primer", vs: 35, base: 'sb' },
+  INTUM:   { name: "Anupam Fireseal Intumescent",        generic: "Thin film intumescent for structural steel", vs: 70, base: 'wb' },
+  GLOW:    { name: "Anupam Photoluminescent Coating",    generic: "Strontium aluminate glow-in-the-dark finish", vs: 45, base: 'sb' },
+  GLOWBASE:{ name: "Anupam Photoluminescent Base",       generic: "High opacity white base for glow coatings", vs: 50, base: 'sb' },
+  AFOUL:   { name: "Anupam Antifouling",                 generic: "Self-polishing copolymer antifouling", vs: 58, base: 'sb' },
+  NONSKID: { name: "Anupam Non-Skid Deck Coating",       generic: "Epoxy with aggregate, anti-slip deck", vs: 88, base: 'hs' },
+  ROADTP:  { name: "Anupam Thermoplastic Road Marking",  generic: "Hot applied thermoplastic with glass beads", vs: 100, base: 'sf' },
+  ROADCOLD:{ name: "Anupam Cold Applied Road Marking",   generic: "Chlorinated rubber road marking", vs: 55, base: 'sb' },
+  GRAPH:   { name: "Anupam Graphite Coating",            generic: "Graphite filled release / lubricating coating", vs: 40, base: 'sb' },
+  ANTIGRAF:{ name: "Anupam Anti-Graffiti Clear",         generic: "Two-pack sacrificial / permanent clear", vs: 35, base: 'sb' },
+  EPPHEN:  { name: "Anupam Epoxy Phenolic Lining",       generic: "Amine cured epoxy phenolic, high chemical resistance", vs: 68, base: 'sb' },
+  SILACR:  { name: "Anupam Silicone Acrylic Exterior",    generic: "Silicone modified acrylic exterior emulsion", vs: 44, base: 'wb' },
+  ALUMPT:  { name: "Anupam Aluminium Paint",              generic: "Leafing aluminium, general purpose", vs: 38, base: 'sb' },
+  BITUM:   { name: "Anupam Bituminous Coating",           generic: "Bitumen based protective / damp proof coating", vs: 60, base: 'sb' },
+  VINYL:   { name: "Anupam Vinyl Coating",                generic: "Single-pack vinyl copolymer", vs: 35, base: 'sb' },
+  PUSEAL:  { name: "Anupam PU Clear Sealer",              generic: "Two-pack aliphatic polyurethane clear", vs: 42, base: 'sb' },
+  HYGWALL: { name: "Anupam Hygienic Wall Coating",        generic: "Cleanable epoxy / PU hybrid wall system", vs: 60, base: 'hs' },
+  MMA:     { name: "Anupam MMA Fast Cure Floor",          generic: "Methyl methacrylate, cures at low temperature", vs: 95, base: 'sf' },
+  EPGROUT: { name: "Anupam Epoxy Mortar",                 generic: "Three-component epoxy repair mortar", vs: 100, base: 'sf' },
+  ACRYLPR: { name: "Anupam Acrylic Wall Primer",          generic: "Water-based acrylic sealer primer", vs: 36, base: 'wb' },
+  /* ---------------- WATER-BORNE INDUSTRIAL ----------------
+     The growing segment, and what low-VOC tenders and green building
+     projects increasingly demand. Applied inside occupied buildings without
+     evacuating the area, which solvent-borne cannot match. */
+  WBEPPRIM:{ name: "Anupam WB Epoxy Primer",              generic: "Water-borne two-pack epoxy primer", vs: 45, base: 'wb' },
+  WBEPFIN: { name: "Anupam WB Epoxy Finish",              generic: "Water-borne two-pack epoxy finish", vs: 42, base: 'wb' },
+  WBZP:    { name: "Anupam WB Zinc Phosphate Primer",     generic: "Water-borne acrylic, zinc phosphate", vs: 40, base: 'wb' },
+  WBPU:    { name: "Anupam WB Polyurethane Finish",       generic: "Water-borne two-pack aliphatic PU", vs: 40, base: 'wb' },
+  WBDTM:   { name: "Anupam WB Acrylic DTM",               generic: "Water-borne acrylic direct to metal", vs: 38, base: 'wb' },
+  WBINTUM: { name: "Anupam WB Fireseal Intumescent",      generic: "Water-borne thin film intumescent", vs: 68, base: 'wb' },
+  WBFLOOR: { name: "Anupam WB Epoxy Floor Coating",       generic: "Water-borne epoxy, breathable floor finish", vs: 40, base: 'wb' },
+  WBHEAT:  { name: "Anupam WB Heat Resistant Coating",    generic: "Water-borne silicone modified, to 250 C", vs: 38, base: 'wb' },
+
+  /* ---------------- DECORATIVE, THE FULL LADDER ---------------- */
+  AZLUX:   { name: "Azura Luxury Interior Emulsion",      generic: "Luxury acrylic interior, silk finish", vs: 42, base: 'wb' },
+  AZEXT:   { name: "Azura Exterior Long Life",            generic: "Premium exterior emulsion, dirt resistant", vs: 44, base: 'wb' },
+  ASINT:   { name: "Asure Premium Interior Emulsion",     generic: "Premium acrylic interior, washable", vs: 40, base: 'wb' },
+  ASEXT:   { name: "Asure Exterior Emulsion",             generic: "Premium acrylic exterior", vs: 42, base: 'wb' },
+  ANEXINT: { name: "Anex Interior Emulsion",              generic: "Mainstream acrylic interior", vs: 38, base: 'wb' },
+  ANEXEXT: { name: "Anex Exterior Emulsion",              generic: "Mainstream acrylic exterior", vs: 40, base: 'wb' },
+  ATOPINT: { name: "Atop Economy Interior",               generic: "Economy acrylic distemper", vs: 34, base: 'wb' },
+  CEMPAINT:{ name: "Anupam Cement Paint",                 generic: "Cement based exterior finish", vs: 55, base: 'wb' },
+  TEXTURE: { name: "Anupam Texture Finish",               generic: "Acrylic textured coating, trowel applied", vs: 65, base: 'wb' },
+  AMAJEEXT:{ name: "Amaje Exterior Primer",               generic: "Water-borne alkali resistant exterior primer", vs: 40, base: 'wb' },
+
+  /* ---------------- SOLVENT-BORNE GAPS ---------------- */
+  CRPRIM:  { name: "Anupam Chlorinated Rubber Primer",    generic: "Chlorinated rubber, high build primer", vs: 42, base: 'sb' },
+  VINYLPR: { name: "Anupam Vinyl Primer",                 generic: "Vinyl copolymer primer for masonry and steel", vs: 34, base: 'sb' },
+  ALKUNDER:{ name: "Anupam Alkyd Undercoat",              generic: "Alkyd undercoat for enamel systems", vs: 50, base: 'sb' },
+  ALKPRIM: { name: "Anupam Alkyd Zinc Chrome Free Primer",generic: "Alkyd primer, chromate free", vs: 48, base: 'sb' },
+  ETCHWASH:{ name: "Anupam Wash Primer",                  generic: "Two-pack acid etch wash primer", vs: 12, base: 'sb' },
+  PUPRIM:  { name: "Anupam PU Primer Surfacer",           generic: "Two-pack polyurethane surfacer", vs: 52, base: 'sb' },
+  EPHBSF:  { name: "Anupam Solvent Free Epoxy",           generic: "100% solids epoxy, high build single coat", vs: 100, base: 'sf' },
+  VINYLEST:{ name: "Anupam Vinyl Ester Lining",           generic: "Vinyl ester, strong acid resistance", vs: 95, base: 'sf' },
+  ZNSIL:   { name: "Anupam Zinc Silicate Shop Primer",    generic: "Weldable inorganic zinc silicate", vs: 28, base: 'sb' },
+
+  /* ---------------- SPECIALTY GAPS ---------------- */
+  FLUOR:   { name: "Anupam Fluorescent Finish",           generic: "Daylight fluorescent, high visibility", vs: 40, base: 'sb' },
+  CAMO:    { name: "Anupam Camouflage Coating",           generic: "Defence specification, IR reflective", vs: 48, base: 'sb' },
+  ANTIMIC: { name: "Anupam Anti-Microbial Coating",       generic: "Silver ion acrylic, hygienic surfaces", vs: 40, base: 'wb' },
+  FOODGR:  { name: "Anupam Food Grade Lining",            generic: "Solvent free epoxy, food contact approved", vs: 100, base: 'sf' },
+  CRYST:   { name: "Anupam Crystalline Waterproofing",    generic: "Cementitious crystalline, integral", vs: 100, base: 'wb' },
+  THERMINS:{ name: "Anupam Thermal Insulation Coating",   generic: "Ceramic microsphere insulating coating", vs: 62, base: 'wb' },
+  PIPECOAT:{ name: "Anupam Pipeline Coating",             generic: "Fusion / liquid epoxy pipeline system", vs: 85, base: 'sf' },
+  SPLASH:  { name: "Anupam Splash Zone Compound",         generic: "Solvent free epoxy, wet surface tolerant", vs: 100, base: 'sf' },
+  MARPRIM: { name: "Anupam Marine Primer",                generic: "Two-pack marine epoxy primer", vs: 58, base: 'sb' },
+  PUFLOOR: { name: "Anupam PU Floor Coating",             generic: "Two-pack polyurethane floor finish", vs: 55, base: 'sb' },
+  NANOCO:  { name: "Anupam Nano Surface Coating",         generic: "Nano-enhanced hydrophobic surface treatment", vs: 25, base: 'wb' },
+
 };
 
 export type PrepKey = "SA25" | "SA3" | "SA2" | "ST3" | "SP16" | "SP1" | "CSP3" | "MASONRY" | "WOOD" | "NONE";
@@ -1470,6 +1532,106 @@ export const SYSTEMS: System[] = [
     tests: ["ISO 20340 — cyclic ageing", "ASTM G154 — gloss retention", "Adhesion"],
     notes: ["Polysiloxane holds gloss and colour far longer than polyurethane, which matters on steel that is meant to be looked at."],
     flags: [],
+  },
+  /* ============== WATER-BORNE ALTERNATIVES ==============
+     Same assets, low-VOC route. These matter for occupied buildings, green
+     building credits, and any tender with a VOC ceiling. They generally give
+     up some durability against a solvent-borne equivalent — that trade is
+     stated rather than hidden. */
+  {
+    id: "bld-steel-wb", sector: "buildings", asset: "Building structural steel",
+    label: "Architectural Steel — Water-Borne, Low VOC",
+    blurb: "Low-odour system for steelwork inside occupied or ventilation-restricted buildings.",
+    prep: "SA25", life: "10–15 years", dur: "H",
+    bestWhen: "Work inside an occupied building, a green building project with a VOC ceiling, or anywhere solvent odour would mean evacuating the space.",
+    envs: ["C2", "C3"],
+    coats: [
+      { role: "Primer", product: "WBZP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray / brush" },
+      { role: "Intermediate", product: "WBEPPRIM", coats: 1, dftMin: 60, dftMax: 80, method: "Airless spray" },
+      { role: "Finish", product: "WBPU", coats: 2, dftMin: 40, dftMax: 50, method: "Airless spray" },
+    ],
+    standards: ["ISO 12944-5", "IGBC low-VOC", "ASTM D3960 — VOC content"],
+    tests: ["ASTM B117 — salt spray", "ASTM D3359 — adhesion", "ASTM D3960 — VOC content for credit documentation"],
+    notes: [
+      "Water-borne coatings dry by water evaporation, so drying slows markedly in high humidity. The recoat intervals on the data sheet assume stated conditions, which eastern India often does not provide.",
+      "Do not apply below 10 °C or above 85% relative humidity. Water-borne is less forgiving of both than solvent-borne.",
+      "Roughly two thirds the design life of the solvent-borne equivalent at C3. The trade is odour, VOC compliance and occupied-space working.",
+    ],
+    flags: [],
+  },
+  {
+    id: "flr-wb", sector: "flooring", asset: "Epoxy industrial floor",
+    label: "Water-Borne Epoxy Floor",
+    blurb: "Breathable low-odour floor for occupied premises and slabs with residual moisture.",
+    prep: "CSP3", life: "5–8 years", dur: "M",
+    bestWhen: "A working facility that cannot be evacuated, or a slab whose moisture content is marginal — water-borne epoxy is breathable where solvent-free is not.",
+    coats: [
+      { role: "Primer", product: "WBEPPRIM", coats: 1, dftMin: 60, dftMax: 80, method: "Roller" },
+      { role: "Finish", product: "WBFLOOR", coats: 2, dftMin: 80, dftMax: 120, method: "Roller" },
+    ],
+    standards: ["ASTM D4060 — abrasion", "ASTM D3960 — VOC"],
+    tests: ["ASTM D4263 — concrete moisture", "Pull-off adhesion", "Abrasion"],
+    notes: [
+      "The real advantage is breathability. A solvent-free epoxy over a damp slab traps vapour and lifts; a water-borne film lets it pass.",
+      "Lower build and lower chemical resistance than solvent-free. Not for forklift traffic or chemical exposure.",
+    ],
+    flags: [],
+  },
+  {
+    id: "og-fire-wb", sector: "oilgas", asset: "Passive fire protection",
+    label: "Cellulosic Fire Protection — Water-Borne",
+    blurb: "Low-VOC intumescent for building steel, applied in occupied premises.",
+    prep: "SA25", life: "Structure life with maintenance", dur: "VH",
+    bestWhen: "Building fire protection rather than hydrocarbon. Cannot be substituted for a jet fire or hydrocarbon rated system.",
+    coats: [
+      { role: "Primer", product: "WBZP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+      { role: "Intumescent", product: "WBINTUM", coats: 1, dftMin: 500, dftMax: 3000, method: "Airless spray, DFT per loading schedule" },
+      { role: "Seal", product: "WBPU", coats: 1, dftMin: 40, dftMax: 50, method: "Airless spray" },
+    ],
+    standards: ["BS 476 Part 20/21", "EN 13381-8", "ASTM D3960 — VOC"],
+    tests: ["BS 476 — fire resistance", "DFT per member against the loading schedule", "Adhesion"],
+    notes: [
+      "This is a CELLULOSIC rating. A hydrocarbon or jet fire risk needs a system tested to UL 1709 or ISO 22899 — they are not interchangeable and substituting one for the other is a life safety error.",
+      "Water-borne intumescent needs longer between coats and is sensitive to humidity during cure. Plan the programme around it.",
+      "DFT still comes from the section factor and required rating, not from a data sheet.",
+    ],
+    flags: ["fire"],
+  },
+  {
+    id: "bld-int-wb", sector: "buildings", asset: "Interior masonry wall",
+    label: "Interior Wall — Hygienic, Anti-Microbial",
+    blurb: "Cleanable anti-microbial finish for hospitals, clinics, food areas and schools.",
+    prep: "MASONRY", life: "5–7 years", dur: "H",
+    bestWhen: "Healthcare, food handling, childcare — anywhere surface hygiene is audited.",
+    coats: [
+      { role: "Primer", product: "UNIPRIM", coats: 1, dftMin: 25, dftMax: 35, method: "Brush / roller" },
+      { role: "Finish", product: "ANTIMIC", coats: 2, dftMin: 30, dftMax: 40, method: "Brush / roller" },
+    ],
+    standards: ["ISO 22196 — antibacterial activity", "ASTM D2486 — scrub", "IGBC low-VOC"],
+    tests: ["ISO 22196 — antibacterial efficacy", "ASTM D2486 — scrub resistance", "Cleanability with hospital disinfectant"],
+    notes: [
+      "Anti-microbial coatings inhibit growth ON the film. They do not sterilise a room and are not a substitute for cleaning protocol — claiming otherwise in a hospital tender will not survive scrutiny.",
+      "Confirm resistance to the specific disinfectant in use. Some hospital chemicals attack ordinary emulsion binders.",
+    ],
+    flags: ["hygiene"],
+  },
+  {
+    id: "pow-therm", sector: "power", asset: "Plant structural steel",
+    label: "Thermal Insulation Coating",
+    blurb: "Ceramic microsphere coating reducing surface temperature and touch-burn risk.",
+    prep: "SA25", life: "8–12 years", dur: "M", tempMax: 200,
+    bestWhen: "Hot pipework or vessels where personnel protection is needed but conventional lagging is impractical or hides corrosion.",
+    coats: [
+      { role: "Primer", product: "WBZP", coats: 1, dftMin: 50, dftMax: 60, method: "Airless spray" },
+      { role: "Insulation", product: "THERMINS", coats: 3, dftMin: 500, dftMax: 1000, method: "Airless spray, multiple passes" },
+    ],
+    standards: ["ASTM C1371 — emittance", "ASTM E1461 — thermal diffusivity"],
+    tests: ["Surface temperature before and after, at operating condition", "Adhesion after thermal cycling"],
+    notes: [
+      "Unlike lagging, the coating can be inspected — corrosion under insulation is visible rather than hidden, which is a real advantage on a plant with a CUI history.",
+      "Insulation performance is proportional to film thickness and needs several passes. Under-application is the common failure.",
+    ],
+    flags: ["heat"],
   },
 ];
 

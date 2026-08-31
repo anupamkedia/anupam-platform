@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef, type ReactNode } from "react";
 import {
-  PRODUCTS, PREP, SECTORS, SYSTEMS, FLAGS, ACCESS_LABEL, CROSSREF,
+  PRODUCTS, PREP, SECTORS, SYSTEMS, FLAGS, ACCESS_LABEL, CROSSREF, BASE_LABEL,
   type System,
 } from "@/data/coating-systems";
 import { createClient } from "@supabase/supabase-js";
@@ -100,6 +100,7 @@ export default function SpecificationGenerator() {
   const [compareId, setCompareId] = useState<string | null>(null);
   const [access, setAccess] = useState("ground");
   const [durWanted, setDurWanted] = useState<string>("");     // "" = let the tool choose
+  const [lowVoc, setLowVoc] = useState(false);                // prefer water-borne
   const [price, setPrice] = useState<Record<string, number>>({});
   const [vsOverride, setVsOverride] = useState<Record<string, number>>({});
   const [accessCost, setAccessCost] = useState<Record<string, number>>({});
@@ -122,9 +123,23 @@ export default function SpecificationGenerator() {
   const printMode = useRef<"spec" | "check">("spec");
 
   const matches = useMemo(() => SYSTEMS.filter((s) => s.sector === sector && s.asset === asset), [sector, asset]);
-  const filtered = useMemo(
-    () => (flags.length ? matches.filter((s) => flags.every((f) => (s.flags || []).includes(f))) : matches),
-    [matches, flags]);
+  const isWaterBorne = (sys: System) =>
+    sys.coats.every((c) => {
+      const b = PRODUCTS[c.product].base;
+      return b === 'wb' || b === 'sf';        // solvent-free counts as low-VOC
+    });
+
+  const filtered = useMemo(() => {
+    let out = flags.length ? matches.filter((s) => flags.every((f) => (s.flags || []).includes(f))) : matches;
+    if (lowVoc) {
+      const wb = out.filter(isWaterBorne);
+      if (wb.length) out = wb;                // only narrow if something remains
+    }
+    return out;
+  }, [matches, flags, lowVoc]);
+
+  /* is a low-VOC route available for this asset at all? */
+  const lowVocAvailable = useMemo(() => matches.some(isWaterBorne), [matches]);
   /* Recommended system: honour an explicit pick, then the requested design
      life, then the tool's own default — which is the longest-life system that
      is not the extreme one, i.e. exactly what it showed before this control
@@ -318,6 +333,19 @@ export default function SpecificationGenerator() {
                 </button>
               ))}
             </div>
+            <label className="flex items-start gap-2.5 cursor-pointer mt-4 pt-4 border-t border-slate-100">
+              <input type="checkbox" checked={lowVoc} onChange={(e) => { setLowVoc(e.target.checked); setSystemId(null); }}
+                className="w-4 h-4 accent-[#1E5AA8] mt-0.5" />
+              <span>
+                <span className="text-[12.5px] text-slate-700 block">Prefer low-VOC / water-borne</span>
+                <span className="text-[11px] text-slate-500 block leading-snug">
+                  {lowVocAvailable
+                    ? "For occupied buildings, green building credits, or a tender with a VOC ceiling."
+                    : "No water-borne route exists for this asset — the selection is unchanged."}
+                </span>
+              </span>
+            </label>
+
             {unmet.length > 0 && (
               <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
                 <p className="text-[12px] text-amber-900">No system for <b>{asset}</b> covers {unmet.map((f) => FLAGS[f]).join(" and ")}.</p>
@@ -490,6 +518,10 @@ export default function SpecificationGenerator() {
                         {system.envs && <Row k="Suits corrosivity" v={system.envs.map((e) => ENV_LABEL[e] ?? e).join(", ")} />}
                         {system.tempMax && <Row k="Max service temperature" v={`${system.tempMax} °C`} />}
                         {system.flags?.length ? <Row k="Satisfies" v={system.flags.map((f) => FLAGS[f]).join(", ")} /> : null}
+                        <Row k="Binder base" v={
+                          Array.from(new Set(system.coats.map((c) => PRODUCTS[c.product].base)))
+                            .map((b) => (b ? BASE_LABEL[b] : "—")).join(" + ")
+                        } />
                       </div>
                     </Sec>
 
@@ -751,6 +783,9 @@ function ScheduleTable({ s, totalMin, totalMax, vsOf }: { s: System; totalMin: n
                 <Td className="text-slate-500 whitespace-nowrap">{c.role}</Td>
                 <Td className="font-medium text-slate-900">{p.name}</Td>
                 <Td className="text-slate-600">{p.generic}</Td>
+                <Td className="text-center whitespace-nowrap text-slate-600">
+                  {p.base ? BASE_LABEL[p.base] : "—"}
+                </Td>
                 <Td className="text-center">{vsOf(c.product)}%</Td>
                 <Td className="text-center">{c.coats}</Td>
                 <Td className="text-center whitespace-nowrap">{c.dftMin}–{c.dftMax} µm</Td>
@@ -759,7 +794,7 @@ function ScheduleTable({ s, totalMin, totalMax, vsOf }: { s: System; totalMin: n
             );
           })}
           <tr className="border-t-2 border-[#0B2A5B] font-semibold">
-            <Td colSpan={5} className="text-right pr-4">Total dry film thickness</Td>
+            <Td colSpan={6} className="text-right pr-4">Total dry film thickness</Td>
             <Td className="text-center text-[#0B2A5B] whitespace-nowrap">{totalMin}–{totalMax} µm</Td><Td />
           </tr>
         </tbody>
