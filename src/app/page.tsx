@@ -338,6 +338,7 @@ export default function HomePage() {
               { label: 'Choose Your Colour', desc: 'Visualizer + shade inspiration', link: '/color-visualizer' },
               { label: 'Choose Your Paint', desc: 'Interior, exterior, waterproofing', link: '/products/decorative' },
               { label: 'Estimate Requirement', desc: 'Paint calculator', link: '/calculator' },
+              { label: 'What Will It Cost?', desc: 'Paint, putty and labour for your home', link: '/painting-cost' },
               { label: 'Get It Done', desc: 'Dealer or painting service', link: '/home-painting' },
             ].map(item => (
               <Link key={item.label} href={item.link} className="group">

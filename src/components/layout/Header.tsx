@@ -83,6 +83,7 @@ const megaMenu: Record<string, { cols: { title: string; items: { label: string; 
   'Home Painting': {
     cols: [
       { title: 'Plan Your Home', items: [
+        { label: 'What Will It Cost?', href: '/painting-cost' },
         { label: 'Get Free Quote', href: '/home-painting' },
         { label: 'Colour Visualizer', href: '/color-visualizer' },
         { label: 'Digital Shade Card', href: '/shade-card' },
