@@ -64,6 +64,7 @@ export default function HomePaintingPage() {
           <div className="flex flex-wrap gap-3">
             <a href="#enquiry" className="bg-[var(--color-red)] text-white font-semibold px-7 py-3.5 hover:opacity-90 transition inline-flex items-center gap-2" style={{borderRadius:'var(--radius-md)'}}>Get a Free Quote <ArrowRight size={16} /></a>
             <Link href="/color-visualizer" className="bg-white/10 backdrop-blur text-white font-semibold px-7 py-3.5 hover:bg-white/20 transition border border-white/20 inline-flex items-center gap-2" style={{borderRadius:'var(--radius-md)'}}><Eye size={16} /> Visualize Colours</Link>
+            <Link href="/painting-cost" className="bg-white/10 backdrop-blur text-white font-semibold px-7 py-3.5 hover:bg-white/20 transition border border-white/20 inline-flex items-center gap-2" style={{borderRadius:'var(--radius-md)'}}>What Will It Cost?</Link>
           </div>
         </div>
       </section>
