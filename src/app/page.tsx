@@ -120,15 +120,15 @@ export default function HomePage() {
       {/* SCALE OF ANUPAM */}
       <section className="bg-[var(--color-navy)] border-t border-white/5 py-16">
         <div className="container-wide">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-center justify-items-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-10 gap-x-8 text-center justify-items-center [&>*:last-child]:col-span-2 md:[&>*:last-child]:col-span-1">
             {scaleData.map((item) => (
               <div key={item.label}>
                 <div className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">{item.value}</div>
-                <div className="text-xs text-white/60 mt-2 font-semibold uppercase tracking-wider">{item.label}</div>
+                <div className="text-[11px] text-white/70 mt-2 font-semibold uppercase tracking-wider">{item.label}</div>
               </div>
             ))}
           </div>
-          <p className="text-white/50 text-sm mt-10 max-w-3xl" style={{fontFamily:'var(--font-body)'}}>
+          <p className="text-white/75 text-[15px] leading-relaxed mt-10 max-w-2xl mx-auto text-center" style={{fontFamily:'var(--font-body)'}}>
             From formulation and resin manufacturing to testing, production and technical application support — critical capabilities remain under our control.
           </p>
         </div>
