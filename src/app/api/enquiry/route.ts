@@ -197,7 +197,7 @@ export async function POST(req: NextRequest) {
     /* Notifications are secondary. The lead is already saved; nothing below
        this line may be allowed to turn a saved lead into an error. */
     try {
-      const maybe = sendNotification({
+      await sendNotification({
         phone,
         whatsappTemplate: 'enquiry_confirmation',
         whatsappParams: [name, type],
@@ -218,9 +218,7 @@ export async function POST(req: NextRequest) {
           <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/admin/enquiries">View in Admin Panel</a></p>
         `,
       });
-      if (maybe && typeof (maybe as any).catch === 'function') {
-        (maybe as Promise<unknown>).catch((err) => console.error('[enquiry] notification failed:', err));
-      }
+
     } catch (err) {
       console.error('[enquiry] notification threw:', err);
     }
