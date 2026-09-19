@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase';
-import { sendNotification } from '@/lib/notifications';
+import { sendNotification, sendEmail } from '@/lib/notifications';
 import { verifyTurnstile } from '@/lib/verifyTurnstile';
 
 /* ============================================================================
@@ -197,6 +197,29 @@ export async function POST(req: NextRequest) {
     /* Notifications are secondary. The lead is already saved; nothing below
        this line may be allowed to turn a saved lead into an error. */
     try {
+      /* Email FIRST and on its own. Inside sendNotification it sat behind the
+         WhatsApp and SMS calls, so an unconfigured channel could block the one
+         notification that actually matters. */
+      if (process.env.EMAIL_SALES && process.env.RESEND_API_KEY) {
+        const r = await sendEmail(
+          process.env.EMAIL_SALES,
+          `New ${type} Enquiry from ${name} — ${company || 'Individual'}`,
+          `<h2>New Website Enquiry</h2>
+           <p><strong>Name:</strong> ${name}</p>
+           <p><strong>Company:</strong> ${company || 'N/A'}</p>
+           <p><strong>Phone:</strong> ${phone}</p>
+           <p><strong>Email:</strong> ${email || 'N/A'}</p>
+           <p><strong>Type:</strong> ${type}</p>
+           <p><strong>From page:</strong> ${page}</p>
+           <p><strong>Message:</strong></p>
+           <blockquote>${msg}</blockquote>
+           <p><a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://anupampaints.com'}/admin/enquiries">View in Admin Panel</a></p>`
+        );
+        console.log('[enquiry] email result:', JSON.stringify(r));
+      } else {
+        console.log('[enquiry] email skipped — EMAIL_SALES or RESEND_API_KEY missing at runtime');
+      }
+
       await sendNotification({
         phone,
         whatsappTemplate: 'enquiry_confirmation',
