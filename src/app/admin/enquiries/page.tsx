@@ -117,9 +117,9 @@ export default function AdminEnquiriesPage() {
                       <div key={r.id}
                         className={`bg-white rounded-xl border p-4 ${stale ? 'border-amber-300' : 'border-slate-200'}`}>
                         <div className="flex flex-wrap items-start gap-3">
-                          <div className="min-w-0 flex-1 cursor-pointer" onClick={() => setOpen(open === r.id ? null : r.id)}>
+                          <div className="min-w-0 basis-full sm:basis-auto sm:flex-1 cursor-pointer" onClick={() => setOpen(open === r.id ? null : r.id)}>
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-semibold text-[14px] text-slate-900">{r.name}</span>
+                              <span className="font-semibold text-[14px] text-slate-900 break-words">{r.name}</span>
                               {r.company && <span className="text-[12.5px] text-slate-500">{r.company}</span>}
                               <span className={`text-[10.5px] px-2 py-0.5 rounded border capitalize ${TONE[r.status || 'new']}`}>
                                 {r.status || 'new'}
@@ -139,7 +139,7 @@ export default function AdminEnquiriesPage() {
                             )}
                           </div>
 
-                          <div className="flex items-center gap-2 shrink-0">
+                          <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto sm:shrink-0">
                             <a href={`tel:${r.phone}`} className="text-[12.5px] font-medium text-[#1E5AA8] hover:underline">{r.phone}</a>
                             <a href={`https://wa.me/91${String(r.phone).replace(/\D/g, '').slice(-10)}`}
                               target="_blank" rel="noopener noreferrer"
