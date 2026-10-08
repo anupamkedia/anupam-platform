@@ -7,6 +7,7 @@ import ExitIntent from '@/components/layout/ExitIntent';
 
 import { Montserrat, DM_Sans } from 'next/font/google';
 import MetaPixel from '@/components/MetaPixel';
+import Analytics from '@/components/Analytics';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <Analytics />
         <MetaPixel />
         <Header />
         <main className="flex-1">{children}</main>
