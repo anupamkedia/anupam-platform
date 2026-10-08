@@ -23,6 +23,12 @@ const sidebarItems = [
   { label: 'Users & Roles', href: '/admin/users', icon: Users },
   { label: 'Notifications', href: '/admin/notifications', icon: Bell },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
+  { label: 'Complaints', href: '/admin/complaints', icon: MessageSquare },
+  { label: 'Employees', href: '/admin/employees', icon: Users },
+  { label: 'Labour Rates', href: '/admin/labour', icon: Users },
+  { label: 'Painters', href: '/admin/painters', icon: Users },
+  { label: 'Coating Pricing', href: '/admin/pricing', icon: FileText },
+  { label: 'Warranties', href: '/admin/warranties', icon: FileText },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
