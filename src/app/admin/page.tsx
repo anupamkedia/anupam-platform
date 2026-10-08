@@ -40,7 +40,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <h2 className="font-bold text-gray-800 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-3">
-            {[{ label: 'Add Product', href: '/admin/products' },{ label: 'New Blog Post', href: '/admin/blog' },{ label: 'View Enquiries', href: '/admin/enquiries' },{ label: 'Manage Dealers', href: '/admin/dealers' },{ label: 'Media Library', href: '/admin/media' },{ label: 'Site Settings', href: '/admin/settings' }].map(a => (
+            {[{ label: 'Add Product', href: '/admin/products' },{ label: 'New Blog Post', href: '/admin/blog' },{ label: 'View Enquiries', href: '/admin/enquiries' },{ label: 'Website Analytics', href: '/admin/analytics' },{ label: 'Manage Dealers', href: '/admin/dealers' },{ label: 'Media Library', href: '/admin/media' },{ label: 'Site Settings', href: '/admin/settings' }].map(a => (
               <Link key={a.label} href={a.href} className="flex items-center gap-2 p-3 rounded-lg border border-gray-100 hover:bg-brand-50 hover:border-brand-200 transition text-sm font-medium text-gray-700">
                 <Eye size={16} className="text-brand-500" />{a.label}
               </Link>

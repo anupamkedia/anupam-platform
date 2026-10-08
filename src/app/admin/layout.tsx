@@ -15,6 +15,7 @@ const sidebarItems = [
   { label: 'Media Library', href: '/admin/media', icon: Image },
   { label: 'Blog Posts', href: '/admin/blog', icon: PenLine },
   { label: 'Enquiries', href: '/admin/enquiries', icon: MessageSquare },
+  { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
   { label: 'Dealers', href: '/admin/dealers', icon: Store },
   { label: 'Approvals', href: '/admin/approvals', icon: Shield },
   { label: 'Campaigns', href: '/admin/campaigns', icon: Megaphone },
