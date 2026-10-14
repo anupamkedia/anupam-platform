@@ -26,6 +26,9 @@ const dmSans = DM_Sans({
 
 
 export const metadata: Metadata = {
+  verification: {
+    google: 'SVNjaotnftxkBaHhzoaOBOGk1Nn_XG2OowLezIQFg1w',
+  },
   title: {
     default: 'Anupam Paints — Industrial, Decorative & Specialty Coatings Manufacturer Since 1972',
     template: '%s | Anupam Paints',
