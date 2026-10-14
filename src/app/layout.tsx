@@ -9,6 +9,7 @@ import { Montserrat, DM_Sans } from 'next/font/google';
 import MetaPixel from '@/components/MetaPixel';
 import Analytics from '@/components/Analytics';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import LinkedInInsight from '@/components/LinkedInInsight';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <LinkedInInsight />
         <GoogleAnalytics />
         <Analytics />
         <MetaPixel />
